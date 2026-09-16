@@ -3,21 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FDE 全栈学习中心 & 交付模拟舱 | Forward Deployed Engineer Hub</title>
+    <title>FDE Flight Simulator | 前线部署工程师全栈学习中心</title>
     <link rel="stylesheet" href="style.css">
     <meta name="description" content="专为企业级大模型落地打造的 FDE 完整知识体系、交付战役方法论、硬核工程代码与沙盒演练平台。">
 </head>
 <body>
     <div class="app-container">
-        <!-- 侧边栏导航 -->
+        <!-- macOS / iPadOS 风格侧边栏 -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="brand-logo">
-                    <span>⚡ FDE Flight Simulator</span>
+                <!-- macOS 交通灯三色圆点 -->
+                <div class="traffic-lights">
+                    <div class="traffic-light red"></div>
+                    <div class="traffic-light yellow"></div>
+                    <div class="traffic-light green"></div>
                 </div>
+
+                <div class="brand-logo">
+                    <span class="brand-title">
+                        <span>⚡ FDE Flight Simulator</span>
+                    </span>
+                    <span class="brand-badge">v2.1</span>
+                </div>
+
+                <!-- 学习进度胶囊 -->
                 <div class="progress-widget">
                     <div class="progress-info">
-                        <span>整体学习进度</span>
+                        <span>全栈进度</span>
                         <span id="progress-text">-- / -- 节</span>
                     </div>
                     <div class="progress-bar-bg">
@@ -26,41 +38,48 @@
                 </div>
             </div>
 
+            <!-- Spotlight 极简检索框 -->
             <div class="search-box">
-                <input type="text" id="search-input" class="search-input" placeholder="🔍 检索章节、代码、黑话或指标...">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="search-input" class="search-input" placeholder="聚焦搜索：知识、代码、黑话...">
+                </div>
             </div>
 
+            <!-- 树状章节列表 -->
             <nav class="sidebar-nav" id="sidebar-nav">
-                <!-- 动态渲染模块与章节列表 -->
+                <!-- 动态由 app.js 渲染 -->
             </nav>
 
+            <!-- 底部工具条 -->
             <div class="sidebar-footer">
                 <button class="theme-toggle-btn" id="theme-toggle">☀️ 明亮模式</button>
-                <a href="https://github.com/haossll666/fde-learning-hub" target="_blank" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">GitHub ↗</a>
+                <a href="https://github.com/haossll666/fde-learning-hub" target="_blank" style="font-size: 0.76rem; color: var(--text-tertiary); text-decoration: none; display: flex; align-items: center; gap: 0.2rem;">GitHub ↗</a>
             </div>
         </aside>
 
-        <!-- 主内容区 -->
+        <!-- 主内容视口 -->
         <main class="main-wrapper">
+            <!-- 毛玻璃顶部状态条 -->
             <header class="top-bar">
-                <div style="display: flex; align-items: center; gap: 0.8rem;">
+                <div style="display: flex; align-items: center; gap: 0.9rem;">
                     <button class="menu-toggle-btn" id="menu-toggle" aria-label="Toggle Navigation">☰</button>
                     <div class="breadcrumb-trail" id="breadcrumb-trail">
                         模块〇 &nbsp;›&nbsp; <strong>加载中...</strong>
                     </div>
                 </div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">
-                    FDE 交付战备体系 v2.0
+                <div style="font-size: 0.76rem; color: var(--text-tertiary); font-weight: 500;">
+                    Cupertino Precision Design
                 </div>
             </header>
 
             <div class="content-container">
-                <!-- 章节头部挂载 -->
+                <!-- 章节标题与已学按钮挂载点 -->
                 <div class="section-header-block" id="section-header-mount">
-                    <!-- 动态渲染标题、摘要和已学标记 -->
+                    <!-- 动态渲染 -->
                 </div>
 
-                <!-- 章节正文挂载 -->
+                <!-- 核心文章正文区 -->
                 <article class="prose" id="section-content-mount">
                     <!-- 动态渲染正文、图表、代码、测验与计算器 -->
                 </article>
@@ -68,7 +87,7 @@
         </main>
     </div>
 
-    <!-- 数据与逻辑脚本 -->
+    <!-- 数据与逻辑驱动脚本 -->
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>
