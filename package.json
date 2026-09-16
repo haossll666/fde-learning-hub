@@ -1,0 +1,19 @@
+{
+  "name": "fde-learning-hub",
+  "version": "1.0.0",
+  "description": "Forward Deployed Engineer (FDE) interactive dynamic learning platform for AI-native enterprise delivery.",
+  "scripts": {
+    "dev": "wrangler pages dev .",
+    "deploy": "wrangler pages deploy . --project-name fde-learning-hub"
+  },
+  "keywords": [
+    "fde",
+    "forward-deployed-engineer",
+    "genai",
+    "palantir",
+    "agent",
+    "enterprise-delivery"
+  ],
+  "author": "ggxx39",
+  "license": "MIT"
+}

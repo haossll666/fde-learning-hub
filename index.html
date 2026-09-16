@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDE 全栈学习中心 & 交付模拟舱 | Forward Deployed Engineer Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="专为企业级大模型落地打造的 FDE 完整知识体系、交付战役方法论、硬核工程代码与沙盒演练平台。">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <span>⚡ FDE Flight Simulator</span>
+                </div>
+                <div class="progress-widget">
+                    <div class="progress-info">
+                        <span>整体学习进度</span>
+                        <span id="progress-text">0 / 16 节 (0%)</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" placeholder="🔍 检索章节、代码、黑话或指标...">
+            </div>
+
+            <nav class="sidebar-nav" id="sidebar-nav">
+                <!-- 动态渲染模块与章节列表 -->
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle-btn" id="theme-toggle">☀️ 明亮模式</button>
+                <a href="https://github.com/ggxx39/fde-learning-hub" target="_blank" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">GitHub ↗</a>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-wrapper">
+            <header class="top-bar">
+                <div style="display: flex; align-items: center; gap: 0.8rem;">
+                    <button class="menu-toggle-btn" id="menu-toggle" aria-label="Toggle Navigation">☰</button>
+                    <div class="breadcrumb-trail" id="breadcrumb-trail">
+                        模块〇 &nbsp;›&nbsp; <strong>加载中...</strong>
+                    </div>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">
+                    FDE 交付战备体系 v2.0
+                </div>
+            </header>
+
+            <div class="content-container">
+                <!-- 章节头部挂载 -->
+                <div class="section-header-block" id="section-header-mount">
+                    <!-- 动态渲染标题、摘要和已学标记 -->
+                </div>
+
+                <!-- 章节正文挂载 -->
+                <article class="prose" id="section-content-mount">
+                    <!-- 动态渲染正文、图表、代码、测验与计算器 -->
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <!-- 数据与逻辑脚本 -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
