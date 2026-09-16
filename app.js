@@ -1,4 +1,4 @@
-// FDE 全栈学习中心 & 交付模拟舱 交互引擎 v2.1.0
+// FDE 全栈学习中心 & 交付模拟舱 交互引擎 v2.2.0
 
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
@@ -11,6 +11,7 @@ let quizAnswersState = {};
 
 function initApp() {
     loadCompletedProgress();
+    loadQuizAnswers();
     loadTheme();
     renderSidebar();
     
@@ -31,7 +32,6 @@ function handleInitialRouting() {
             return;
         }
     }
-    // 默认加载第一小节
     loadSection(0, 0, false);
 }
 
@@ -58,12 +58,15 @@ function findSectionByItemId(itemId) {
     return null;
 }
 
-// 2. 学习进度与 LocalStorage
+// 2. 学习进度与 LocalStorage (优化 2：过滤 stale ID 防止进度虚增)
 function loadCompletedProgress() {
     try {
         const saved = localStorage.getItem('fde_hub_completed');
         if (saved) {
-            completedItems = new Set(JSON.parse(saved));
+            const rawList = JSON.parse(saved);
+            // 严格过滤：仅保留当前 data.js 中合法存在的 section id
+            const validList = rawList.filter(id => findSectionByItemId(id));
+            completedItems = new Set(validList);
         }
     } catch (e) {
         console.error("加载学习打卡进度失败", e);
@@ -80,7 +83,7 @@ function saveCompletedProgress() {
     updateProgressUI();
     renderSidebar();
     
-    // 如果当前在成长看板，刷新看板
+    // 如果当前在成长看板，联动刷新看板
     if (FDE_ALL_DATA.modules[currentModuleIndex]?.items[currentItemIndex]?.id === 'dashboard-view') {
         renderDashboard();
     }
@@ -115,7 +118,27 @@ function updateProgressUI() {
     }
 }
 
-// 3. 主题切换
+// 3. 测验答案持久化 (优化 1：跨会话不丢失，答题记录持久化)
+function loadQuizAnswers() {
+    try {
+        const saved = localStorage.getItem('fde_hub_quiz');
+        if (saved) {
+            quizAnswersState = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.error("加载测验答案失败", e);
+    }
+}
+
+function saveQuizAnswers() {
+    try {
+        localStorage.setItem('fde_hub_quiz', JSON.stringify(quizAnswersState));
+    } catch (e) {
+        console.error("保存测验答案失败", e);
+    }
+}
+
+// 4. 主题切换
 function loadTheme() {
     const theme = localStorage.getItem('fde_hub_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', theme);
@@ -137,7 +160,7 @@ function updateThemeButtonUI(theme) {
     }
 }
 
-// 4. 渲染侧边栏
+// 5. 渲染侧边栏 (优化 3：检索支持标题、摘要、以及正文/黑话/代码片段全文匹配)
 function renderSidebar(filterQuery = '') {
     const navContainer = document.getElementById('sidebar-nav');
     if (!navContainer) return;
@@ -148,7 +171,13 @@ function renderSidebar(filterQuery = '') {
     FDE_ALL_DATA.modules.forEach((mod, mIdx) => {
         let matchingItems = [];
         mod.items.forEach((item, iIdx) => {
-            const match = !q || item.title.toLowerCase().includes(q) || item.summary.toLowerCase().includes(q);
+            // 全文纯文本检索：剥离 HTML 标签后做无缝匹配
+            const contentPlainText = item.content ? item.content.replace(/<[^>]+>/g, ' ').toLowerCase() : '';
+            const match = !q || 
+                          item.title.toLowerCase().includes(q) || 
+                          item.summary.toLowerCase().includes(q) ||
+                          contentPlainText.includes(q);
+
             if (match) {
                 matchingItems.push({ item, iIdx });
             }
@@ -174,13 +203,13 @@ function renderSidebar(filterQuery = '') {
     });
 
     if (!html && q) {
-        html = `<div style="padding: 1rem; color: var(--text-muted); font-size: 0.85rem; text-align: center;">未找到匹配内容</div>`;
+        html = `<div style="padding: 1rem; color: var(--text-muted); font-size: 0.82rem; text-align: center;">未找到匹配的知识或代码片段</div>`;
     }
 
     navContainer.innerHTML = html;
 }
 
-// 5. 加载章节与动态内容
+// 6. 加载章节与动态内容
 function loadSection(mIdx, iIdx, updateHash = true) {
     currentModuleIndex = mIdx;
     currentItemIndex = iIdx;
@@ -227,7 +256,7 @@ function loadSection(mIdx, iIdx, updateHash = true) {
         renderDashboard();
     }
 
-    // 核心 Bug 修复：在 DOM 注入后立刻恢复清单勾选状态
+    // 恢复清单勾选状态
     restoreChecklistStates();
 
     // 重新高亮导航
@@ -257,7 +286,7 @@ function updateSectionDoneButton() {
     }
 }
 
-// 6. 事件绑定
+// 7. 事件绑定
 function bindGlobalEvents() {
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
@@ -280,20 +309,16 @@ function bindGlobalEvents() {
     }
 }
 
-// 7. 交互工具：Cost of Inaction (CoI) 商业损失计算器（带精确 85% 折算）
+// 8. 交互工具：Cost of Inaction (CoI) 商业损失计算器
 window.executeCoICalculation = function() {
     const staff = parseFloat(document.getElementById('coi_staff')?.value) || 0;
     const salary = parseFloat(document.getElementById('coi_salary')?.value) || 0;
     const pct = parseFloat(document.getElementById('coi_pct')?.value) || 0;
     const loss = parseFloat(document.getElementById('coi_loss')?.value) || 0;
 
-    // 每月纯低效人力浪费 = 人数 * 月薪 * (耗时比例 / 100)
     const monthlyWaste = staff * salary * (pct / 100);
-    // 每月历史错误造成的平均损失 = (年度损失 * 10000) / 12
     const monthlyLoss = (loss * 10000) / 12;
-    // 综合每月不作为成本 (CoI)
     const monthlyCoI = monthlyWaste + monthlyLoss;
-    // 承诺算法修正：首年预计净释放商业价值 = monthlyCoI * 12 * 0.85 (按 85% 自动化率折算)
     const annualNetGain = (monthlyCoI * 12) * 0.85;
 
     const fmt = (num) => '¥' + Math.round(num).toLocaleString('zh-CN');
@@ -309,7 +334,7 @@ window.executeCoICalculation = function() {
     if (box) box.classList.remove('hidden');
 };
 
-// 8. 修复后的清单持久化（采用稳定 Key 字典机制）
+// 9. 清单持久化
 function restoreChecklistStates() {
     try {
         const saved = localStorage.getItem('fde_hub_checklist_map');
@@ -347,7 +372,7 @@ window.updateChecklistProgress = function() {
     }
 };
 
-// 9. 交互题库：测验引擎
+// 10. 交互题库：测验引擎 (优化 1 联动：即时持久化答题状态)
 function renderQuizzes() {
     const mount = document.getElementById('quiz-mount-point');
     if (!mount) return;
@@ -381,6 +406,7 @@ function renderQuizzes() {
 window.handleQuizAnswer = function(quizId, chosenOpt, correctOpt) {
     if (quizAnswersState[quizId] !== undefined) return;
     quizAnswersState[quizId] = chosenOpt;
+    saveQuizAnswers(); // 立即存盘，刷新不丢失
     renderQuizzes();
     
     // 如果在成长看板，联动更新
@@ -389,7 +415,7 @@ window.handleQuizAnswer = function(quizId, chosenOpt, correctOpt) {
     }
 };
 
-// 10. 模块六：个人成长看板 (Personal Growth Dashboard)
+// 11. 模块六：个人成长看板
 function renderDashboard() {
     const mount = document.getElementById('dashboard-mount-point');
     if (!mount) return;
@@ -442,7 +468,7 @@ function renderDashboard() {
                 <div class="kpi-card danger">
                     <span class="label">实战决断通关率</span>
                     <span class="val">${correctCount} / ${totalQuizzes} 题</span>
-                    <span style="font-size: 0.78rem; color: var(--text-muted); display:block; margin-top:0.3rem;">答题正确率 ${quizAccuracy}%</span>
+                    <span style="font-size: 0.78rem; color: var(--text-muted); display:block; margin-top:0.3rem;">答题正确率 ${quizAccuracy}% (已答 ${answeredCount} 题)</span>
                 </div>
                 <div class="kpi-card" style="background: var(--bg-tertiary);">
                     <span class="label">双防线自检项</span>
@@ -458,7 +484,7 @@ function renderDashboard() {
                     const modDone = mod.items.filter(it => completedItems.has(it.id)).length;
                     const pct = Math.round((modDone / modTotal) * 100);
                     return `
-                    <div style="margin-bottom: 1rem; background: var(--bg-secondary); padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <div style="margin-bottom: 1rem; background: var(--bg-surface); padding: 0.9rem 1.1rem; border-radius: var(--radius-md); border: 0.5px solid var(--border-subtle);">
                         <div style="display:flex; justify-content:space-between; font-size: 0.86rem; margin-bottom: 0.4rem;">
                             <strong>${mod.title}</strong>
                             <span>${modDone}/${modTotal} (${pct}%)</span>
@@ -472,7 +498,7 @@ function renderDashboard() {
 
             <div style="margin-top: 2rem; display: flex; gap: 1rem;">
                 <button class="action-btn" onclick="exportStudyRecords()">📥 导出学习成就 JSON 报告</button>
-                <button class="mark-done-btn" style="border-color: var(--danger); color: var(--danger);" onclick="resetStudyProgress()">⚠️ 重置所有学习记录</button>
+                <button class="mark-done-btn" style="border-color: var(--apple-red); color: var(--apple-red);" onclick="resetStudyProgress()">⚠️ 重置所有学习记录</button>
             </div>
         </div>
     `;
@@ -510,6 +536,7 @@ window.resetStudyProgress = function() {
         completedItems.clear();
         quizAnswersState = {};
         localStorage.removeItem('fde_hub_completed');
+        localStorage.removeItem('fde_hub_quiz');
         localStorage.removeItem('fde_hub_checklist_map');
         updateProgressUI();
         renderSidebar();
@@ -517,7 +544,7 @@ window.resetStudyProgress = function() {
     }
 };
 
-// 11. 代码一键复制
+// 12. 代码一键复制
 window.copyCode = function(buttonElement) {
     const pre = buttonElement.closest('.code-header').nextElementSibling;
     if (!pre) return;
@@ -527,7 +554,7 @@ window.copyCode = function(buttonElement) {
     navigator.clipboard.writeText(code.innerText).then(() => {
         const originalText = buttonElement.textContent;
         buttonElement.textContent = '已复制! ✓';
-        buttonElement.style.background = 'var(--success)';
+        buttonElement.style.background = 'var(--apple-green)';
         setTimeout(() => {
             buttonElement.textContent = originalText;
             buttonElement.style.background = '';
