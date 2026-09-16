@@ -851,3 +851,139 @@ p code, li code {
     transform: rotate(90deg);
   }
 }
+
+/* Dual-Track Translation Card */
+.dual-track-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dt-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.dt-col {
+  background: var(--bg-tertiary);
+  padding: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.dt-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.dt-badge.tech {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.dt-badge.biz {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+}
+
+.dt-badge.cxo {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.dt-col p {
+  font-size: 0.82rem;
+  margin-bottom: 0;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Pre-Mortem Grid */
+.pre-mortem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.pm-card {
+  background: var(--bg-secondary);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 1.1rem;
+  position: relative;
+}
+
+.pm-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 0.4rem;
+}
+
+.pm-card h4 {
+  font-size: 0.98rem;
+  margin: 0.3rem 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.pm-card p {
+  font-size: 0.84rem;
+  margin-bottom: 0.6rem;
+  color: var(--text-secondary);
+}
+
+.pm-remedy {
+  background: var(--bg-tertiary);
+  border-left: 3px solid var(--success);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+/* Dashboard Styles */
+.rank-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.4rem;
+  text-align: center;
+}
+
+.rank-badge {
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding: 0.5rem 1.4rem;
+  border-radius: 30px;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 860px) {
+  .dt-grid, .pre-mortem-grid {
+    grid-template-columns: 1fr;
+  }
+}

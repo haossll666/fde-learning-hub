@@ -127,7 +127,7 @@ graph TD
 * **隐私与离线安全**：无任何第三方 Cookie、无追踪上报代码，完全支持本地离线环境保存阅读。
 
 ### 5.2 Cloudflare 部署配置规范
-* **归属目录**：`/Users/rock/Projects/ggxx39/fde-learning-hub/`（符合本地环境 Git 账号映射准则）。
+* **归属目录**：`/Users/rock/Projects/haossll666/fde-learning-hub/`（符合本地环境 Git 账号映射准则）。
 * **认证账号**：`xxlupward@gmail.com`（Account ID: `ffb134a45cfc3c1c1c3da047900e2cf7`）。
 * **自动化部署命令**：`wrangler pages deploy . --project-name fde-learning-hub`。
 * **产出公网资产**：获得官方在全球部署的免费 SSL 证书及 `https://fde-learning-hub.pages.dev` 访问节点。
