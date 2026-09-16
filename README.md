@@ -79,4 +79,4 @@ npm run deploy
 ---
 
 ## 📄 许可协议
-MIT License © 2026 ggxx39
+MIT License © 2026 haossll666
