@@ -1,0 +1,6 @@
+.git
+.gitignore
+PRD.md
+README.md
+package.json
+.wrangler

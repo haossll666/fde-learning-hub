@@ -1094,6 +1094,233 @@ p code, li code {
   display: none !important;
 }
 
+/* Branching Decision Sandbox */
+.branching-sandbox {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 1.8rem 0;
+  box-shadow: var(--shadow-subtle);
+}
+
+.branching-sandbox h4 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin-bottom: 1.1rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.choice-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.choice-btn {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1.2rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  font-family: var(--font-system);
+  text-align: left;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.choice-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--apple-blue);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.choice-btn.selected.choice-success {
+  background: var(--apple-green-bg) !important;
+  border-color: var(--apple-green) !important;
+  color: var(--apple-green) !important;
+  font-weight: 600;
+}
+
+.choice-btn.selected.choice-fail {
+  background: var(--apple-red-bg) !important;
+  border-color: var(--apple-red) !important;
+  color: var(--apple-red) !important;
+  font-weight: 600;
+}
+
+.outcome-box {
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.4rem;
+  border-radius: var(--radius-md);
+  animation: fadeIn 0.25s ease-out;
+}
+
+.outcome-box.success {
+  background: var(--apple-green-bg);
+  border: 1px solid var(--apple-green);
+}
+
+.outcome-box.fail {
+  background: var(--apple-red-bg);
+  border: 1px solid var(--apple-red);
+}
+
+.outcome-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.impact-chips {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.impact-chip {
+  font-size: 0.78rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-subtle);
+}
+
+.impact-chip.pos {
+  color: var(--apple-green);
+  border-color: var(--apple-green);
+}
+
+.impact-chip.neg {
+  color: var(--apple-red);
+  border-color: var(--apple-red);
+}
+
+.outcome-desc {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.outcome-retry-tip, .outcome-success-tip {
+  font-size: 0.8rem;
+  margin-top: 0.6rem;
+  color: var(--text-secondary);
+}
+
+/* Code Hunt Challenge */
+.code-hunt-block {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  margin: 1.6rem 0;
+  overflow: hidden;
+}
+
+.code-hunt-header {
+  background: var(--bg-tertiary);
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 4D Competency Radar & Dashboard Upgrades */
+.competency-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 2rem 0;
+}
+
+.competency-card {
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.3rem;
+  box-shadow: var(--shadow-subtle);
+}
+
+.competency-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.competency-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.competency-level {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.competency-tip {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+  line-height: 1.4;
+}
+
+/* PBL Summary Grid in Dashboard */
+.pbl-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 2rem 0;
+}
+
+.pbl-summary-item {
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.2rem;
+  box-shadow: var(--shadow-subtle);
+}
+
+.pbl-summary-item.pass {
+  border-left: 3px solid var(--apple-green);
+}
+
+.pbl-summary-item.fail {
+  border-left: 3px solid var(--apple-red);
+}
+
+.pbl-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.45rem;
+  font-size: 0.88rem;
+}
+
+.pbl-summary-item p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.45;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Responsive Overrides */
 @media (max-width: 880px) {
   .sidebar {
@@ -1114,7 +1341,7 @@ p code, li code {
   .top-bar {
     padding: 0.85rem 1.5rem;
   }
-  .dt-grid, .pre-mortem-grid, .calc-grid, .dual-checklist, .kpi-cards {
+  .dt-grid, .pre-mortem-grid, .calc-grid, .dual-checklist, .kpi-cards, .competency-grid, .pbl-summary-grid {
     grid-template-columns: 1fr;
   }
 }

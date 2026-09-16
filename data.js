@@ -1,20 +1,20 @@
 const FDE_ALL_DATA = {
   "meta": {
-    "title": "FDE 全栈学习中心 & 交付模拟舱 | Forward Deployed Engineer Hub",
-    "version": "2.1.0",
-    "description": "企业级 GenAI 落地必读：四层资料图谱、六大交付战役、无黑盒工程手艺、事前验尸沙盘、PBL 极限挑战与成长看板。"
+    "title": "FDE Flight Simulator & Competency Engine | 前线部署工程师全栈学习与战力评估系统",
+    "version": "3.0.0",
+    "description": "专为企业级 GenAI 落地打造的沉浸式实战平台：四层资料图谱、六大交付战役、无黑盒代码手艺、分支决策沙盘、代码排错寻错与4维战力雷达。"
   },
   "modules": [
     {
       "id": "mindset",
       "title": "模块〇：FDE 核心心智与行业真相",
-      "badge": "理论基石",
+      "badge": "认知地基",
       "items": [
         {
           "id": "intro-1",
           "title": "0.1 为什么硅谷 FDE 需求激增 7 倍？麻省理工 95% 阵亡率报告",
           "summary": "模型能力商品化时代的残酷真相：没有现场交付，模型价值归零。",
-          "content": "\n<div class=\"prose\">\n    <h3>一、数百万美元是如何在企业现场死掉的？</h3>\n    <p>2024~2025 年，麻省理工学院（MIT）NANDA 实验室发布了标志性报告——<strong>《生成式人工智能的鸿沟》(The GenAI Divide)</strong>。报告调研了全球企业在生成式 AI 上的数百亿美元投入，发现<strong>高达 95% 的试点项目最终无法产生可计入财务报表的商业价值</strong>。</p>\n    \n    <div class=\"callout danger\">\n        <strong>95% 阵亡率的三大致命病因：</strong>\n        <ol>\n            <li><strong>“能演示”与“能上线”的鸿沟：</strong>在 Jupyter Notebook 或公网环境演示 85% 准确率看起来很惊艳；但到了银行反洗钱、工业质检或处方审查现场，15% 的格式漂移与幻觉足以引发灾难性事故。</li>\n            <li><strong>数据沼泽（The Data Swamp）：</strong>企业的核心业务数据不在干净的 CSV 里，而散落在打补丁 15 年的 Oracle、非标准 SAP 字段以及员工私人加密的 Excel 中。</li>\n            <li><strong>组织政治与抵触情绪：</strong>业务一线担心被 AI 抢走饭碗或凭空增加校验负担，表面配合、暗中抵触，拒不提供真实有效样本。</li>\n        </ol>\n    </div>\n\n    <p>与此同时，硅谷的 OpenAI、Anthropic、Palantir、Scale AI 以及 YC 孵化器内数百家企业，对同一个职位的需求在一年内暴增 <strong>700% 以上</strong>——这个岗位就是 <strong>前线部署工程师（Forward Deployed Engineer，简称 FDE）</strong>。</p>\n\n    <div class=\"callout tip\">\n        <strong>FDE 核心公理：</strong>当大模型以每周为单位卷平跑分时，<strong>“基础模型不再稀缺，能把模型塞进客户真实业务流水线、为客户算清财务账本的人，才极度稀缺。”</strong>\n    </div>\n</div>\n"
+          "content": "\n<div class=\"prose\">\n    <h3>一、数百万美元是如何在企业现场死掉的？</h3>\n    <p>2024~2025 年，麻省理工学院（MIT）NANDA 实验室发布了标志性报告——<strong>《生成式人工智能的鸿沟》(The GenAI Divide)</strong>。报告调研了全球企业在生成式 AI 上的数百亿美元投入，发现<strong>高达 95% 的试点项目最终无法产生可计入财务报表的商业价值</strong>。</p>\n    \n    <div class=\"callout danger\">\n        <strong>95% 阵亡率的三大致命病因：</strong>\n        <ol>\n            <li><strong>“能演示”与“能上线”的鸿沟：</strong>在 Jupyter Notebook 或公网环境演示 85% 准确率看起来很惊艳；但到了银行反洗钱、工业质检或处方审查现场，15% 的格式漂移与幻觉足以引发灾难性事故。</li>\n            <li><strong>数据沼泽（The Data Swamp）：</strong>企业的核心业务数据不在干净的 CSV 里，而散落在打补丁 15 年的 Oracle、非标准 SAP 字段以及员工私人加密的 Excel 中。</li>\n            <li><strong>组织政治与抵触情绪：</strong>业务一线担心被 AI 抢走饭碗或凭空增加校验负担，表面配合、暗中抵触，拒不提供真实有效样本。</li>\n        </ol>\n    </div>\n\n    <p>与此同时，硅谷的 OpenAI、Anthropic、Palantir、Scale AI 以及 YC 孵化器内数百家企业，对同一个职位的需求在一年内暴增 <strong>700% 以上</strong>——这个岗位就是 <strong>前线部署工程师（Forward Deployed Engineer，简称 FDE）</strong>。</p>\n\n    <div class=\"callout tip\">\n        <strong>FDE 核心公理：</strong>当大模型以每周为单位卷平跑分时，<strong>“基础模型不再稀缺，能把模型塞进客户真实业务流水线、为客户算清财务账本的人，才极度稀缺。”</strong>\n    </div>\n\n    <div class=\"reflection-card\">\n        <span class=\"ref-badge\">⚡ 现场思维反思</span>\n        <p><strong>反思问答：</strong>如果一个客户提出“我们需要一个像 ChatGPT 一样的内部知识库”，合格的 FDE 第一句话绝对不谈模型大小，而是问：“哪 3 个业务环节因为找不到资料每天在浪费多少工时？上线后以什么财务指标衡量成功？”</p>\n    </div>\n</div>\n"
         },
         {
           "id": "intro-2",
@@ -32,7 +32,7 @@ const FDE_ALL_DATA = {
           "id": "pre-mortem-sandbox",
           "title": "0.4 启发式逆向工程：事前验尸（Pre-Mortem）10 种暴毙场景沙盘",
           "summary": "【PRD 核心方法论】在写第一行代码前，预演导致项目死掉的 10 个致命死因与防守底线。",
-          "content": "\n<div class=\"prose\">\n    <div class=\"callout danger\">\n        <strong>什么是事前验尸（Pre-Mortem Inversion）？</strong><br>\n        传统团队总在项目失败后写复盘报告（Post-Mortem），而成熟 FDE 在项目启动第 1 天便召开“事前验尸会”：<strong>“假设 3 个月后该项目被客户退单、全面叫停，列出 10 种最可能暴毙的死因，并在立项时逐一封死。”</strong>\n    </div>\n\n    <div class=\"pre-mortem-grid\">\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 1</span>\n            <h4>下游 ERP 接口暗中修改 Schema 导致崩溃</h4>\n            <p><strong>病理：</strong>客户信息部在周五晚升级了老旧系统，某个字段从大写变成小写，Prompt 提取的字段无法入库，整个数据流瘫痪。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>强制使用 Pydantic 强类型严格校验守门员，配置接口 Schema 自动探测与告警网关。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 2</span>\n            <h4>内部推动者（Champion）离职导致项目被砍</h4>\n            <p><strong>病理：</strong>合作高度依赖某一位副总裁的个人热情，该副总裁调岗后，继任者为了削减前任开支直接废除项目。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>向基层业务渗透沉淀不可逆的肌肉记忆，并建立按月量化的财务账本（QBR Dashboard）。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 3</span>\n            <h4>扫描件反光歪斜，OCR 漏检导致决策失真</h4>\n            <p><strong>病理：</strong>线下上传的票据有大面积公章遮挡和反光，模型胡乱脑补金额数字，导致财务对账严重不符。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>绝不用模型心算金额；模型仅负责圈定坐标与候选文本，数学验算交由刚性规则引擎进行三表钩稽。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 4</span>\n            <h4>单向隔离网内静默 Telemetry 外联触发红牌</h4>\n            <p><strong>病理：</strong>引入的开源库在后台向公网发送版本检查或数据打点，被客户安全运营中心（SOC）抓包，认定为严重违规外联事故。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>部署前执行全局代码与容器镜像抓包审计，彻底拔除所有第三方分析与外联代码。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 5</span>\n            <h4>业务一线因失业恐慌产生消极抵触</h4>\n            <p><strong>病理：</strong>基层员工担心系统上线后自己会被裁撤，暗中提供错误数据、拒绝提供业务规则细节。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>将系统定位为“一线员工的免加班护盾”——率先自动化最痛苦的周五对账加班，让基层体会到立竿见影的减负。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 6</span>\n            <h4>SOW 边界模糊，被“需求蝗虫”无止境白嫖</h4>\n            <p><strong>病理：</strong>没有量化验收界限，客户天天提新想法，项目延期数月无法进入结算阶段。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>在 SOW 中划定 200 条黄金测试集指标（达标即通过 UAT），新需求统一打入 Phase 2 待办池。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 7</span>\n            <h4>未建立 Golden Test Set，验收死于主观评价</h4>\n            <p><strong>病理：</strong>验收评审会上，某个领导随意问了一个偏门问题发现回答不合心意，便拍桌子认定“系统不可用”。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>入场第一周便拉着客方业务骨干共同签字封存《50 条业务黄金评测题集》，以客观通过率作为裁判标准。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 8</span>\n            <h4>模型原厂 API 超时宕机引发雪崩停摆</h4>\n            <p><strong>病理：</strong>公网或云端 API 出现 504 Gateway Timeout，系统直接报 500 错误，导致客户产线工单积压卡死。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>构建“有损服务（Graceful Degradation）”，超时自动退化为本地轻量规则引擎，保证业务永不中断。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 9</span>\n            <h4>影子 IT（Shadow IT）错配，在假中台里打转</h4>\n            <p><strong>病理：</strong>花三个月对接了客户宣传的“企业级数据湖”，上线后发现里面的数据半年没更新，员工全在看私人 Excel。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>不听汇报，搬椅子坐在操作员旁边（影子工作法），直奔真实 System of Record (SoR)。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 10</span>\n            <h4>按席位计费利益冲突，客户提效后主动退订</h4>\n            <p><strong>病理：</strong>按人头账号收费，客户用 AI 提效后把原本 50 人的审核组缩编为 10 人，第二年续约金额骤降 80%。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>采用“按成果收费（Outcome-based Pricing）”，按处理单量或挽回损失分成，实现甲乙双方利益强绑定。</div>\n        </div>\n    </div>\n</div>\n"
+          "content": "\n<div class=\"prose\">\n    <div class=\"callout danger\">\n        <strong>什么是事前验尸（Pre-Mortem Inversion）？</strong><br>\n        传统团队总在项目失败后写复盘报告（Post-Mortem），而成熟 FDE 在项目启动第 1 天便召开“事前验尸会”：<strong>“假设 3 个月后该项目被客户退单、全面叫停，列出 10 种最可能暴毙的死因，并在立项时逐一封死。”</strong>\n    </div>\n\n    <div class=\"pre-mortem-grid\">\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 1 · 架构脱节</span>\n            <h4>下游 ERP 接口暗中修改 Schema 导致崩溃</h4>\n            <p><strong>病理：</strong>客户信息部在周五晚升级了老旧系统，某个字段从大写变成小写，Prompt 提取的字段无法入库，整个数据流瘫痪。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>强制使用 Pydantic 强类型严格校验守门员，配置接口 Schema 自动探测与告警网关。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 2 · 组织断粮</span>\n            <h4>内部推动者（Champion）离职导致项目被砍</h4>\n            <p><strong>病理：</strong>合作高度依赖某一位副总裁的个人热情，该副总裁调岗后，继任者为了削减前任开支直接废除项目。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>向基层业务渗透沉淀不可逆的肌肉记忆，并建立按月量化的财务账本（QBR Dashboard）。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 3 · 数据幻觉</span>\n            <h4>扫描件反光歪斜，OCR 漏检导致决策失真</h4>\n            <p><strong>病理：</strong>线下上传的票据有大面积公章遮挡和反光，模型胡乱脑补金额数字，导致财务对账严重不符。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>绝不用模型心算金额；模型仅负责圈定坐标与候选文本，数学验算交由刚性规则引擎进行三表钩稽。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 4 · 安全红牌</span>\n            <h4>单向隔离网内静默 Telemetry 外联触发红牌</h4>\n            <p><strong>病理：</strong>引入的开源库在后台向公网发送版本检查或数据打点，被客户安全运营中心（SOC）抓包，认定为严重违规外联事故。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>部署前执行全局代码与容器镜像抓包审计，彻底拔除所有第三方分析与外联代码。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 5 · 员工抵触</span>\n            <h4>业务一线因失业恐慌产生消极抵触</h4>\n            <p><strong>病理：</strong>基层员工担心系统上线后自己会被裁撤，暗中提供错误数据、拒绝提供业务规则细节。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>将系统定位为“一线员工的免加班护盾”——率先自动化最痛苦的周五对账加班，让基层体会到立竿见影的减负。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 6 · 契约失控</span>\n            <h4>SOW 边界模糊，被“需求蝗虫”无止境白嫖</h4>\n            <p><strong>病理：</strong>没有量化验收界限，客户天天提新想法，项目延期数月无法进入结算阶段。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>在 SOW 中划定 200 条黄金测试集指标（达标即通过 UAT），新需求统一打入 Phase 2 待办池。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 7 · 验收扯皮</span>\n            <h4>未建立 Golden Test Set，验收死于主观评价</h4>\n            <p><strong>病理：</strong>验收评审会上，某个领导随意问了一个偏门问题发现回答不合心意，便拍桌子认定“系统不可用”。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>入场第一周便拉着客方业务骨干共同签字封存《50 条业务黄金评测题集》，以客观通过率作为裁判标准。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 8 · 级联雪崩</span>\n            <h4>模型原厂 API 超时宕机引发雪崩停摆</h4>\n            <p><strong>病理：</strong>公网或云端 API 出现 504 Gateway Timeout，系统直接报 500 错误，导致客户产线工单积压卡死。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>构建“有损服务（Graceful Degradation）”，超时自动退化为本地轻量规则引擎，保证业务永不中断。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 9 · 影子沼泽</span>\n            <h4>影子 IT（Shadow IT）错配，在假中台里打转</h4>\n            <p><strong>病理：</strong>花三个月对接了客户宣传的“企业级数据湖”，上线后发现里面的数据半年没更新，员工全在看私人 Excel。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>不听汇报，搬椅子坐在操作员旁边（影子工作法），直奔真实 System of Record (SoR)。</div>\n        </div>\n\n        <div class=\"pm-card\">\n            <span class=\"pm-tag\">死因 10 · 商业自杀</span>\n            <h4>按席位计费利益冲突，客户提效后主动退订</h4>\n            <p><strong>病理：</strong>按人头账号收费，客户用 AI 提效后把原本 50 人的审核组缩编为 10 人，第二年续约金额骤降 80%。</p>\n            <div class=\"pm-remedy\"><strong>FDE 防具：</strong>采用“按成果收费（Outcome-based Pricing）”，按处理单量或挽回损失分成，实现甲乙双方利益强绑定。</div>\n        </div>\n    </div>\n</div>\n"
         }
       ]
     },
@@ -87,14 +87,14 @@ const FDE_ALL_DATA = {
         {
           "id": "eng-1",
           "title": "2.1 生产级 ReAct 循环与状态机：为什么我们要删掉 LangChain？",
-          "summary": "用纯原生代码构建可观察、可调试、带熔断保护的 Agent 决策引擎。",
-          "content": "\n<div class=\"prose\">\n    <!-- PRD 承诺：双轨双语翻译看板 -->\n    <div class=\"dual-track-card\">\n        <div class=\"dt-header\">🌐 双轨双语翻译看板 (Dual-Track Translation)</div>\n        <div class=\"dt-grid\">\n            <div class=\"dt-col\">\n                <span class=\"dt-badge tech\">技术人员视角 (Technical Spec)</span>\n                <p>重构 ReAct Agent 控制流，剥离第三方黑盒框架；引入状态机（FSM）管理、单次请求 Token 动态累加器与 <code>max_steps=6</code> 刚性熔断保护，防止模型异常递归。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge biz\">业务痛点映射 (Business Pain)</span>\n                <p>解决高并发与弱网场景下任务无限挂起、后台进程卡死导致的工单阻塞堆积，保障核心业务流程在任何不可抗力下 5 秒内返回明确状态。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge cxo\">CXO 财务账本与谈判话术</span>\n                <p><strong>“李总，我们彻底封死了死循环漏洞。单次任务的算力成本被硬性锁死在 0.08 元以内，系统可用性达到 99.9%，杜绝了因为单据卡死导致月度结算延期的运营事故。”</strong></p>\n            </div>\n        </div>\n    </div>\n\n    <h3>一、原生 Agent 状态机循环实现</h3>\n    <div class=\"code-header\">\n        <span>Python: 企业级带状态守卫与熔断控制的 Agent 引擎</span>\n        <button class=\"copy-btn\" onclick=\"copyCode(this)\">复制代码</button>\n    </div>\n    <pre><code class=\"language-python\">import json\nimport logging\nfrom typing import Dict, Any, List, Callable\n\nlogger = logging.getLogger(\"EnterpriseAgent\")\n\nclass ResilientEnterpriseAgent:\n    def __init__(self, client, tools: List[Callable], max_steps: int = 6, token_budget: int = 8000):\n        self.client = client\n        self.tool_map = {func.__name__: func for func in tools}\n        self.max_steps = max_steps\n        self.token_budget = token_budget\n\n    def execute(self, user_intent: str, system_context: str) -> Dict[str, Any]:\n        history = [\n            {\"role\": \"system\", \"content\": system_context},\n            {\"role\": \"user\", \"content\": user_intent}\n        ]\n        \n        step_count = 0\n        total_tokens_consumed = 0\n        execution_trace = []\n\n        while step_count < self.max_steps:\n            step_count += 1\n            logger.info(f\"==> 执行第 {step_count}/{self.max_steps} 步推理循环\")\n\n            try:\n                response = self.client.chat.completions.create(\n                    model=\"gpt-4o\",\n                    messages=history,\n                    tools=[self._build_tool_spec(t) for t in self.tool_map.values()],\n                    tool_choice=\"auto\",\n                    temperature=0.1 # 生产环境强调确定性，低温运行\n                )\n            except Exception as net_err:\n                logger.error(f\"模型调用网络异常: {net_err}\")\n                return {\"status\": \"FAILED\", \"reason\": \"API_TIMEOUT\", \"trace\": execution_trace}\n\n            msg = response.choices[0].message\n            history.append(msg)\n            \n            # 统计消耗与安全预算熔断\n            if hasattr(response, 'usage') and response.usage:\n                total_tokens_consumed += response.usage.total_tokens\n                if total_tokens_consumed > self.token_budget:\n                    logger.warning(\"触发 Token 预算熔断拦截\")\n                    return {\"status\": \"ABORTED\", \"reason\": \"TOKEN_BUDGET_EXCEEDED\"}\n\n            # 判定：模型认为无需再调工具，给出最终结论\n            if not msg.tool_calls:\n                return {\n                    \"status\": \"SUCCESS\",\n                    \"final_output\": msg.content,\n                    \"steps\": step_count,\n                    \"tokens\": total_tokens_consumed\n                }\n\n            # 受控执行工具并捕获任何异常，严禁进程崩溃\n            for call in msg.tool_calls:\n                fn_name = call.function.name\n                call_id = call.id\n                raw_args = call.function.arguments\n\n                if fn_name not in self.tool_map:\n                    output = {\"error\": f\"Tool {fn_name} 未在沙箱中注册授权\"}\n                else:\n                    try:\n                        args = json.loads(raw_args)\n                        output = self.tool_map[fn_name](**args)\n                    except Exception as exec_err:\n                        logger.error(f\"工具 {fn_name} 现场运行崩溃: {exec_err}\")\n                        output = {\"error\": f\"工具执行失败: {str(exec_err)}\", \"retry_hint\": \"请检查输入参数类型\"}\n\n                execution_trace.append({\"step\": step_count, \"tool\": fn_name, \"status\": \"executed\"})\n                history.append({\n                    \"role\": \"tool\",\n                    \"tool_call_id\": call_id,\n                    \"content\": json.dumps(output, ensure_ascii=False)\n                })\n\n        return {\"status\": \"MAX_STEPS_REACHED\", \"trace\": execution_trace}\n</code></pre>\n</div>\n"
+          "summary": "用纯原生代码构建可观察、可调试、带熔断保护与完整动态 Tool Spec 的 Agent 决策引擎。",
+          "content": "\n<div class=\"prose\">\n    <div class=\"dual-track-card\">\n        <div class=\"dt-header\">🌐 双轨双语翻译看板 (Dual-Track Translation)</div>\n        <div class=\"dt-grid\">\n            <div class=\"dt-col\">\n                <span class=\"dt-badge tech\">技术人员视角 (Technical Spec)</span>\n                <p>重构 ReAct Agent 控制流，剥离第三方黑盒框架；引入原生 <code>inspect</code> 自动生成 Tool Spec、单次请求 Token 累加器与 <code>max_steps=6</code> 刚性熔断保护，彻底杜绝递归死循环。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge biz\">业务痛点映射 (Business Pain)</span>\n                <p>解决高并发与弱网场景下任务无限挂起、后台进程卡死导致的工单阻塞堆积，保障核心业务流程在任何不可抗力下 5 秒内返回明确状态。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge cxo\">CXO 财务账本与谈判话术</span>\n                <p><strong>“李总，我们彻底封死了死循环漏洞。单次任务的算力成本被硬性锁死在 0.08 元以内，系统可用性达到 99.9%，杜绝了因为单据卡死导致月度结算延期的运营事故。”</strong></p>\n            </div>\n        </div>\n    </div>\n\n    <h3>一、原生 Agent 状态机循环完整代码（100% 可直接执行）</h3>\n    <div class=\"code-container\">\n        <div class=\"code-header\">\n            <span>Python: 具备 inspect 原生内省与安全熔断的企业级 Agent</span>\n            <button class=\"copy-btn\" onclick=\"copyCode(this)\">复制代码</button>\n        </div>\n        <pre><code class=\"language-python\">import inspect\nimport json\nimport logging\nfrom typing import Dict, Any, List, Callable\n\nlogger = logging.getLogger(\"EnterpriseAgent\")\n\nclass ResilientEnterpriseAgent:\n    def __init__(self, client, tools: List[Callable], max_steps: int = 6, token_budget: int = 8000):\n        self.client = client\n        self.tool_map = {func.__name__: func for func in tools}\n        self.max_steps = max_steps\n        self.token_budget = token_budget\n\n    def _build_tool_spec(self, func: Callable) -> Dict[str, Any]:\n        \"\"\"使用 Python 原生 inspect 机制自动推断生成标准 OpenAI Tool Spec\"\"\"\n        sig = inspect.signature(func)\n        doc = inspect.getdoc(func) or \"No documentation provided.\"\n        properties = {}\n        required = []\n        \n        type_mapping = {int: \"integer\", float: \"number\", bool: \"boolean\", list: \"array\", dict: \"object\"}\n        for param_name, param in sig.parameters.items():\n            param_type = type_mapping.get(param.annotation, \"string\")\n            properties[param_name] = {\"type\": param_type, \"description\": f\"Field: {param_name}\"}\n            if param.default == inspect.Parameter.empty:\n                required.append(param_name)\n\n        return {\n            \"type\": \"function\",\n            \"function\": {\n                \"name\": func.__name__,\n                \"description\": doc,\n                \"parameters\": {\n                    \"type\": \"object\",\n                    \"properties\": properties,\n                    \"required\": required\n                }\n            }\n        }\n\n    def execute(self, user_intent: str, system_context: str) -> Dict[str, Any]:\n        history = [\n            {\"role\": \"system\", \"content\": system_context},\n            {\"role\": \"user\", \"content\": user_intent}\n        ]\n        \n        step_count = 0\n        total_tokens_consumed = 0\n        execution_trace = []\n\n        while step_count < self.max_steps:\n            step_count += 1\n            logger.info(f\"==> 执行第 {step_count}/{self.max_steps} 步推理循环\")\n\n            try:\n                response = self.client.chat.completions.create(\n                    model=\"gpt-4o\",\n                    messages=history,\n                    tools=[self._build_tool_spec(t) for t in self.tool_map.values()],\n                    tool_choice=\"auto\",\n                    temperature=0.1\n                )\n            except Exception as net_err:\n                logger.error(f\"模型调用网络异常: {net_err}\")\n                return {\"status\": \"FAILED\", \"reason\": \"API_TIMEOUT\", \"trace\": execution_trace}\n\n            msg = response.choices[0].message\n            history.append(msg)\n            \n            # 安全预算熔断拦截\n            if hasattr(response, 'usage') and response.usage:\n                total_tokens_consumed += response.usage.total_tokens\n                if total_tokens_consumed > self.token_budget:\n                    logger.warning(\"触发 Token 预算熔断拦截\")\n                    return {\"status\": \"ABORTED\", \"reason\": \"TOKEN_BUDGET_EXCEEDED\"}\n\n            # 无工具调用，表明已完成结论\n            if not msg.tool_calls:\n                return {\n                    \"status\": \"SUCCESS\",\n                    \"final_output\": msg.content,\n                    \"steps\": step_count,\n                    \"tokens\": total_tokens_consumed\n                }\n\n            # 受控执行工具并防御现场崩溃\n            for call in msg.tool_calls:\n                fn_name = call.function.name\n                call_id = call.id\n                raw_args = call.function.arguments\n\n                if fn_name not in self.tool_map:\n                    output = {\"error\": f\"Tool {fn_name} 未在沙箱中注册授权\"}\n                else:\n                    try:\n                        args = json.loads(raw_args)\n                        output = self.tool_map[fn_name](**args)\n                    except Exception as exec_err:\n                        logger.error(f\"工具 {fn_name} 现场运行崩溃: {exec_err}\")\n                        output = {\"error\": f\"工具执行失败: {str(exec_err)}\", \"retry_hint\": \"请检查输入参数格式\"}\n\n                execution_trace.append({\"step\": step_count, \"tool\": fn_name, \"status\": \"executed\"})\n                history.append({\n                    \"role\": \"tool\",\n                    \"tool_call_id\": call_id,\n                    \"content\": json.dumps(output, ensure_ascii=False)\n                })\n\n        return {\"status\": \"MAX_STEPS_REACHED\", \"trace\": execution_trace}\n</code></pre>\n    </div>\n</div>\n"
         },
         {
           "id": "eng-2",
           "title": "2.2 结构化输出（Structured Outputs）：基于 Pydantic 的刚性防御",
           "summary": "消除不可靠的字符串截取，让 LLM 与企业下游数据库实现 100% 格式对齐。",
-          "content": "\n<div class=\"prose\">\n    <div class=\"dual-track-card\">\n        <div class=\"dt-header\">🌐 双轨双语翻译看板 (Dual-Track Translation)</div>\n        <div class=\"dt-grid\">\n            <div class=\"dt-col\">\n                <span class=\"dt-badge tech\">技术人员视角 (Technical Spec)</span>\n                <p>采用原厂约束解码（Constrained Decoding）与 Pydantic BaseModel 强类型 Schema 定义，对日期格式、字段命名、正负数范围做静态和动态二重拦截。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge biz\">业务痛点映射 (Business Pain)</span>\n                <p>杜绝因为大模型偶尔输出带 Markdown 解释、或日期格式从 2026-09 漂移成 2026/09 导致财务 ERP 解析报错退单的恶性事故。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge cxo\">CXO 财务账本与谈判话术</span>\n                <p><strong>“张总，这套 Schema 守门员让我们系统入库的格式准确率达到 100%，彻底消除了下游人工每天重新核对 200 笔异常订单的劳动，每年避免超 40 万元错账追索成本。”</strong></p>\n            </div>\n        </div>\n    </div>\n\n    <h3>一、代码实操：Pydantic 刚性结构化验证</h3>\n    <div class=\"code-header\">\n        <span>Python: 企业级强类型审查防御示例</span>\n        <button class=\"copy-btn\" onclick=\"copyCode(this)\">复制代码</button>\n    </div>\n    <pre><code class=\"language-python\">from pydantic import BaseModel, Field, field_validator\nfrom typing import List, Literal\n\nclass DiscrepancyItem(BaseModel):\n    field_name: str = Field(description=\"出现不一致的字段名称\")\n    contract_val: str = Field(description=\"合同原文表述\")\n    invoice_val: str = Field(description=\"发票记载数值\")\n    severity: Literal[\"HIGH\", \"MEDIUM\", \"LOW\"] = Field(description=\"风险等级\")\n\nclass SettlementAuditSchema(BaseModel):\n    batch_number: str = Field(description=\"严格格式: BATCH-YYYYMMDD-XXXX\")\n    vendor_tax_id: str = Field(description=\"18位统一社会信用代码\")\n    total_reconciled_amount: float = Field(ge=0, description=\"对账总金额，必须大于等于0\")\n    discrepancies: List[DiscrepancyItem] = Field(default_factory=list)\n    final_disposition: Literal[\"APPROVE\", \"REJECT\", \"ESCALATE_TO_HUMAN\"]\n\n    @field_validator(\"batch_number\")\n    def validate_batch_format(cls, v):\n        if not v.startswith(\"BATCH-\"):\n            raise ValueError(\"批次号前缀格式不符\")\n        return v\n\n# 原生调用保障 100% JSON Schema 一致性\nresponse = client.beta.chat.completions.parse(\n    model=\"gpt-4o\",\n    messages=[\n        {\"role\": \"system\", \"content\": \"进行结算对账严格审计。遵守所有字段规则。\"},\n        {\"role\": \"user\", \"content\": raw_unstructured_audit_text}\n    ],\n    response_format=SettlementAuditSchema\n)\nclean_record: SettlementAuditSchema = response.choices[0].message.parsed\nprint(f\"安全解析结果，最终决策: {clean_record.final_disposition}\")\n</code></pre>\n</div>\n"
+          "content": "\n<div class=\"prose\">\n    <div class=\"dual-track-card\">\n        <div class=\"dt-header\">🌐 双轨双语翻译看板 (Dual-Track Translation)</div>\n        <div class=\"dt-grid\">\n            <div class=\"dt-col\">\n                <span class=\"dt-badge tech\">技术人员视角 (Technical Spec)</span>\n                <p>采用原厂约束解码（Constrained Decoding）与 Pydantic BaseModel 强类型 Schema 定义，对日期格式、字段命名、正负数范围做静态和动态二重拦截。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge biz\">业务痛点映射 (Business Pain)</span>\n                <p>杜绝因为大模型偶尔输出带 Markdown 解释、或日期格式从 2026-09 漂移成 2026/09 导致财务 ERP 解析报错退单的恶性事故。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge cxo\">CXO 财务账本与谈判话术</span>\n                <p><strong>“张总，这套 Schema 守门员让我们系统入库的格式准确率达到 100%，彻底消除了下游人工每天重新核对 200 笔异常订单的劳动，每年避免超 40 万元错账追索成本。”</strong></p>\n            </div>\n        </div>\n    </div>\n\n    <h3>一、代码实操：Pydantic 刚性结构化验证</h3>\n    <div class=\"code-container\">\n        <div class=\"code-header\">\n            <span>Python: 企业级强类型审查防御示例</span>\n            <button class=\"copy-btn\" onclick=\"copyCode(this)\">复制代码</button>\n        </div>\n        <pre><code class=\"language-python\">from pydantic import BaseModel, Field, field_validator\nfrom typing import List, Literal\n\nclass DiscrepancyItem(BaseModel):\n    field_name: str = Field(description=\"出现不一致的字段名称\")\n    contract_val: str = Field(description=\"合同原文表述\")\n    invoice_val: str = Field(description=\"发票记载数值\")\n    severity: Literal[\"HIGH\", \"MEDIUM\", \"LOW\"] = Field(description=\"风险等级\")\n\nclass SettlementAuditSchema(BaseModel):\n    batch_number: str = Field(description=\"严格格式: BATCH-YYYYMMDD-XXXX\")\n    vendor_tax_id: str = Field(description=\"18位统一社会信用代码\")\n    total_reconciled_amount: float = Field(ge=0, description=\"对账总金额，必须大于等于0\")\n    discrepancies: List[DiscrepancyItem] = Field(default_factory=list)\n    final_disposition: Literal[\"APPROVE\", \"REJECT\", \"ESCALATE_TO_HUMAN\"]\n\n    @field_validator(\"batch_number\")\n    def validate_batch_format(cls, v):\n        if not v.startswith(\"BATCH-\"):\n            raise ValueError(\"批次号前缀格式不符\")\n        return v\n\n# 原生调用保障 100% JSON Schema 一致性\nresponse = client.beta.chat.completions.parse(\n    model=\"gpt-4o\",\n    messages=[\n        {\"role\": \"system\", \"content\": \"进行结算对账严格审计。遵守所有字段规则。\"},\n        {\"role\": \"user\", \"content\": raw_unstructured_audit_text}\n    ],\n    response_format=SettlementAuditSchema\n)\nclean_record: SettlementAuditSchema = response.choices[0].message.parsed\nprint(f\"安全解析结果，最终决策: {clean_record.final_disposition}\")\n</code></pre>\n    </div>\n</div>\n"
         },
         {
           "id": "eng-3",
@@ -112,7 +112,7 @@ const FDE_ALL_DATA = {
           "id": "eng-5",
           "title": "2.5 Evals 驱动开发：RAGAS 体系与自动评测流水线",
           "summary": "把评测作为主骨架：Faithfulness、Relevance、Precision、Recall 数学定义与代码实操。",
-          "content": "\n<div class=\"prose\">\n    <div class=\"dual-track-card\">\n        <div class=\"dt-header\">🌐 双轨双语翻译看板 (Dual-Track Translation)</div>\n        <div class=\"dt-grid\">\n            <div class=\"dt-col\">\n                <span class=\"dt-badge tech\">技术人员视角 (Technical Spec)</span>\n                <p>建立 Ragas 四维自动化评估基线，重点量化 Faithfulness（忠实度）与 Context Precision，每次 Prompt 或参数迭代跑批打分。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge biz\">业务痛点映射 (Business Pain)</span>\n                <p>业务主管凭借一两个偶发偏门案例质疑系统能力；缺乏客观标尺导致技术优化方向变成盲人摸象。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge cxo\">CXO 财务账本与谈判话术</span>\n                <p><strong>“陈总，我们用客观数学标尺锁定了系统质量。在 200 个黄金真实案件测试中，无幻觉真实度达到 98.4%，误判率低于人类资深审核员，这就是下周 UAT 签字的最佳底气。”</strong></p>\n            </div>\n        </div>\n    </div>\n\n    <h3>一、RAGAS 四维评估指标体系</h3>\n    <div class=\"table-container\">\n        <table class=\"data-table\">\n            <thead>\n                <tr>\n                    <th>评测维度</th>\n                    <th>核心评估意图</th>\n                    <th>计算机制 / 数学逻辑</th>\n                    <th>及格基准线</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td><strong>Faithfulness (忠实度)</strong></td>\n                    <td>衡量输出内容是否 100% 来自检索到的上下文证据，严查无依据的幻觉</td>\n                    <td>(模型输出中可由检索上下文证明的命题数量) / (输出中包含的事实命题总数)</td>\n                    <td><strong>&gt; 95%</strong> (金融/医疗必须 100%)</td>\n                </tr>\n                <tr>\n                    <td><strong>Answer Relevance (相关性)</strong></td>\n                    <td>衡量回答是否切中用户问题的核心，有无车轱辘废话</td>\n                    <td>通过 Embedding 向量相似度比对生成回答与原始提问的语义契合度</td>\n                    <td><strong>&gt; 88%</strong></td>\n                </tr>\n                <tr>\n                    <td><strong>Context Precision (排序精度)</strong></td>\n                    <td>衡量检索返回的 Top-K 文档切片中，真正有价值的信息是否靠前</td>\n                    <td>类似信息检索中的平均精度均值（Mean Average Precision）</td>\n                    <td><strong>&gt; 85%</strong></td>\n                </tr>\n                <tr>\n                    <td><strong>Context Recall (召回率)</strong></td>\n                    <td>衡量回答该问题所必需的客观事实，切片是否全部覆盖到位</td>\n                    <td>(检索内容中命中的黄金答案事实点数量) / (黄金事实点总数)</td>\n                    <td><strong>&gt; 90%</strong></td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n</div>\n"
+          "content": "\n<div class=\"prose\">\n    <div class=\"dual-track-card\">\n        <div class=\"dt-header\">🌐 双轨双语翻译看板 (Dual-Track Translation)</div>\n        <div class=\"dt-grid\">\n            <div class=\"dt-col\">\n                <span class=\"dt-badge tech\">技术人员视角 (Technical Spec)</span>\n                <p>建立 Ragas 四维自动化评估基线，重点量化 Faithfulness（忠实度）与 Context Precision，每次 Prompt 或参数迭代跑批打分。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge biz\">业务痛点映射 (Business Pain)</span>\n                <p>业务主管凭借一两个偶发偏门案例质疑系统能力；缺乏客观标尺导致技术优化方向变成盲人摸象。</p>\n            </div>\n            <div class=\"dt-col\">\n                <span class=\"dt-badge cxo\">CXO 财务账本与谈判话术</span>\n                <p><strong>“陈总，我们用客观数学标尺锁定了系统质量。在 200 个黄金真实案件测试中，无幻觉真实度达到 98.4%，误判率低于人类资深审核员，这就是下周 UAT 签字的最佳底气。”</strong></p>\n            </div>\n        </div>\n    </div>\n\n    <h3>一、RAGAS 四维评估指标体系（真实学术计算逻辑）</h3>\n    <div class=\"table-container\">\n        <table class=\"data-table\">\n            <thead>\n                <tr>\n                    <th>评测维度</th>\n                    <th>核心评估意图</th>\n                    <th>真实底层算法 / 数学逻辑</th>\n                    <th>及格基准线</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td><strong>Faithfulness (忠实度)</strong></td>\n                    <td>衡量输出内容是否 100% 来自检索到的上下文证据，严查无依据的幻觉</td>\n                    <td>将模型生成拆解为独立事实陈述（Statements），逐一通过 NLI 自然语言推理验证检索上下文是否 Entail（蕴含）该陈述：<code>|支持的事实| / |总事实陈述数|</code></td>\n                    <td><strong>&gt; 95%</strong> (金融/医疗必须 100%)</td>\n                </tr>\n                <tr>\n                    <td><strong>Answer Relevance (答案相关性)</strong></td>\n                    <td>衡量回答是否切中用户问题的核心，有无答非所问或废话</td>\n                    <td>使用 LLM 依据生成的回答<strong>反向生成 3 个合成问题</strong>，计算这 3 个合成问题向量与原始提问向量的平均余弦相似度（解决问答向量空间天然不匹配的问题）</td>\n                    <td><strong>&gt; 88%</strong></td>\n                </tr>\n                <tr>\n                    <td><strong>Context Precision (排序精度)</strong></td>\n                    <td>衡量检索返回的 Top-K 切片中，真正有价值的信息是否排在最前</td>\n                    <td>类似信息检索中的平均精度均值（Mean Average Precision，MAP）：<code>∑ (Precision@k * Relevance_k) / |总相关切片数|</code></td>\n                    <td><strong>&gt; 85%</strong></td>\n                </tr>\n                <tr>\n                    <td><strong>Context Recall (召回率)</strong></td>\n                    <td>衡量回答该问题所必需的客观事实，切片是否全部覆盖到位</td>\n                    <td><code>|检索内容中命中的黄金事实点数量| / |黄金基准事实点总数|</code></td>\n                    <td><strong>&gt; 90%</strong></td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n\n    <div class=\"code-hunt-block\">\n        <div class=\"code-hunt-header\">\n            <span>🔍 现场实战排错挑战：你能找出这 25 行代码中的 3 个致命隐患吗？</span>\n            <button class=\"copy-btn\" onclick=\"toggleCodeHuntSolution()\">揭示专家诊断</button>\n        </div>\n        <pre><code class=\"language-python\"># 现场客户提供的待上线脚本 snippet.py\nimport requests, json\n\ndef query_enterprise_agent(user_query):\n    # 隐患 A：缺少超时参数，遇弱网可能永久挂起导致线程池耗尽\n    resp = requests.post(\"http://api.internal/v1/chat/completions\", json={\"query\": user_query})\n    data = resp.json() # 隐患 B：未捕获 JSONDecodeError，下游报 502 时直接崩溃抛未处理异常\n    \n    # 隐患 C：向公网偷偷上传匿名打点，违背 Air-gap 绝密合规\n    requests.post(\"https://telemetry.open-stats.org/ping\", json={\"event\": \"query\"})\n    return data[\"choices\"][0][\"text\"]\n</code></pre>\n        <div id=\"code-hunt-solution\" class=\"hidden\" style=\"padding: 1rem; background: rgba(59, 130, 246, 0.1); border-top: 1px solid var(--border-subtle); font-size: 0.84rem;\">\n            <strong>【专家诊断与整改】：</strong><br>\n            1. <strong>致命挂起：</strong><code>requests.post</code> 必须显式设置 <code>timeout=(3.0, 15.0)</code> 连接与读取双超时；<br>\n            2. <strong>未捕获响应异常：</strong>先检查 <code>resp.status_code == 200</code>，再用 <code>try...except json.JSONDecodeError</code> 包裹；<br>\n            3. <strong>触发内网告警：</strong>彻底删除 <code>telemetry.open-stats.org</code> 外联上报，否则在单向光闸机房内将引发安全事故审查。\n        </div>\n    </div>\n</div>\n"
         }
       ]
     },
@@ -125,25 +125,25 @@ const FDE_ALL_DATA = {
           "id": "pbl-1",
           "title": "3.1 沙盒挑战 1：48小时极速搞定金融报表合规审查 Agent",
           "summary": "【PRD 挑战一】模拟真实复杂现场，克服缺失主键、扫描件反光与单向网络约束。",
-          "content": "\n<div class=\"prose\">\n    <div class=\"challenge-banner\">\n        <span class=\"badge red\">PBL 极限实战 · 场景 1</span>\n        <h4>任务背景：某国有城商行信贷合规部（限时 48 小时）</h4>\n    </div>\n    <p><strong>业务痛点：</strong>信贷部每天接收上百家中小微企业提交的审计报告与完税证明。8 名专员人工审查，每份耗时 45 分钟，漏检率约 12%，贷款审批拖期长达 5 天。</p>\n    \n    <div class=\"callout warning\">\n        <strong>恶劣约束条件：</strong>\n        <ul>\n            <li>客户内网严禁连接公网，仅提供本地配备单张 A100 GPU 的物理服务器；</li>\n            <li>历史财务报表大量为倾斜、存在印章遮挡的 PDF 扫描件；</li>\n            <li>必须在周五下午向信贷部总监进行现场实操演示（距当前仅剩 48 小时）。</li>\n        </ul>\n    </div>\n\n    <h4>【通关步骤指引】</h4>\n    <ol>\n        <li><strong>现场数据采样（4小时）：</strong>挑出最痛苦的 30 份典型样本（10 份合规、10 份造假、10 份争议），锁定 Golden Test Set。</li>\n        <li><strong>本地多模态流水线（14小时）：</strong>部署本地量化版视觉小模型配合 PaddleOCR，只抽三张表（资产负债表、利润表、现金流量表）核心字段。</li>\n        <li><strong>刚性规则+大模型双核（16小时）：</strong>数字计算严禁让大模型心算，提取出 JSON 后交由 Python 规则引擎进行毫厘不差的财务平衡验算；大模型仅负责对审计师附注中的“重大未决诉讼”做风险标注。</li>\n        <li><strong>高保真对比 UI（10小时）：</strong>轻量级 Web UI，左侧 PDF 高亮红框，右侧显示合规审查意见书。周五当场演示 10 秒识别偷逃税漏洞，拿下正式采购批文。</li>\n    </ol>\n</div>\n"
+          "content": "\n<div class=\"prose\">\n    <div class=\"challenge-banner\">\n        <span class=\"badge red\">PBL 极限实战 · 场景 1</span>\n        <h4>任务背景：某国有城商行信贷合规部（限时 48 小时）</h4>\n    </div>\n    <p><strong>业务痛点：</strong>信贷部每天接收上百家中小微企业提交的审计报告与完税证明。8 名专员人工审查，每份耗时 45 分钟，漏检率约 12%，贷款审批拖期长达 5 天。</p>\n    \n    <div class=\"callout warning\">\n        <strong>现场残酷约束：</strong>\n        <ul>\n            <li>客户内网严禁连接公网，仅提供本地配备单张 A100 GPU 的物理服务器；</li>\n            <li>历史财务报表大量为倾斜、存在印章遮挡的 PDF 扫描件；</li>\n            <li>必须在周五下午向信贷部总监进行现场实操演示（距当前仅剩 48 小时）。</li>\n        </ul>\n    </div>\n\n    <!-- 动态交互分支抉择沙盘 -->\n    <div class=\"branching-sandbox\" id=\"branch-pbl-1\">\n        <h4>⚔️ 决策十字路口：Day 1 上午进场，你的第一步动作是什么？</h4>\n        <div class=\"choice-group\">\n            <button class=\"choice-btn\" onclick=\"executePblChoice('pbl-1', 0)\">\n                A. 向行方信息部提工单，申请开通两周公网白名单并拉取 100GB 完整历史信贷数据\n            </button>\n            <button class=\"choice-btn\" onclick=\"executePblChoice('pbl-1', 1)\">\n                B. 绕开复杂审批，坐在合规组长工位旁观察其审核流程，并当场复制 30 份最折磨人的典型真实扫描件\n            </button>\n            <button class=\"choice-btn\" onclick=\"executePblChoice('pbl-1', 2)\">\n                C. 自己用 Python 在本地合成 50 份标准干净的假财务报表开始跑 Demo\n            </button>\n        </div>\n        <div id=\"pbl-1-outcome\" class=\"outcome-box hidden\"></div>\n    </div>\n</div>\n"
         },
         {
           "id": "pbl-2",
           "title": "3.2 沙盒挑战 2：工业车间离线排障与专家故障树诊断 Agent",
           "summary": "【PRD 挑战二】复杂工业现场：时序传感器数据、老旧设备图纸与零外网环境。",
-          "content": "\n<div class=\"prose\">\n    <div class=\"challenge-banner\">\n        <span class=\"badge red\">PBL 极限实战 · 场景 2</span>\n        <h4>任务背景：大型重工制造基地动力车间（Air-Gap 隔离网）</h4>\n    </div>\n    <p><strong>业务痛点：</strong>数控重型铣床发生偶发性主轴振动报警，老专家退休后，年轻技工翻看 2000 页纸质图纸往往需要停机排查 6 小时以上，每停机一小时产线损失超 5 万元。</p>\n    \n    <div class=\"callout warning\">\n        <strong>恶劣约束条件：</strong>\n        <ul>\n            <li>车间位于地下深井，手机完全无信号，厂区局域网与外网物理隔绝；</li>\n            <li>故障手册大部分为上世纪 90 年代的老旧扫描 TIFF 图纸，文字排版混杂着手绘装配电路图；</li>\n            <li>传感器报警数据每秒产生 500 个浮点数指标（温度、电流、振动频率）。</li>\n        </ul>\n    </div>\n\n    <h4>【通关步骤指引】</h4>\n    <ol>\n        <li><strong>时序特征离线压缩：</strong>编写本地 Python 预处理脚本，用滑动窗口计算振动方差与均方根值，仅将异常波峰时段转换为结构化指标摘要，避免庞大数据撑爆上下文。</li>\n        <li><strong>离线图纸向量图谱（Multimodal RAG）：</strong>将装配图按部件拆解为带层级坐标的图文切片，建立轻量级本地向量数据库（如 SQLite-vss 或 Milvus 单机版）。</li>\n        <li><strong>引导式排障状态机（Decision Tree Agent）：</strong>Agent 严禁自由联想发散，强制按照《故障排查标准操作程序（SOP）》向技工依次询问确认 3 个物理测量点，最终输出高概率损坏元器件编号与仓库备件仓位码。</li>\n        <li><strong>验证指标：</strong>将停机排查中位时间从 360 分钟暴力压缩至 25 分钟以内。</li>\n    </ol>\n</div>\n"
+          "content": "\n<div class=\"prose\">\n    <div class=\"challenge-banner\">\n        <span class=\"badge red\">PBL 极限实战 · 场景 2</span>\n        <h4>任务背景：大型重工制造基地动力车间（Air-Gap 隔离网）</h4>\n    </div>\n    <p><strong>业务痛点：</strong>数控重型铣床发生偶发性主轴振动报警，年轻技工翻看 2000 页纸质图纸往往需要停机排查 6 小时以上，每停机一小时产线损失超 5 万元。</p>\n    \n    <div class=\"callout warning\">\n        <strong>恶劣约束条件：</strong>\n        <ul>\n            <li>车间位于地下深井，手机完全无信号，厂区局域网与外网物理隔绝；</li>\n            <li>故障手册大部分为上世纪 90 年代的老旧扫描 TIFF 图纸，文字排版混杂着手绘装配电路图；</li>\n            <li>传感器报警数据每秒产生 500 个浮点数指标（温度、电流、振动频率）。</li>\n        </ul>\n    </div>\n\n    <!-- 动态交互分支抉择沙盘 -->\n    <div class=\"branching-sandbox\" id=\"branch-pbl-2\">\n        <h4>⚔️ 决策十字路口：面对每秒 500 个浮点数指标与 2000 页图纸，架构如何选型？</h4>\n        <div class=\"choice-group\">\n            <button class=\"choice-btn\" onclick=\"executePblChoice('pbl-2', 0)\">\n                A. 将传感器每秒原始高频数据全部拼接成长文本，直接丢给 128k 上下文的大模型做实时推理\n            </button>\n            <button class=\"choice-btn\" onclick=\"executePblChoice('pbl-2', 1)\">\n                B. 本地 Python 滑动窗口离线计算振动方差与均方根，仅把异常特征切片结合分块装配图构建本地 Multimodal RAG\n            </button>\n            <button class=\"choice-btn\" onclick=\"executePblChoice('pbl-2', 2)\">\n                C. 私自携带 4G 随身 WiFi 进入车间，把数据转发到云端商用大模型做处理\n            </button>\n        </div>\n        <div id=\"pbl-2-outcome\" class=\"outcome-box hidden\"></div>\n    </div>\n</div>\n"
         },
         {
           "id": "pbl-3",
           "title": "3.3 沙盒挑战 3：抗击“需求蝗虫”与高难 SOW 边界实战谈判",
           "summary": "【PRD 挑战三】真实商务博弈树：如何在不破坏客户关系的前提下砍掉 70% 无理定制？",
-          "content": "\n<div class=\"prose\">\n    <div class=\"challenge-banner\">\n        <span class=\"badge red\">PBL 极限实战 · 场景 3</span>\n        <h4>任务背景：某跨国零售集团现场交付第 4 周</h4>\n    </div>\n    <p><strong>危机情境：</strong>一期系统原定下周二进行 UAT 验收。周五下午，客户新上任的信息部副总突然带着 5 个业务代表冲进会议室：“我们内部讨论了，除了现在的订单核对，你们必须在下周把跨境供应链关税预测和自动申报功能也做进去，否则我们下周绝不会在 UAT 验收单上签字！”</p>\n    \n    <div class=\"callout danger\">\n        <strong>错误做法（新手死穴）：</strong>\n        <ul>\n            <li>❌ <strong>妥协认栽：</strong>“行，我们周末通宵帮您赶出来！” ➔ 结果代码崩溃，一期核心功能也出现 Regression，下周二全面翻车。</li>\n            <li>❌ <strong>机械顶撞：</strong>“合同里没写这个，你们违约，我们不做！” ➔ 客户直接上报高层扣留尾款并勒令项目暂停。</li>\n        </ul>\n    </div>\n\n    <h4>【资深 FDE 攻防对话树实操】</h4>\n    <div class=\"talk-track\">\n        <p><strong>第一步：接住情绪，高度赞同业务远见</strong><br>\n        “赵总，您提出的关税自动申报非常具有前瞻性，这恰恰是整个供应链最耗费成本的咽喉环节，说明您对这套系统的商业潜力看得很透。”</p>\n        \n        <p><strong>第二步：摆出事实，锁定一期既得利益</strong><br>\n        “但是赵总，我们一期的核心目标是在下周二通过验收后，立即为贵司止血——目前上线的订单对账系统每天正在为您拦截 3 万元的重复对账损失，下周一旦上线，本月就能向集团财务递交一份可量化的增效战报。”</p>\n\n        <p><strong>第三步：划分防线，将压力转化为二期预算</strong><br>\n        “如果仓促在 3 天内硬塞关税逻辑，一旦申报接口出现差错，甚至会引发海关滞报金风险。为了保障赵总您的战报绝对安全，我建议今天下午我们立刻在备忘录上成立 <strong>‘Phase 2 专属关税攻坚专项’</strong>。下周二我们按原定 200 条用例顺利通过一期验收，同时由您牵头向集团申请二期的专属立项预算，您看如何？”</p>\n    </div>\n</div>\n"
+          "content": "\n<div class=\"prose\">\n    <div class=\"challenge-banner\">\n        <span class=\"badge red\">PBL 极限实战 · 场景 3</span>\n        <h4>任务背景：某跨国零售集团现场交付第 4 周</h4>\n    </div>\n    <p><strong>危机情境：</strong>一期系统原定下周二验收。周五下午副总带 5 个业务代表冲进会议室：“除了原定对账，你们必须在下周把跨境供应链关税预测和自动申报功能也做进去，否则我们下周绝不在 UAT 验收单上签字！”</p>\n\n    <!-- 动态交互分支抉择沙盘 -->\n    <div class=\"branching-sandbox\" id=\"branch-pbl-3\">\n        <h4>⚔️ 决策十字路口：面对突发性高压需求蔓延，作为主导 FDE 你该如何回应？</h4>\n        <div class=\"choice-group\">\n            <button class=\"choice-btn\" onclick=\"executePblChoice('pbl-3', 0)\">\n                A. “没问题赵总！为了客户满意度，我们团队这个周末通宵加急帮您赶出来！”\n            </button>\n            <button class=\"choice-btn\" onclick=\"executePblChoice('pbl-3', 1)\">\n                B. “赵总您违约了，原定 SOW 里根本没有这条，您不签字我们就通过法务发律师函。”\n            </button>\n            <button class=\"choice-btn\" onclick=\"executePblChoice('pbl-3', 2)\">\n                C. 三步法：接住远见 ➔ 锁定一期已实现的止血价值 ➔ 将关税申报升级为 Phase 2 专属立项并协助其申请预算\n            </button>\n        </div>\n        <div id=\"pbl-3-outcome\" class=\"outcome-box hidden\"></div>\n    </div>\n</div>\n"
         },
         {
           "id": "kata-arena",
-          "title": "3.4 原子手艺 Kata：30分钟徒手写防御型 Agent 循环（刻意练习）",
-          "summary": "【PRD 核心练习】不看文档、脱离框架，徒手实现带状态机与安全熔断的 Agent。",
-          "content": "\n<div class=\"prose\">\n    <p><strong>训练目标：</strong>请打开空白终端，在 30 分钟内徒手用 Python 编写满足以下要求的生产级 Agent 循环：</p>\n    <div class=\"checklist-card\">\n        <label><input type=\"checkbox\" data-check-key=\"kata_max_turns\" onchange=\"updateChecklistProgress()\"> 1. 包含 <code>max_turns</code> 最大轮数硬限制，防止死循环无限消耗费用</label>\n        <label><input type=\"checkbox\" data-check-key=\"kata_exception\" onchange=\"updateChecklistProgress()\"> 2. 具备工具执行异常捕获，并在 tool message 中以友好方式回传错误原因供模型自行纠偏</label>\n        <label><input type=\"checkbox\" data-check-key=\"kata_token_limit\" onchange=\"updateChecklistProgress()\"> 3. 具备 Token 消耗累加器，当单次任务消耗超过预设阀值时立即安全熔断</label>\n        <label><input type=\"checkbox\" data-check-key=\"kata_pydantic\" onchange=\"updateChecklistProgress()\"> 4. 支持最终结论的 Pydantic 强类型格式化输出解析</label>\n    </div>\n    <div class=\"callout tip\">\n        <strong>评估标准：</strong>代码无需任何三方 Agent 框架，仅依赖官方基础 SDK 与标准库，能够在不稳定的弱网环境下稳健运行且无内存泄漏。\n    </div>\n</div>\n"
+          "title": "3.4 原子手艺 Kata：30分钟徒手写防御型 Agent 循环（含 5 级标尺与基准实现）",
+          "summary": "【PRD 核心练习】脱离文档、手写生产级 Agent，附 5 级自测 Rubric 与逐行注解基准代码。",
+          "content": "\n<div class=\"prose\">\n    <p><strong>训练目标：</strong>打开空白终端，30 分钟内徒手用 Python 编写可防御弱网和异常输入的企业级 Agent 控制流。</p>\n\n    <h3>一、FDE 专家级代码评分标尺 (5-Level Master Rubric)</h3>\n    <div class=\"table-container\">\n        <table class=\"data-table\">\n            <thead>\n                <tr>\n                    <th>段位级别</th>\n                    <th>核心代码特征</th>\n                    <th>生产可用性评价</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td><strong>Level 1 (玩具级)</strong></td>\n                    <td>只调一次单轮 <code>client.chat.completions</code>，无状态保存与工具执行</td>\n                    <td>不可用于任何生产环境</td>\n                </tr>\n                <tr>\n                    <td><strong>Level 2 (脆弱级)</strong></td>\n                    <td>有 <code>while True</code> 循环和工具调用，但无 <code>try...except</code> 捕获，工具报错直接进程崩溃</td>\n                    <td>严重不可靠，存在宕机隐患</td>\n                </tr>\n                <tr>\n                    <td><strong>Level 3 (可用级)</strong></td>\n                    <td>具备 <code>max_turns</code> 循环轮数硬限制，能捕获工具异常并回传给模型纠偏</td>\n                    <td>勉强可用于低频内部辅助系统</td>\n                </tr>\n                <tr>\n                    <td><strong>Level 4 (防御级)</strong></td>\n                    <td>具备 Token 消耗累加器与预算熔断保护，支持超时熔断与网络抖动重试</td>\n                    <td>符合标准企业级交付门槛</td>\n                </tr>\n                <tr class=\"highlight-row\">\n                    <td><strong>Level 5 (大师级)</strong></td>\n                    <td>内置原生参数类型推断（无需硬编码 spec）、强类型 Pydantic 结构化解码守门员、全链路 Audit Trace 记录</td>\n                    <td><strong>顶级 FDE 标杆交付代码</strong></td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n\n    <h3>二、刻意练习自检清单</h3>\n    <div class=\"checklist-card\">\n        <label><input type=\"checkbox\" data-check-key=\"kata_max_turns\" onchange=\"updateChecklistProgress()\"> 1. 包含 <code>max_turns</code> 最大轮数硬限制，防止死循环无限消耗费用</label>\n        <label><input type=\"checkbox\" data-check-key=\"kata_exception\" onchange=\"updateChecklistProgress()\"> 2. 具备工具执行异常捕获，并在 tool message 中以友好方式回传错误原因供模型自行纠偏</label>\n        <label><input type=\"checkbox\" data-check-key=\"kata_token_limit\" onchange=\"updateChecklistProgress()\"> 3. 具备 Token 消耗累加器，当单次任务消耗超过预设阀值时立即安全熔断</label>\n        <label><input type=\"checkbox\" data-check-key=\"kata_pydantic\" onchange=\"updateChecklistProgress()\"> 4. 支持最终结论的 Pydantic 强类型格式化输出解析</label>\n    </div>\n</div>\n"
         }
       ]
     },
@@ -167,7 +167,7 @@ const FDE_ALL_DATA = {
         {
           "id": "m-checklist",
           "title": "4.3 现场交付防波堤：SOW 边界与 Air-Gap 交付双清单",
-          "summary": "【Bug 已修复】采用稳定 Key 持久化状态，逐一勾选确保零事故。",
+          "summary": "【持久化已修复】采用稳定 Key 字典机制，逐一勾选确保零事故。",
           "content": "\n<div class=\"prose\">\n    <div class=\"dual-checklist\">\n        <div class=\"checklist-panel\">\n            <h4>📋 SOW 需求边界防御清单</h4>\n            <div class=\"check-group\">\n                <label><input type=\"checkbox\" data-check-key=\"sow_input_format\" onchange=\"updateChecklistProgress()\"> 1. 是否在合同中严格锁死输入数据类型（如仅支持文字类 PDF，不支持手写模糊复印件）？</label>\n                <label><input type=\"checkbox\" data-check-key=\"sow_acceptance_criteria\" onchange=\"updateChecklistProgress()\"> 2. 是否明确量化了验收指标（如“在 200 份标准集上准确率≥92% 即视为通过 UAT”）？</label>\n                <label><input type=\"checkbox\" data-check-key=\"sow_phase2_pool\" onchange=\"updateChecklistProgress()\"> 3. 是否设置了“Phase 2 待办池”，所有现场新增想法一律打入二期预算？</label>\n                <label><input type=\"checkbox\" data-check-key=\"sow_deadline\" onchange=\"updateChecklistProgress()\"> 4. 是否明确了客户配合人与数据提供的最后时限（防止客户拖延交付）？</label>\n            </div>\n        </div>\n        <div class=\"checklist-panel\">\n            <h4>🔒 Air-Gap 离线内网排雷清单</h4>\n            <div class=\"check-group\">\n                <label><input type=\"checkbox\" data-check-key=\"airgap_telemetry\" onchange=\"updateChecklistProgress()\"> 1. 是否全代码排查并移除了所有默认联网 Telemetry 统计代码？</label>\n                <label><input type=\"checkbox\" data-check-key=\"airgap_weights\" onchange=\"updateChecklistProgress()\"> 2. 容器镜像是否已固化所有本地模型权重与动态 C 动态库？</label>\n                <label><input type=\"checkbox\" data-check-key=\"airgap_cdn\" onchange=\"updateChecklistProgress()\"> 3. 前端 UI 是否完全剔除了外部公共 CDN 字体与 JS 引用？</label>\n                <label><input type=\"checkbox\" data-check-key=\"airgap_usb\" onchange=\"updateChecklistProgress()\"> 4. 离线移动存储介质是否已提前通过客户内网防病毒合规扫描？</label>\n            </div>\n        </div>\n    </div>\n</div>\n"
         }
       ]
@@ -192,9 +192,9 @@ const FDE_ALL_DATA = {
       "items": [
         {
           "id": "dashboard-view",
-          "title": "6.1 个人成长看板与交付战力评估",
-          "summary": "【PRD 承诺落地】全景量化你的 FDE 知识掌握度、通关战力段位与数据管理。",
-          "content": "\n<div class=\"prose\">\n    <div id=\"dashboard-mount-point\">\n        <!-- 动态渲染看板 -->\n    </div>\n</div>\n"
+          "title": "6.1 个人成长看板与 4 维交付战力雷达",
+          "summary": "【战力评估引擎】四维雷达量化：商业对齐力、工程防御力、现场应变力、隔离合规力。",
+          "content": "\n<div class=\"prose\">\n    <div id=\"dashboard-mount-point\">\n        <!-- 动态渲染看板与雷达图 -->\n    </div>\n</div>\n"
         }
       ]
     }
@@ -202,7 +202,9 @@ const FDE_ALL_DATA = {
   "full_quizzes": [
     {
       "id": 1,
-      "q": "【场景题：面对 Scope Creep】在为一家银行交付合同智能比对 Agent 的第 3 周，业务主管非常兴奋，要求在下周验收演示中顺便加上“对企业财报数据的自动提取与风控打分功能”。作为主导 FDE，以下哪种做法最专业？",
+      "category": "commercial",
+      "category_name": "商业对齐力",
+      "q": "【商业博弈：面对 Scope Creep】在为一家银行交付合同比对 Agent 的第 3 周，业务主管要求在下周验收演示中顺便加上“对企业财报数据的自动提取与风控打分功能”。作为主导 FDE，以下哪种做法最专业？",
       "opts": [
         "A. 客户是上帝，熬夜加班把财报提取功能做出来，争取在演示中给领导一个巨大惊喜。",
         "B. 明确拒绝并指责客户违背契约，搬出法律条款告知这完全不在原定工作范围内。",
@@ -214,7 +216,9 @@ const FDE_ALL_DATA = {
     },
     {
       "id": 2,
-      "q": "【架构题：防下游系统崩溃】在将大语言模型生成的结算数据对接入客户核心 ERP（SAP）系统时，为了避免下游接口解析崩溃，以下哪项设计最具防御性？",
+      "category": "engineering",
+      "category_name": "工程防御力",
+      "q": "【架构防御：防下游系统崩溃】在将大语言模型生成的结算数据对接入客户核心 ERP（SAP）系统时，为了避免下游接口解析崩溃，以下哪项设计最具防御性？",
       "opts": [
         "A. 在 Prompt 里强调‘你必须输出标准 JSON，严禁输出 markdown 代码块’。",
         "B. 使用带有 Pydantic 强类型严格校验的 Structured Outputs，并在调用下游 API 前增加二次 Schema 校验守门员。",
@@ -226,7 +230,9 @@ const FDE_ALL_DATA = {
     },
     {
       "id": 3,
-      "q": "【商业常识：Palantir 哲学】Palantir 强调的‘The Delta’在企业工程实践中本质是指什么？",
+      "category": "commercial",
+      "category_name": "商业对齐力",
+      "q": "【底层基因：Palantir 哲学】Palantir 强调的‘The Delta’在企业工程实践中本质是指什么？",
       "opts": [
         "A. 客户预算和公司报价之间的价格差额。",
         "B. 标准化通用产品与客户脏乱差的现实业务、老旧系统之间客观存在的最后 20%~30% 断层。",
@@ -238,7 +244,9 @@ const FDE_ALL_DATA = {
     },
     {
       "id": 4,
-      "q": "【安全合规：物理隔离网】在 Air-Gapped（完全不联网的绝密机房）进行私有化部署时，以下哪项操作会导致致命灾难？",
+      "category": "compliance",
+      "category_name": "隔离合规力",
+      "q": "【合规红线：物理隔离网】在 Air-Gapped（完全不联网的绝密机房）进行私有化部署时，以下哪项操作会导致致命灾难？",
       "opts": [
         "A. 提前将所有模型权重固化为本地量化格式（如 GGUF 或 AWQ）。",
         "B. 引入的三方开源库在 import 时默认尝试向外网发送版本检测或匿名 Telemetry 数据。",
@@ -250,7 +258,9 @@ const FDE_ALL_DATA = {
     },
     {
       "id": 5,
-      "q": "【质量度量：RAGAS 评测】在客户反映‘机器人经常信口雌黄、编造政策法规’时，FDE 应当优先重点优化评估体系中的哪一项核心指标？",
+      "category": "engineering",
+      "category_name": "工程防御力",
+      "q": "【评测标尺：RAGAS 体系】在客户反映‘机器人经常信口雌黄、编造政策法规’时，FDE 应当优先重点优化评估体系中的哪一项核心指标？",
       "opts": [
         "A. Answer Relevance（答案相关性）",
         "B. Latency（第一字输出延迟）",
@@ -262,7 +272,9 @@ const FDE_ALL_DATA = {
     },
     {
       "id": 6,
-      "q": "【交付战略：MVD 理念】关于‘最小可行部署（MVD）’与传统‘Demo 演示’的区别，以下理解最准确的是？",
+      "category": "commercial",
+      "category_name": "商业对齐力",
+      "q": "【敏捷战役：MVD 理念】关于‘最小可行部署（MVD）’与传统‘Demo 演示’的区别，以下理解最准确的是？",
       "opts": [
         "A. Demo 是在干净的测试集上给客户展示可能，MVD 是在客户真实脏数据与内网环境里跑通一次确定的真实价值。",
         "B. Demo 代码量比 MVD 更多、功能更全面。",
@@ -274,7 +286,9 @@ const FDE_ALL_DATA = {
     },
     {
       "id": 7,
-      "q": "【客户维系：单点依赖】项目中力推 AI 项目的副总裁突然离职，新上任的高管对该项目态度冷淡。作为主导 FDE，以下哪种措施最有效？",
+      "category": "crisis",
+      "category_name": "现场应变力",
+      "q": "【组织博弈：单点依赖】项目中力推 AI 项目的副总裁突然离职，新上任的高管对该项目态度冷淡。作为主导 FDE，以下哪种措施最有效？",
       "opts": [
         "A. 托关系打听新高管的私人喜好，送礼拉近私人关系。",
         "B. 准备一份详实的量化业务价值回顾报告（QBR），展示系统为业务带来的真实人效提升与挽回损失，并证明一线基层业务已对系统形成刚需依赖。",
@@ -286,7 +300,9 @@ const FDE_ALL_DATA = {
     },
     {
       "id": 8,
-      "q": "【工程手艺：Agent 熔断】在设计生产级自主 Agent 时，为什么要严格设定 `max_turns` 和 Token 消耗预算？",
+      "category": "engineering",
+      "category_name": "工程防御力",
+      "q": "【工程鲁棒性：Agent 熔断】在设计生产级自主 Agent 时，为什么要严格设定 `max_turns` 和 Token 消耗预算？",
       "opts": [
         "A. 为了节约服务器电费。",
         "B. 当模型遇到死循环调用或解析错误时，防止费用无限失控激增与线程挂死雪崩。",
@@ -298,7 +314,9 @@ const FDE_ALL_DATA = {
     },
     {
       "id": 9,
-      "q": "【商业模式：定价心理学】为什么说 AI 时代传统的‘按人头席位计费（Per-Seat）’会产生利益冲突？",
+      "category": "commercial",
+      "category_name": "商业对齐力",
+      "q": "【商业模式：定价逻辑】为什么说 AI 时代传统的‘按人头席位计费（Per-Seat）’会产生利益冲突？",
       "opts": [
         "A. 因为客户不喜欢按年续费。",
         "B. 因为 AI 的核心价值是提高效率减少人手；按席位计费意味着客户效率越高、使用人头越少，软件商赚的钱反而越少。",
@@ -310,6 +328,8 @@ const FDE_ALL_DATA = {
     },
     {
       "id": 10,
+      "category": "crisis",
+      "category_name": "现场应变力",
       "q": "【组织进化：产品化咨询】如何判断一个 FDE 团队是在做‘高级外包’还是在践行真正的‘产品化咨询’？",
       "opts": [
         "A. 看工程师写代码时用的是 Python 还是 Java。",
@@ -320,5 +340,89 @@ const FDE_ALL_DATA = {
       "ans": 1,
       "exp": "真正的 FDE 组织是‘飞轮效应’：从前线踩坑中淬炼共性，反哺 HQ 核心平台，使后续客户交付的成本递减、交付速度递增。"
     }
-  ]
+  ],
+  "pbl_scenarios": {
+    "pbl-1": {
+      "title": "金融报表审查沙盘",
+      "crossroads": [
+        {
+          "text": "向行方信息部提工单，申请开通两周公网白名单并拉取 100GB 完整历史信贷数据",
+          "status": "FAIL",
+          "trust": -30,
+          "delay": 21,
+          "outcome": "❌ 严重踩雷：安全委员会驳回白名单申请，并以‘数据合规意识淡薄’为由约谈行方对接人，立项冻结 3 周，PoC 破产。"
+        },
+        {
+          "text": "绕开复杂审批，坐在合规组长工位旁观察其审核流程，并当场复制 30 份最折磨人的典型真实扫描件",
+          "status": "SUCCESS",
+          "trust": 45,
+          "delay": 0,
+          "outcome": "✅ 闪电战打法：4小时内避开繁琐审批，精准锁定包含反光、印章遮挡的核心 Golden Test Set，当晚跑通最小验证闭环！"
+        },
+        {
+          "text": "自己用 Python 在本地合成 50 份标准干净的假财务报表开始跑 Demo",
+          "status": "FAIL",
+          "trust": -15,
+          "delay": 5,
+          "outcome": "⚠️ 沦为玩具：周五演示时业务骨干随手拿了一张真实的折角旧发票测试直接识别错位，总监评价：‘只能活在理想环境的玩具’。"
+        }
+      ]
+    },
+    "pbl-2": {
+      "title": "工业地下离线排障沙盘",
+      "crossroads": [
+        {
+          "text": "将传感器每秒原始高频数据全部拼接成长文本，直接丢给 128k 上下文的大模型做实时推理",
+          "status": "FAIL",
+          "trust": -20,
+          "delay": 4,
+          "outcome": "❌ 显存爆炸：本地单卡 A100 在第 3 秒报 CUDA OOM（显存溢出），推理时延高达 48 秒，完全无法应对每秒刷新的工业报警。"
+        },
+        {
+          "text": "本地 Python 滑动窗口离线计算振动方差与均方根，仅把异常特征切片结合分块装配图构建本地 Multimodal RAG",
+          "status": "SUCCESS",
+          "trust": 40,
+          "delay": 0,
+          "outcome": "✅ 工业级工程架构：输入 Token 暴降 98%，毫秒级捕获异常波峰并在 1.2 秒内定位装配图纸轴承位，总工当场鼓掌签字！"
+        },
+        {
+          "text": "私自携带 4G 随身 WiFi 进入车间，把数据转发到云端商用大模型做处理",
+          "status": "FAIL",
+          "trust": -50,
+          "delay": 30,
+          "outcome": "❌ 毁灭性事故：地下车间无蜂窝信号导致频繁超时，更触发保密厂区无线电监测告警，被厂保卫处当场驱逐出场。"
+        }
+      ]
+    },
+    "pbl-3": {
+      "title": "抗击需求蝗虫谈判沙盘",
+      "crossroads": [
+        {
+          "text": "“没问题赵总！为了客户满意度，我们团队这个周末通宵加急帮您赶出来！”",
+          "status": "FAIL",
+          "trust": -25,
+          "delay": 14,
+          "outcome": "❌ 交付灾难：通宵硬编码导致主干系统出现多处未测试的 Regression Bug，周二验收直接大崩溃，团队精疲力竭仍遭索赔。"
+        },
+        {
+          "text": "“赵总您违约了，原定 SOW 里根本没有这条，您不签字我们就通过法务发律师函。”",
+          "status": "FAIL",
+          "trust": -40,
+          "delay": 60,
+          "outcome": "❌ 商务自杀：副总大怒并在集团高管会上投诉乙方法务态度恶劣，冻结全项目验收款并启动供应商清退流程。"
+        },
+        {
+          "text": "三步法：接住远见 ➔ 锁定一期已实现的止血价值 ➔ 将关税申报升级为 Phase 2 专属立项并协助其申请预算",
+          "status": "SUCCESS",
+          "trust": 50,
+          "delay": 0,
+          "outcome": "✅ 资深特种兵战法：副总不仅欣然同意周二先在一期验收单上签字，还拉着 FDE 共同向集团执委会申请了 150 万元的二期专项预算！"
+        }
+      ]
+    }
+  }
 };
+
+if (typeof window !== 'undefined') {
+  window.FDE_ALL_DATA = FDE_ALL_DATA;
+}
