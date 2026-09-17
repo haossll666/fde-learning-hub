@@ -4,3 +4,6 @@ PRD.md
 README.md
 package.json
 .wrangler
+.agents
+tests
+*.md

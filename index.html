@@ -6,11 +6,498 @@
     <title>FDE Flight Simulator | 前线部署工程师全栈学习中心</title>
     <link rel="stylesheet" href="style.css">
     <meta name="description" content="专为企业级大模型落地打造的 FDE 完整知识体系、交付战役方法论、硬核工程代码与沙盒演练平台。">
+    <style>
+        /* M2/M3 Spotlight Search Modal (Cupertino Material Translucency & Spring Physics) */
+        .spotlight-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            z-index: 2000;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 12vh;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .spotlight-overlay.hidden {
+            display: none !important;
+        }
+        .spotlight-modal {
+            width: 100%;
+            max-width: 640px;
+            background: var(--bg-surface-elevated, rgba(36, 36, 38, 0.95));
+            border: 0.5px solid var(--border-subtle, rgba(255, 255, 255, 0.15));
+            border-radius: var(--radius-lg, 16px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: spotlightPop 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes spotlightPop {
+            from { opacity: 0; transform: scale(0.96) translateY(-8px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .spotlight-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border-bottom: 0.5px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
+            gap: 0.75rem;
+        }
+        .spotlight-search-glyph {
+            font-size: 1.1rem;
+            color: var(--apple-blue);
+        }
+        .spotlight-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-family: var(--font-system);
+        }
+        .spotlight-input::placeholder {
+            color: var(--text-tertiary);
+        }
+        .spotlight-esc-pill {
+            background: var(--bg-tertiary, rgba(255, 255, 255, 0.08));
+            border: 0.5px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 2px 7px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+        .spotlight-results {
+            max-height: 52vh;
+            overflow-y: auto;
+            padding: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .spotlight-item {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.75rem 0.9rem;
+            border-radius: var(--radius-sm, 8px);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        .spotlight-item:hover, .spotlight-item.active {
+            background: var(--apple-blue);
+            color: #ffffff !important;
+        }
+        .spotlight-item:hover .spotlight-item-badge,
+        .spotlight-item.active .spotlight-item-badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+        .spotlight-item:hover .spotlight-item-snippet,
+        .spotlight-item.active .spotlight-item-snippet {
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .spotlight-item:hover .spotlight-enter-hint,
+        .spotlight-item.active .spotlight-enter-hint {
+            opacity: 1;
+            color: #ffffff;
+        }
+        .spotlight-item-badge {
+            font-size: 0.7rem;
+            padding: 2px 7px;
+            border-radius: 5px;
+            background: var(--bg-tertiary, rgba(255, 255, 255, 0.08));
+            color: var(--apple-blue);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .spotlight-item-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .spotlight-item-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .spotlight-item-snippet {
+            font-size: 0.76rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .spotlight-enter-hint {
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            font-weight: bold;
+        }
+        .spotlight-mark {
+            background: rgba(41, 151, 255, 0.35);
+            color: inherit;
+            padding: 1px 3px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        .spotlight-item.active .spotlight-mark {
+            background: rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+        }
+        .spotlight-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 1.25rem;
+            background: var(--bg-tertiary, rgba(0, 0, 0, 0.15));
+            border-top: 0.5px solid var(--border-subtle);
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+        .spotlight-hints {
+            display: flex;
+            gap: 0.9rem;
+        }
+        .spotlight-kbd {
+            background: var(--bg-surface);
+            border: 0.5px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+        }
+        .spotlight-empty {
+            padding: 2.5rem 1rem;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.88rem;
+        }
+
+        /* Top Bar ⌘K Badge Button */
+        .spotlight-nav-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: var(--bg-tertiary, rgba(255, 255, 255, 0.06));
+            border: 0.5px solid var(--border-subtle);
+            border-radius: var(--radius-pill, 9999px);
+            padding: 0.3rem 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: var(--font-system);
+        }
+        .spotlight-nav-badge:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border-color: var(--border-focus);
+        }
+        .spotlight-nav-kbd {
+            background: var(--bg-surface);
+            border: 0.5px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-size: 0.68rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+
+        /* Accordion Sidebar Header & Chevron */
+        .nav-module-header {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-family: var(--font-system);
+            padding: 0.9rem 0.6rem 0.35rem 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-tertiary);
+            text-align: left;
+            transition: color 0.15s ease;
+        }
+        .nav-module-header:hover {
+            color: var(--text-primary);
+        }
+        .nav-module-header .nav-module-title-group {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .nav-chevron {
+            font-size: 0.75rem;
+            display: inline-block;
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: rotate(0deg);
+        }
+        .nav-chevron.collapsed {
+            transform: rotate(-90deg);
+        }
+        .nav-module-items {
+            overflow: hidden;
+            transition: max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+        }
+        .nav-module-items.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Pulse Highlight Target Animation */
+        @keyframes pulseHighlightAnimation {
+            0% { box-shadow: 0 0 0 0 rgba(41, 151, 255, 0.6); background-color: rgba(41, 151, 255, 0.15); }
+            50% { box-shadow: 0 0 0 8px rgba(41, 151, 255, 0); background-color: rgba(41, 151, 255, 0.08); }
+            100% { box-shadow: 0 0 0 0 rgba(41, 151, 255, 0); background-color: transparent; }
+        }
+        .pulse-highlight {
+            animation: pulseHighlightAnimation 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: var(--radius-md, 12px);
+        }
+
+        /* Capsule Toast Notification */
+        .capsule-toast {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(0);
+            background: rgba(30, 30, 32, 0.88);
+            backdrop-filter: blur(20px) saturate(190%);
+            -webkit-backdrop-filter: blur(20px) saturate(190%);
+            border: 0.5px solid var(--border-subtle, rgba(255, 255, 255, 0.18));
+            border-radius: var(--radius-pill, 9999px);
+            padding: 0.55rem 1.4rem;
+            color: #ffffff;
+            font-size: 0.84rem;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            pointer-events: none;
+            transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 1;
+        }
+        .capsule-toast.hidden {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-12px);
+            pointer-events: none;
+        }
+
+        /* CoI Slider & Interactive Gauge styling */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.35rem;
+        }
+        .coi-range-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-input, rgba(118, 118, 128, 0.24));
+            outline: none;
+            cursor: pointer;
+        }
+        .coi-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+            border: 0.5px solid rgba(0,0,0,0.04);
+            transition: transform 0.1s ease;
+        }
+        .coi-range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        .coi-button-bar {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+        .coi-secondary-btn {
+            background: var(--bg-tertiary);
+            border: 0.5px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 0.65rem 1.1rem;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-system);
+        }
+        .coi-secondary-btn:hover {
+            background: var(--bg-surface-elevated);
+            border-color: var(--border-focus);
+        }
+
+        /* SOW & Air-Gap Defense Gauge */
+        .defense-gauge-card {
+            background: var(--bg-surface);
+            border: 0.5px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.1rem;
+            margin-bottom: 1.25rem;
+        }
+        .gauge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.84rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .risk-tier-badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 0.4rem;
+            display: inline-block;
+        }
+        .risk-tier-badge.blocker { background: var(--apple-red-bg); color: var(--apple-red); border: 0.5px solid var(--apple-red); }
+        .risk-tier-badge.critical { background: var(--apple-orange-bg); color: var(--apple-orange); border: 0.5px solid var(--apple-orange); }
+        .risk-tier-badge.highrisk { background: rgba(255, 204, 0, 0.15); color: #ffd60a; border: 0.5px solid #ffd60a; }
+        .risk-tier-badge.advisory { background: var(--apple-blue-glow); color: var(--apple-blue); border: 0.5px solid var(--apple-blue); }
+
+        /* Quiz Cognitive Attribution & Spaced Practice */
+        .cognitive-trap-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: var(--apple-red-bg);
+            color: var(--apple-red);
+            font-size: 0.74rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-bottom: 0.6rem;
+            border: 0.5px solid rgba(255, 69, 58, 0.25);
+        }
+        .opt-cognitive-feedback {
+            margin-top: 0.45rem;
+            padding: 0.6rem 0.85rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            line-height: 1.45;
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--border-subtle);
+        }
+        .opt-cognitive-feedback.chosen-wrong {
+            background: var(--apple-red-bg);
+            border-left-color: var(--apple-red);
+            color: var(--text-primary);
+        }
+        .opt-cognitive-feedback.chosen-correct {
+            background: var(--apple-green-bg);
+            border-left-color: var(--apple-green);
+            color: var(--text-primary);
+        }
+        .quiz-retry-btn {
+            background: var(--bg-tertiary);
+            border: 0.5px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 0.4rem 0.85rem;
+            font-size: 0.78rem;
+            color: var(--apple-blue);
+            cursor: pointer;
+            margin-top: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: all 0.15s ease;
+        }
+        .quiz-retry-btn:hover {
+            background: var(--apple-blue-glow);
+            border-color: var(--apple-blue);
+        }
+
+        /* References Footer Cards */
+        .refs-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.9rem;
+            margin-top: 0.8rem;
+        }
+        .ref-card {
+            background: var(--bg-surface);
+            border: 0.5px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .ref-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--apple-blue);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        .ref-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+        }
+        .ref-badge {
+            font-size: 0.68rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        .ref-link {
+            color: var(--apple-blue);
+            text-decoration: none;
+            font-size: 0.84rem;
+            font-weight: 600;
+            line-height: 1.35;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .ref-link:hover {
+            color: var(--apple-blue-hover);
+            text-decoration: underline;
+        }
+        .ref-note {
+            font-size: 0.76rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.45;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
         <!-- macOS / iPadOS 风格侧边栏 -->
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="课程目录树">
             <div class="sidebar-header">
                 <!-- macOS 交通灯三色圆点 -->
                 <div class="traffic-lights">
@@ -42,12 +529,12 @@
             <div class="search-box">
                 <div class="search-input-wrapper">
                     <span class="search-icon">🔍</span>
-                    <input type="text" id="search-input" class="search-input" placeholder="聚焦搜索：知识、代码、黑话...">
+                    <input type="text" id="search-input" class="search-input" placeholder="聚焦搜索：知识、代码、黑话..." aria-label="侧边栏章节快速过滤">
                 </div>
             </div>
 
             <!-- 树状章节列表 -->
-            <nav class="sidebar-nav" id="sidebar-nav">
+            <nav class="sidebar-nav" id="sidebar-nav" aria-label="课程章节导航">
                 <!-- 动态由 app.js 渲染 -->
             </nav>
 
@@ -59,17 +546,24 @@
         </aside>
 
         <!-- 主内容视口 -->
-        <main class="main-wrapper">
+        <main class="main-wrapper" role="main">
             <!-- 毛玻璃顶部状态条 -->
-            <header class="top-bar">
+            <header class="top-bar" role="banner">
                 <div style="display: flex; align-items: center; gap: 0.9rem;">
                     <button class="menu-toggle-btn" id="menu-toggle" aria-label="Toggle Navigation">☰</button>
                     <div class="breadcrumb-trail" id="breadcrumb-trail">
                         模块〇 &nbsp;›&nbsp; <strong>加载中...</strong>
                     </div>
                 </div>
-                <div style="font-size: 0.76rem; color: var(--text-tertiary); font-weight: 500;">
-                    Cupertino Precision Design
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <button class="spotlight-nav-badge" id="spotlight-trigger-btn" onclick="openSpotlight()" aria-label="打开 Spotlight 快速搜索" title="快速搜索 (⌘K / Ctrl+K)">
+                        <span class="spotlight-nav-icon">🔍</span>
+                        <span class="spotlight-nav-text">搜索...</span>
+                        <kbd class="spotlight-nav-kbd">⌘K</kbd>
+                    </button>
+                    <div class="top-bar-subtitle" style="font-size: 0.76rem; color: var(--text-tertiary); font-weight: 500;">
+                        Cupertino Precision Design
+                    </div>
                 </div>
             </header>
 
@@ -86,6 +580,33 @@
             </div>
         </main>
     </div>
+
+    <!-- Spotlight 快速搜索全局遮罩模态框 (Apple Cupertino 物理景深与毛玻璃质感) -->
+    <div id="spotlight-overlay" class="spotlight-overlay hidden" role="dialog" aria-modal="true" aria-label="Spotlight 快速搜索" onclick="closeSpotlight()">
+        <div class="spotlight-modal" onclick="event.stopPropagation()">
+            <div class="spotlight-header">
+                <span class="spotlight-search-glyph">🔍</span>
+                <input type="text" id="spotlight-input" class="spotlight-input" placeholder="全局搜索：知识点、工程代码、行业黑话、权威文献..." autocomplete="off" spellcheck="false" aria-label="搜索框">
+                <button class="spotlight-esc-pill" onclick="closeSpotlight()" aria-label="关闭搜索">ESC</button>
+            </div>
+            <div class="spotlight-results" id="spotlight-results" role="listbox" aria-label="搜索结果">
+                <!-- 动态由 app.js 渲染 -->
+            </div>
+            <div class="spotlight-footer">
+                <div class="spotlight-hints">
+                    <span class="spotlight-hint"><kbd class="spotlight-kbd">↑</kbd> <kbd class="spotlight-kbd">↓</kbd> 切换选项</span>
+                    <span class="spotlight-hint"><kbd class="spotlight-kbd">↵</kbd> 跳转正文</span>
+                    <span class="spotlight-hint"><kbd class="spotlight-kbd">ESC</kbd> 退出</span>
+                </div>
+                <div class="spotlight-brand">
+                    <span>⚡ FDE Flight Simulator</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局胶囊轻提示 (Cupertino Capsule Toast) -->
+    <div id="capsule-toast" class="capsule-toast hidden" role="status" aria-live="polite"></div>
 
     <!-- 数据与逻辑驱动脚本 -->
     <script src="data.js"></script>
