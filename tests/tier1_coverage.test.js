@@ -269,6 +269,24 @@ function createTier1Suite() {
         assert.strictEqual(inspectedCount, 24, 'All 24 items must be inspected for refs');
     });
 
+    // 1.11 Standardized Citation References Integrity
+    suite.test('1.11 Inline citation references match corresponding item refs count', () => {
+        data.modules.forEach(mod => {
+            mod.items.forEach(item => {
+                if (item.content) {
+                    const matches = item.content.matchAll(/href="#ref-(\d+)"/g);
+                    for (const m of matches) {
+                        const refIdx = parseInt(m[1], 10);
+                        assert.ok(
+                            refIdx >= 1 && refIdx <= (item.refs ? item.refs.length : 0),
+                            `Item '${item.id}' citation [${refIdx}] must point to valid ref (total refs: ${item.refs?.length || 0})`
+                        );
+                    }
+                }
+            });
+        });
+    });
+
     return suite;
 }
 

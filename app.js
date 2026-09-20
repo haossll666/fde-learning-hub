@@ -552,6 +552,42 @@ function updateThemeButtonUI(theme) {
     }
 }
 
+// 11.5 移动端侧边栏抽屉与遮罩控制器 (Mobile Drawer & Backdrop Controller)
+function openSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (sidebar) sidebar.classList.add('open');
+    if (backdrop) backdrop.classList.add('active');
+    if (typeof document !== 'undefined' && document.body && document.body.classList) {
+        document.body.classList.add('sidebar-open');
+    }
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (sidebar) sidebar.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('active');
+    if (typeof document !== 'undefined' && document.body && document.body.classList) {
+        document.body.classList.remove('sidebar-open');
+    }
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar && sidebar.classList.contains('open')) {
+        closeSidebar();
+    } else {
+        openSidebar();
+    }
+}
+
+function scrollToTop() {
+    if (typeof window !== 'undefined' && window.scrollTo) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
 // 12. 加载章节与动态增强 (Auto-expand module, pulse animation & tool binding)
 function loadSection(mIdx, iIdx, updateHash = true) {
     currentModuleIndex = mIdx;
@@ -596,15 +632,16 @@ function loadSection(mIdx, iIdx, updateHash = true) {
     if (contentMount) {
         contentMount.innerHTML = item.content || '';
 
-        // 结构化文献引用页脚 (Card-based refs footer)
+        // 结构化文献引用页脚 (Card-based refs footer with standardized citations)
         if (item.refs && item.refs.length > 0) {
             contentMount.insertAdjacentHTML('beforeend', `
                 <footer class="refs-footer" aria-label="权威文献与一手来源索引">
-                    <div class="refs-title">📚 权威文献与一手来源索引 (Authoritative Literature)</div>
+                    <div class="refs-title">📚 权威文献与一手来源索引 (Authoritative Citations & Literature)</div>
                     <div class="refs-cards-grid">
-                        ${item.refs.map(r => `
-                            <div class="ref-card">
+                        ${item.refs.map((r, idx) => `
+                            <div class="ref-card" id="ref-${idx + 1}" tabindex="-1">
                                 <div class="ref-card-header">
+                                    <span class="ref-index">[${idx + 1}]</span>
                                     ${r.badge ? `<span class="badge blue ref-badge">${r.badge}</span>` : ''}
                                     <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="ref-link">
                                         <span class="ref-title">${r.title}</span>
@@ -616,7 +653,7 @@ function loadSection(mIdx, iIdx, updateHash = true) {
                         `).join('')}
                     </div>
                     <ul class="refs-list" style="display: none;">
-                        ${item.refs.map(r => `<li><a href="${r.url}" target="_blank" rel="noopener noreferrer">${r.title} ↗</a></li>`).join('')}
+                        ${item.refs.map((r, idx) => `<li><a href="${r.url}" target="_blank" rel="noopener noreferrer">[${idx + 1}] ${r.title} ↗</a></li>`).join('')}
                     </ul>
                 </footer>
             `);
@@ -641,6 +678,11 @@ function loadSection(mIdx, iIdx, updateHash = true) {
         enhanceChecklistSection();
     }
 
+    // 针对原生 Agent 状态机与安全熔断 (eng-1) 挂载交互式飞行演练舱
+    if (item.id === 'eng-1') {
+        initAgentSimulator();
+    }
+
     // 恢复清单勾选状态
     restoreChecklistStates();
 
@@ -650,11 +692,8 @@ function loadSection(mIdx, iIdx, updateHash = true) {
     // 重新高亮导航
     renderSidebar(currentSearchQuery);
 
-    // 移动端收起侧边栏
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar && sidebar.classList.contains('open')) {
-        sidebar.classList.remove('open');
-    }
+    // 移动端收起侧边栏并关闭遮罩
+    closeSidebar();
 
     // 平滑滚动回顶部
     if (typeof window !== 'undefined' && window.scrollTo) {
@@ -717,10 +756,58 @@ function bindGlobalEvents() {
     }
 
     const menuBtn = document.getElementById('menu-toggle');
-    const sidebar = document.getElementById('sidebar');
-    if (menuBtn && sidebar) {
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
+    if (menuBtn) {
+        menuBtn.addEventListener('click', toggleSidebar);
+    }
+
+    const closeBtn = document.getElementById('sidebar-close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeSidebar);
+    }
+
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (backdrop) {
+        backdrop.addEventListener('click', closeSidebar);
+    }
+
+    const trafficRed = document.getElementById('traffic-light-red');
+    if (trafficRed) {
+        trafficRed.addEventListener('click', closeSidebar);
+    }
+
+    // 移动端“回到顶部”浮钮滚动显示控制
+    if (typeof window !== 'undefined') {
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('back-to-top-btn');
+            if (btn) {
+                if (window.scrollY > 280) {
+                    btn.classList.remove('hidden');
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
+        }, { passive: true });
+    }
+
+    // 行内引用角标点击联动 (Inline Citation Reference Click & Glow Pulse)
+    if (typeof document !== 'undefined') {
+        document.addEventListener('click', (e) => {
+            const citeLink = e.target.closest('.citation-ref');
+            if (citeLink) {
+                const href = citeLink.getAttribute('href');
+                if (href && href.startsWith('#ref-')) {
+                    const targetId = href.substring(1);
+                    const targetCard = document.getElementById(targetId);
+                    if (targetCard) {
+                        e.preventDefault();
+                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        targetCard.classList.remove('highlight-pulse');
+                        void targetCard.offsetWidth; // 触发 reflow 重启动画
+                        targetCard.classList.add('highlight-pulse');
+                        targetCard.focus({ preventScroll: true });
+                    }
+                }
+            }
         });
     }
 
@@ -758,6 +845,13 @@ function bindGlobalEvents() {
                     return;
                 }
                 return;
+            } else if (e.key === 'Escape') {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar && sidebar.classList.contains('open')) {
+                    e.preventDefault();
+                    closeSidebar();
+                    return;
+                }
             }
 
             // 3. 严格输入焦点守护：当用户正在任何输入框、文本区或滑块中输入时，绝不劫持键盘按键！
@@ -1399,6 +1493,697 @@ function exportAirgapChecklist() {
     }
 }
 
+// 17.5 生产级 Agent 状态机与交互式飞行模拟舱引擎 (eng-1 Simulator & Subpage Engine)
+let simState = {
+    scenario: 'happy',
+    maxSteps: 6,
+    tokenBudget: 8000,
+    faultInjection: 'none',
+    currentStep: 0,
+    currentPhase: 1,
+    tokensConsumed: 120,
+    status: 'READY',
+    autoRunTimer: null,
+    activeInspectTool: 'get_order_status'
+};
+
+const SIM_SCENARIO_DATA = {
+    happy: {
+        title: "🌟 场景 1: 三步自愈黄金流",
+        steps: [
+            {
+                stepNum: 0,
+                phase: 1,
+                status: 'READY',
+                tokens: 120,
+                cost: '¥0.001',
+                codeSync: 'history = [{"role": "system", ...}, {"role": "user", ...}]',
+                log: '[INIT] 组装初始 History: 注入系统上下文与目标 "查订单 1002 状态"',
+                history: [
+                    { role: 'system', content: '你是由 ResilientEnterpriseAgent 驱动的交付运维助理，受限使用注册沙箱工具。' },
+                    { role: 'user', content: '查一下订单 1002 状态，未发货就催办仓管' }
+                ]
+            },
+            {
+                stepNum: 1,
+                phase: 4,
+                status: 'RUNNING',
+                tokens: 520,
+                cost: '¥0.008',
+                codeSync: 'output = {"error": f"工具执行失败: ...", "retry_hint": "请检查输入参数格式"}',
+                log: '[WARN] 第 1 步: 模型调用 get_order_status 故意漏传 order_id，沙箱捕获异常并注入 retry_hint',
+                history: [
+                    { role: 'system', content: '你是由 ResilientEnterpriseAgent 驱动的交付运维助理，受限使用注册沙箱工具。' },
+                    { role: 'user', content: '查一下订单 1002 状态，未发货就催办仓管' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'call_981a', name: 'get_order_status', args: {} }] },
+                    { role: 'tool', tool_call_id: 'call_981a', content: '{"error": "工具执行失败: 缺少必填参数 \'order_id\'", "retry_hint": "请从上下文解析订单号 1002 并重新调用"}' }
+                ]
+            },
+            {
+                stepNum: 2,
+                phase: 4,
+                status: 'RUNNING',
+                tokens: 980,
+                cost: '¥0.015',
+                codeSync: 'args = json.loads(raw_args); output = self.tool_map[fn_name](**args)',
+                log: '[INFO] 第 2 步: 模型感知 retry_hint 触发 In-Context 自愈！成功调用 get_order_status(order_id="1002")，返回 UNSHIPPED',
+                history: [
+                    { role: 'system', content: '你是由 ResilientEnterpriseAgent 驱动的交付运维助理，受限使用注册沙箱工具。' },
+                    { role: 'user', content: '查一下订单 1002 状态，未发货就催办仓管' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'call_981a', name: 'get_order_status', args: {} }] },
+                    { role: 'tool', tool_call_id: 'call_981a', content: '{"error": "工具执行失败: 缺少必填参数 \'order_id\'", "retry_hint": "请从上下文解析订单号 1002 并重新调用"}' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'call_421b', name: 'get_order_status', args: { order_id: '1002' } }] },
+                    { role: 'tool', tool_call_id: 'call_421b', content: '{"order_id": "1002", "status": "UNSHIPPED", "warehouse": "WH-09-华东一号仓", "sku": "SKU-PRO-X1"}' }
+                ]
+            },
+            {
+                stepNum: 3,
+                phase: 4,
+                status: 'RUNNING',
+                tokens: 1450,
+                cost: '¥0.022',
+                codeSync: 'output = self.tool_map[fn_name](**args)  # 触发 remind_warehouse',
+                log: '[INFO] 第 3 步: 模型判定订单未发货，决策发起催办工单 remind_warehouse(order_id="1002")，仓管系统响应成功',
+                history: [
+                    { role: 'system', content: '你是由 ResilientEnterpriseAgent 驱动的交付运维助理，受限使用注册沙箱工具。' },
+                    { role: 'user', content: '查一下订单 1002 状态，未发货就催办仓管' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'call_981a', name: 'get_order_status', args: {} }] },
+                    { role: 'tool', tool_call_id: 'call_981a', content: '{"error": "工具执行失败: 缺少必填参数 \'order_id\'", "retry_hint": "请从上下文解析订单号 1002 并重新调用"}' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'call_421b', name: 'get_order_status', args: { order_id: '1002' } }] },
+                    { role: 'tool', tool_call_id: 'call_421b', content: '{"order_id": "1002", "status": "UNSHIPPED", "warehouse": "WH-09-华东一号仓", "sku": "SKU-PRO-X1"}' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'call_773c', name: 'remind_warehouse', args: { order_id: '1002', reason: '未发货超时催办' } }] },
+                    { role: 'tool', tool_call_id: 'call_773c', content: '{"success": true, "ticket_id": "TKT-8848", "dispatch_time": "13:50:22", "operator": "WH-AUTO-DISPATCH", "msg": "加急催发工单已送达仓管"}' }
+                ]
+            },
+            {
+                stepNum: 4,
+                phase: 5,
+                status: 'SUCCESS',
+                tokens: 1720,
+                cost: '¥0.026',
+                codeSync: 'if not msg.tool_calls: return {"status": "SUCCESS", "final_output": msg.content, ...}',
+                log: '[SUCCESS] 第 4 步: 无新工具调用，模型达成终局结论！返回用户最终汇报，状态机平稳退出',
+                history: [
+                    { role: 'system', content: '你是由 ResilientEnterpriseAgent 驱动的交付运维助理，受限使用注册沙箱工具。' },
+                    { role: 'user', content: '查一下订单 1002 状态，未发货就催办仓管' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'call_981a', name: 'get_order_status', args: {} }] },
+                    { role: 'tool', tool_call_id: 'call_981a', content: '{"error": "工具执行失败: 缺少必填参数 \'order_id\'", "retry_hint": "请从上下文解析订单号 1002 并重新调用"}' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'call_421b', name: 'get_order_status', args: { order_id: '1002' } }] },
+                    { role: 'tool', tool_call_id: 'call_421b', content: '{"order_id": "1002", "status": "UNSHIPPED", "warehouse": "WH-09-华东一号仓", "sku": "SKU-PRO-X1"}' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'call_773c', name: 'remind_warehouse', args: { order_id: '1002', reason: '未发货超时催办' } }] },
+                    { role: 'tool', tool_call_id: 'call_773c', content: '{"success": true, "ticket_id": "TKT-8848", "dispatch_time": "13:50:22", "operator": "WH-AUTO-DISPATCH", "msg": "加急催发工单已送达仓管"}' },
+                    { role: 'assistant', content: '✅ 订单 1002 核查完毕：当前存放于【华东一号仓 (WH-09)】，状态为【未发货】。已为您向仓管推送加急催办工单（工单号：TKT-8848），仓管正在优先拣货出库。', tool_calls: null }
+                ]
+            }
+        ]
+    },
+    loop: {
+        title: "🚨 场景 2: 死循环与步数刚性熔断",
+        steps: [
+            {
+                stepNum: 0,
+                phase: 1,
+                status: 'READY',
+                tokens: 150,
+                cost: '¥0.002',
+                codeSync: 'while step_count < self.max_steps:  # 硬性步数上限 6 步',
+                log: '[INIT] 任务：核验资金流水差异。已预设死循环陷阱（工具A与工具B互相重定向）',
+                history: [
+                    { role: 'system', content: '资金对账 Agent，当前 max_steps=6。' },
+                    { role: 'user', content: '核验跨账期资金对账单中的金额差异' }
+                ]
+            },
+            {
+                stepNum: 1,
+                phase: 4,
+                status: 'RUNNING',
+                tokens: 450,
+                cost: '¥0.007',
+                codeSync: 'output = query_bank_ledger(**args)',
+                log: '[INFO] 步数 1/6: 调用 query_bank_ledger，工具返回 "流水无差异，请向 ERP 单据重新确认"',
+                history: [
+                    { role: 'system', content: '资金对账 Agent，当前 max_steps=6。' },
+                    { role: 'user', content: '核验跨账期资金对账单中的金额差异' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'c_1', name: 'query_bank_ledger', args: { date: '2026-09' } }] },
+                    { role: 'tool', tool_call_id: 'c_1', content: '{"status": "NEED_ERP_CHECK", "hint": "请查询 query_erp_discrepancy"}' }
+                ]
+            },
+            {
+                stepNum: 2,
+                phase: 4,
+                status: 'RUNNING',
+                tokens: 780,
+                cost: '¥0.012',
+                codeSync: 'output = query_erp_discrepancy(**args)',
+                log: '[INFO] 步数 2/6: 调用 query_erp_discrepancy，工具返回 "ERP 状态正常，请重新查询银行流水"',
+                history: [
+                    { role: 'system', content: '资金对账 Agent，当前 max_steps=6。' },
+                    { role: 'user', content: '核验跨账期资金对账单中的金额差异' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'c_1', name: 'query_bank_ledger', args: { date: '2026-09' } }] },
+                    { role: 'tool', tool_call_id: 'c_1', content: '{"status": "NEED_ERP_CHECK", "hint": "请查询 query_erp_discrepancy"}' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'c_2', name: 'query_erp_discrepancy', args: { batch: 'B-01' } }] },
+                    { role: 'tool', tool_call_id: 'c_2', content: '{"status": "NEED_BANK_CHECK", "hint": "请返回查询 query_bank_ledger"}' }
+                ]
+            },
+            {
+                stepNum: 3,
+                phase: 4,
+                status: 'RUNNING',
+                tokens: 1120,
+                cost: '¥0.017',
+                codeSync: 'while step_count < self.max_steps:  # 步数累计至 3/6',
+                log: '[WARN] 步数 3/6: 模型陷入双向互相依赖循环，再次调用 query_bank_ledger...',
+                history: [
+                    { role: 'system', content: '资金对账 Agent，当前 max_steps=6。' },
+                    { role: 'user', content: '核验跨账期资金对账单中的金额差异' },
+                    { role: 'assistant', content: '正在重新比对银行端流水...', tool_calls: [{ id: 'c_3', name: 'query_bank_ledger', args: { date: '2026-09' } }] },
+                    { role: 'tool', tool_call_id: 'c_3', content: '{"status": "NEED_ERP_CHECK"}' }
+                ]
+            },
+            {
+                stepNum: 4,
+                phase: 4,
+                status: 'RUNNING',
+                tokens: 1480,
+                cost: '¥0.022',
+                codeSync: 'while step_count < self.max_steps:  # 步数累计至 4/6',
+                log: '[WARN] 步数 4/6: 循环推诿继续，再次调用 query_erp_discrepancy...',
+                history: [
+                    { role: 'system', content: '资金对账 Agent，当前 max_steps=6。' },
+                    { role: 'user', content: '核验跨账期资金对账单中的金额差异' },
+                    { role: 'assistant', content: '转入 ERP 核查...', tool_calls: [{ id: 'c_4', name: 'query_erp_discrepancy', args: { batch: 'B-01' } }] },
+                    { role: 'tool', tool_call_id: 'c_4', content: '{"status": "NEED_BANK_CHECK"}' }
+                ]
+            },
+            {
+                stepNum: 5,
+                phase: 4,
+                status: 'RUNNING',
+                tokens: 1850,
+                cost: '¥0.028',
+                codeSync: 'while step_count < self.max_steps:  # 步数累计至 5/6 (临界值)',
+                log: '[WARN] 步数 5/6: 步数逼近警戒上限！下一次循环将触发刚性截断！',
+                history: [
+                    { role: 'system', content: '资金对账 Agent，当前 max_steps=6。' },
+                    { role: 'user', content: '核验跨账期资金对账单中的金额差异' },
+                    { role: 'assistant', content: '第 5 轮复查流水...', tool_calls: [{ id: 'c_5', name: 'query_bank_ledger', args: { date: '2026-09' } }] },
+                    { role: 'tool', tool_call_id: 'c_5', content: '{"status": "NEED_ERP_CHECK"}' }
+                ]
+            },
+            {
+                stepNum: 6,
+                phase: 5,
+                status: 'MAX_STEPS_REACHED',
+                tokens: 2200,
+                cost: '¥0.033',
+                codeSync: 'return {"status": "MAX_STEPS_REACHED", "trace": execution_trace}',
+                log: '[ALERT] 步数达到 6/6 极值！while 循环终止，触发 MAX_STEPS_REACHED 刚性熔断！杜绝死循环挂死服务器！',
+                history: [
+                    { role: 'system', content: '资金对账 Agent，当前 max_steps=6。' },
+                    { role: 'user', content: '核验跨账期资金对账单中的金额差异' },
+                    { role: 'assistant', content: '第 5 轮复查流水...', tool_calls: [{ id: 'c_5', name: 'query_bank_ledger', args: { date: '2026-09' } }] },
+                    { role: 'tool', tool_call_id: 'c_5', content: '{"status": "NEED_ERP_CHECK"}' },
+                    { role: 'system', content: '【系统熔断通知】达到最大执行步数限制 (6 步)，循环强行终止。' }
+                ]
+            }
+        ]
+    },
+    token: {
+        title: "💸 场景 3: 算力 Token 预算熔断",
+        steps: [
+            {
+                stepNum: 0,
+                phase: 1,
+                status: 'READY',
+                tokens: 180,
+                cost: '¥0.003',
+                codeSync: 'self.token_budget = 8000  # 安全预算红线',
+                log: '[INIT] 任务：全量日志检索。Token 安全预算 pool = 8000 tokens',
+                history: [
+                    { role: 'system', content: '日志运维 Agent，安全预算 8000 tokens。' },
+                    { role: 'user', content: '查询全量生产历史日志并定位所有异常告警' }
+                ]
+            },
+            {
+                stepNum: 1,
+                phase: 2,
+                status: 'RUNNING',
+                tokens: 420,
+                cost: '¥0.006',
+                codeSync: 'response = self.client.chat.completions.create(...)',
+                log: '[INFO] 第 1 步: 模型请求调用 fetch_production_logs(service="all", limit=99999)',
+                history: [
+                    { role: 'system', content: '日志运维 Agent，安全预算 8000 tokens。' },
+                    { role: 'user', content: '查询全量生产历史日志并定位所有异常告警' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'c_log', name: 'fetch_production_logs', args: { service: 'all', limit: 99999 } }] }
+                ]
+            },
+            {
+                stepNum: 2,
+                phase: 5,
+                status: 'ABORTED',
+                tokens: 8450,
+                cost: '¥0.127',
+                codeSync: 'if total_tokens_consumed > self.token_budget: return {"status": "ABORTED", "reason": "TOKEN_BUDGET_EXCEEDED"}',
+                log: '[ALERT] 危险！工具返回超大 50KB 未分页日志！单次消耗达 8,030 tokens，累计 8,450 > 8,000！立即熔断拦截！',
+                history: [
+                    { role: 'system', content: '日志运维 Agent，安全预算 8000 tokens。' },
+                    { role: 'user', content: '查询全量生产历史日志并定位所有异常告警' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'c_log', name: 'fetch_production_logs', args: { service: 'all', limit: 99999 } }] },
+                    { role: 'tool', tool_call_id: 'c_log', content: '{"logs_dump": "[40,000 字巨型 JSON 数组已截断...]"}' },
+                    { role: 'system', content: '【财务预算安全网触发】单任务 Token 消耗累计 8,450 超标！立即熔断，为企业成功挽救数十元失控账单！' }
+                ]
+            }
+        ]
+    },
+    sandbox: {
+        title: "🛡️ 场景 4: 未授权沙箱拦截",
+        steps: [
+            {
+                stepNum: 0,
+                phase: 1,
+                status: 'READY',
+                tokens: 110,
+                cost: '¥0.001',
+                codeSync: 'self.tool_map = {func.__name__: func for func in tools}',
+                log: '[INIT] 沙箱白名单注册完毕：仅授权 safe_backup_database，未授权任何危险删库指令',
+                history: [
+                    { role: 'system', content: '受控环境 Agent，任何工具调用必须受到沙箱白名单鉴权。' },
+                    { role: 'user', content: '清空测试环境所有过期的历史数据表' }
+                ]
+            },
+            {
+                stepNum: 1,
+                phase: 4,
+                status: 'RUNNING',
+                tokens: 430,
+                cost: '¥0.006',
+                codeSync: 'if fn_name not in self.tool_map: output = {"error": f"Tool {fn_name} 未在沙箱中注册授权"}',
+                log: '[ALERT] 拦截高危幻觉调用！模型尝试执行 drop_database()，在 self.tool_map 查无此人，直接拦截！',
+                history: [
+                    { role: 'system', content: '受控环境 Agent，任何工具调用必须受到沙箱白名单鉴权。' },
+                    { role: 'user', content: '清空测试环境所有过期的历史数据表' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'c_drop', name: 'drop_database', args: { force: true } }] },
+                    { role: 'tool', tool_call_id: 'c_drop', content: '{"error": "Tool drop_database 未在沙箱中注册授权"}' }
+                ]
+            },
+            {
+                stepNum: 2,
+                phase: 5,
+                status: 'SUCCESS',
+                tokens: 650,
+                cost: '¥0.010',
+                codeSync: 'return {"status": "SUCCESS", "final_output": msg.content, ...}',
+                log: '[SUCCESS] 模型接收到沙箱拒绝通知，优雅向用户提示权限不足，核心资产未受任何损害！',
+                history: [
+                    { role: 'system', content: '受控环境 Agent，任何工具调用必须受到沙箱白名单鉴权。' },
+                    { role: 'user', content: '清空测试环境所有过期的历史数据表' },
+                    { role: 'assistant', content: null, tool_calls: [{ id: 'c_drop', name: 'drop_database', args: { force: true } }] },
+                    { role: 'tool', tool_call_id: 'c_drop', content: '{"error": "Tool drop_database 未在沙箱中注册授权"}' },
+                    { role: 'assistant', content: '🛡️ 安全沙箱防御拦截：您请求的 drop_database 指令未在企业安全白名单中授权，系统已主动拒绝该高危调用，确保数据库安全。', tool_calls: null }
+                ]
+            }
+        ]
+    }
+};
+
+function switchEngTab(tabKey) {
+    if (typeof window !== 'undefined') window.switchEngTab = switchEngTab;
+    const tabs = ['theory', 'simulator', 'interview'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`btn-tab-${t}`);
+        const pane = document.getElementById(`eng-tab-pane-${t}`);
+        if (btn) {
+            if (t === tabKey) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+            } else {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            }
+        }
+        if (pane) {
+            if (t === tabKey) {
+                pane.classList.remove('hidden');
+            } else {
+                pane.classList.add('hidden');
+            }
+        }
+    });
+
+    if (tabKey === 'simulator') {
+        initAgentSimulator();
+    }
+}
+
+function initAgentSimulator() {
+    const container = document.getElementById('agent-simulator-container');
+    if (!container) return;
+
+    setSimScenario(simState.scenario || 'happy');
+}
+
+function setSimScenario(scId) {
+    if (typeof window !== 'undefined') window.setSimScenario = setSimScenario;
+    if (simState.autoRunTimer) {
+        clearInterval(simState.autoRunTimer);
+        simState.autoRunTimer = null;
+        const autoBtn = document.getElementById('sim-autorun-btn');
+        if (autoBtn) autoBtn.innerHTML = '⚡ 连续运行 (Auto Run)';
+    }
+
+    simState.scenario = scId;
+    simState.currentStep = 0;
+
+    const pills = ['happy', 'loop', 'token', 'sandbox'];
+    pills.forEach(p => {
+        const el = document.getElementById(`sim-sc-${p}`);
+        if (el) {
+            if (p === scId) el.classList.add('active');
+            else el.classList.remove('active');
+        }
+    });
+
+    const termLogs = document.getElementById('sim-terminal-logs');
+    if (termLogs) {
+        termLogs.innerHTML = '';
+    }
+
+    const scData = SIM_SCENARIO_DATA[scId] || SIM_SCENARIO_DATA.happy;
+    applySimStepData(scData.steps[0], true);
+}
+
+function updateSimParams() {
+    if (typeof window !== 'undefined') window.updateSimParams = updateSimParams;
+    const maxStepsInput = document.getElementById('sim_max_steps');
+    const tokenBudgetInput = document.getElementById('sim_token_budget');
+    const faultInput = document.getElementById('sim_fault_select');
+
+    if (maxStepsInput) {
+        simState.maxSteps = parseInt(maxStepsInput.value, 10) || 6;
+        const lbl = document.getElementById('val_sim_max_steps');
+        if (lbl) lbl.textContent = `${simState.maxSteps} 步`;
+    }
+    if (tokenBudgetInput) {
+        simState.tokenBudget = parseInt(tokenBudgetInput.value, 10) || 8000;
+        const lbl = document.getElementById('val_sim_token_budget');
+        if (lbl) lbl.textContent = String(simState.tokenBudget);
+    }
+    if (faultInput) {
+        simState.faultInjection = faultInput.value;
+    }
+
+    const scData = SIM_SCENARIO_DATA[simState.scenario] || SIM_SCENARIO_DATA.happy;
+    const currentStepData = scData.steps[Math.min(simState.currentStep, scData.steps.length - 1)];
+    applySimStepData(currentStepData, false);
+}
+
+function applySimStepData(stepData, appendLog = true) {
+    if (!stepData) return;
+
+    // 1. 遥测看板
+    const stepEl = document.getElementById('metric-step-val');
+    if (stepEl) stepEl.textContent = `${stepData.stepNum} / ${simState.maxSteps}`;
+
+    const tokenEl = document.getElementById('metric-token-val');
+    if (tokenEl) tokenEl.textContent = String(stepData.tokens);
+
+    const costEl = document.getElementById('metric-cost-val');
+    if (costEl) costEl.textContent = stepData.cost;
+
+    const statusBadge = document.getElementById('sim-status-badge');
+    if (statusBadge) {
+        statusBadge.textContent = stepData.status;
+        statusBadge.className = 'sim-status-badge';
+        if (stepData.status === 'READY') statusBadge.classList.add('idle');
+        else if (stepData.status === 'RUNNING') statusBadge.classList.add('running');
+        else if (stepData.status === 'SUCCESS') statusBadge.classList.add('success');
+        else if (stepData.status === 'MAX_STEPS_REACHED') statusBadge.classList.add('warn');
+        else if (stepData.status === 'ABORTED') statusBadge.classList.add('alert');
+    }
+
+    // 2. Token 燃油箱
+    const pct = Math.min(100, Math.round((stepData.tokens / simState.tokenBudget) * 100));
+    const fuelFill = document.getElementById('sim-fuel-fill');
+    const fuelText = document.getElementById('fuel-pct-text');
+    if (fuelFill) {
+        fuelFill.style.width = `${pct}%`;
+        fuelFill.className = 'sim-fuel-fill';
+        if (pct >= 80) fuelFill.classList.add('danger');
+        else if (pct >= 50) fuelFill.classList.add('warn');
+    }
+    if (fuelText) fuelText.textContent = `${pct}% (${stepData.tokens} / ${simState.tokenBudget})`;
+
+    // 3. 代码映射框
+    const codeSyncText = document.getElementById('sim-code-sync-text');
+    if (codeSyncText) codeSyncText.textContent = stepData.codeSync;
+
+    // 4. 状态机节点高亮
+    for (let i = 1; i <= 5; i++) {
+        const node = document.getElementById(`flow-node-${i}`);
+        if (node) {
+            node.className = 'sim-flow-node';
+            if (i < stepData.phase) {
+                node.classList.add('passed');
+            } else if (i === stepData.phase) {
+                node.classList.add('active');
+                if (stepData.status === 'ABORTED' || stepData.status === 'MAX_STEPS_REACHED') {
+                    node.classList.add('error-alert');
+                }
+            }
+        }
+    }
+
+    // 5. 终端日志流
+    if (appendLog && stepData.log) {
+        const termLogs = document.getElementById('sim-terminal-logs');
+        if (termLogs) {
+            const line = document.createElement('div');
+            line.className = 'sim-log-line';
+            if (stepData.log.includes('[INIT]')) line.classList.add('info');
+            else if (stepData.log.includes('[WARN]')) line.classList.add('warn');
+            else if (stepData.log.includes('[ALERT]')) line.classList.add('error');
+            else if (stepData.log.includes('[SUCCESS]')) line.classList.add('success');
+            line.textContent = stepData.log;
+            termLogs.appendChild(line);
+
+            const term = document.getElementById('sim-terminal');
+            if (term && term.scrollHeight) {
+                term.scrollTop = term.scrollHeight;
+            }
+        }
+    }
+
+    // 6. 渲染 History 列表
+    renderSimHistory(stepData.history);
+}
+
+function renderSimHistory(historyList) {
+    const mount = document.getElementById('sim-history-list');
+    const badge = document.getElementById('history-count-badge');
+    if (!mount) return;
+
+    if (badge) badge.textContent = `${historyList.length} 条消息`;
+
+    mount.innerHTML = historyList.map((m, idx) => {
+        const roleClass = m.role || 'user';
+        let bodyHtml = '';
+        if (m.content) {
+            bodyHtml = `<div class="sim-msg-body">${escapeHtml(m.content)}</div>`;
+        }
+        if (m.tool_calls && m.tool_calls.length > 0) {
+            bodyHtml += m.tool_calls.map(tc => `
+                <div class="sim-msg-meta" style="color:var(--apple-orange);">
+                    ⚡ <strong>Tool Call:</strong> <code>${escapeHtml(tc.name)}(${escapeHtml(JSON.stringify(tc.args))})</code>
+                    <span style="opacity:0.6; font-size:0.65rem;">(id: ${escapeHtml(tc.id)})</span>
+                </div>
+            `).join('');
+        }
+        if (m.tool_call_id) {
+            bodyHtml += `<div class="sim-msg-meta" style="color:var(--apple-green);">绑定 tool_call_id: <code>${escapeHtml(m.tool_call_id)}</code></div>`;
+        }
+
+        return `
+            <div class="sim-msg-item">
+                <div class="sim-msg-header">
+                    <span class="sim-role-tag ${roleClass}">#${idx + 1} ${roleClass.toUpperCase()}</span>
+                </div>
+                ${bodyHtml}
+            </div>
+        `;
+    }).join('');
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function stepAgentSimulator() {
+    if (typeof window !== 'undefined') window.stepAgentSimulator = stepAgentSimulator;
+    const scData = SIM_SCENARIO_DATA[simState.scenario] || SIM_SCENARIO_DATA.happy;
+    const maxIdx = scData.steps.length - 1;
+
+    if (simState.currentStep < maxIdx) {
+        simState.currentStep++;
+        applySimStepData(scData.steps[simState.currentStep], true);
+    } else {
+        showToast("已达到当前场景的推演终态 ✓");
+        if (simState.autoRunTimer) {
+            clearInterval(simState.autoRunTimer);
+            simState.autoRunTimer = null;
+            const autoBtn = document.getElementById('sim-autorun-btn');
+            if (autoBtn) autoBtn.innerHTML = '⚡ 连续运行 (Auto Run)';
+        }
+    }
+}
+
+function autoRunAgentSimulator() {
+    if (typeof window !== 'undefined') window.autoRunAgentSimulator = autoRunAgentSimulator;
+    const autoBtn = document.getElementById('sim-autorun-btn');
+    if (simState.autoRunTimer) {
+        clearInterval(simState.autoRunTimer);
+        simState.autoRunTimer = null;
+        if (autoBtn) autoBtn.innerHTML = '⚡ 连续运行 (Auto Run)';
+        showToast("推演已暂停 ⏸");
+        return;
+    }
+
+    const scData = SIM_SCENARIO_DATA[simState.scenario] || SIM_SCENARIO_DATA.happy;
+    if (simState.currentStep >= scData.steps.length - 1) {
+        simState.currentStep = 0;
+        applySimStepData(scData.steps[0], true);
+    }
+
+    if (autoBtn) autoBtn.innerHTML = '⏸ 暂停推演 (Pause)';
+    simState.autoRunTimer = setInterval(() => {
+        if (simState.currentStep < scData.steps.length - 1) {
+            stepAgentSimulator();
+        } else {
+            clearInterval(simState.autoRunTimer);
+            simState.autoRunTimer = null;
+            if (autoBtn) autoBtn.innerHTML = '⚡ 连续运行 (Auto Run)';
+        }
+    }, 1100);
+}
+
+function resetAgentSimulator() {
+    if (typeof window !== 'undefined') window.resetAgentSimulator = resetAgentSimulator;
+    if (simState.autoRunTimer) {
+        clearInterval(simState.autoRunTimer);
+        simState.autoRunTimer = null;
+        const autoBtn = document.getElementById('sim-autorun-btn');
+        if (autoBtn) autoBtn.innerHTML = '⚡ 连续运行 (Auto Run)';
+    }
+    setSimScenario(simState.scenario || 'happy');
+    showToast("沙盒状态机已重置 🔄");
+}
+
+function toggleSimFullscreen() {
+    if (typeof window !== 'undefined') window.toggleSimFullscreen = toggleSimFullscreen;
+    const container = document.getElementById('agent-simulator-container');
+    const backdrop = document.getElementById('sim-fullscreen-backdrop');
+    const btn = document.getElementById('sim-fullscreen-toggle-btn');
+    if (!container) return;
+
+    const isFull = container.classList.contains('fullscreen-mode');
+    if (isFull) {
+        container.classList.remove('fullscreen-mode');
+        if (backdrop) backdrop.classList.remove('active');
+        if (btn) btn.innerHTML = '⤢ 全屏子页面模式';
+    } else {
+        container.classList.add('fullscreen-mode');
+        if (backdrop) backdrop.classList.add('active');
+        if (btn) btn.innerHTML = '✕ 退出全屏模式';
+    }
+}
+
+function switchInspectTool(toolName) {
+    if (typeof window !== 'undefined') window.switchInspectTool = switchInspectTool;
+    const pyBox = document.getElementById('inspect-py-source');
+    const jsonBox = document.getElementById('inspect-json-spec');
+
+    if (toolName === 'get_order_status') {
+        if (pyBox) {
+            pyBox.innerHTML = `<span style="color:#ff7b72;">def</span> <span style="color:#d2a8ff;">get_order_status</span>(order_id: <span style="color:#79c0ff;">str</span>) -&gt; <span style="color:#79c0ff;">dict</span>:
+    <span style="color:#a5d6ff;">"""查询指定订单的履约与仓储状态。"""</span>
+    <span style="color:#8b949e;"># 现场真实业务查询...</span>
+    <span style="color:#ff7b72;">return</span> {"order_id": order_id}`;
+        }
+        if (jsonBox) {
+            jsonBox.innerHTML = `{
+  <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"function"</span>,
+  <span style="color:#79c0ff;">"function"</span>: {
+    <span style="color:#79c0ff;">"name"</span>: <span style="color:#a5d6ff;">"get_order_status"</span>,
+    <span style="color:#79c0ff;">"description"</span>: <span style="color:#a5d6ff;">"查询指定订单的履约与仓储状态。"</span>,
+    <span style="color:#79c0ff;">"parameters"</span>: {
+      <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"object"</span>,
+      <span style="color:#79c0ff;">"properties"</span>: {
+        <span style="color:#79c0ff;">"order_id"</span>: { <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"string"</span> }
+      },
+      <span style="color:#79c0ff;">"required"</span>: [<span style="color:#a5d6ff;">"order_id"</span>]
+    }
+  }
+}`;
+        }
+    } else if (toolName === 'remind_warehouse') {
+        if (pyBox) {
+            pyBox.innerHTML = `<span style="color:#ff7b72;">def</span> <span style="color:#d2a8ff;">remind_warehouse</span>(order_id: <span style="color:#79c0ff;">str</span>, reason: <span style="color:#79c0ff;">str</span> = <span style="color:#a5d6ff;">"加急催发"</span>) -&gt; <span style="color:#79c0ff;">dict</span>:
+    <span style="color:#a5d6ff;">"""向目标仓储系统推送加急催办工单。"""</span>
+    <span style="color:#8b949e;"># 现场真实业务分发...</span>
+    <span style="color:#ff7b72;">return</span> {"success": True}`;
+        }
+        if (jsonBox) {
+            jsonBox.innerHTML = `{
+  <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"function"</span>,
+  <span style="color:#79c0ff;">"function"</span>: {
+    <span style="color:#79c0ff;">"name"</span>: <span style="color:#a5d6ff;">"remind_warehouse"</span>,
+    <span style="color:#79c0ff;">"description"</span>: <span style="color:#a5d6ff;">"向目标仓储系统推送加急催办工单。"</span>,
+    <span style="color:#79c0ff;">"parameters"</span>: {
+      <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"object"</span>,
+      <span style="color:#79c0ff;">"properties"</span>: {
+        <span style="color:#79c0ff;">"order_id"</span>: { <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"string"</span> },
+        <span style="color:#79c0ff;">"reason"</span>: { <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"string"</span> }
+      },
+      <span style="color:#79c0ff;">"required"</span>: [<span style="color:#a5d6ff;">"order_id"</span>]
+    }
+  }
+}`;
+        }
+    }
+}
+
+function handleConceptQuiz(qIdx, optIdx, isCorrect) {
+    if (typeof window !== 'undefined') window.handleConceptQuiz = handleConceptQuiz;
+    const box = document.getElementById(`concept-feedback-${qIdx}`);
+    if (!box) return;
+
+    box.classList.remove('hidden');
+    if (isCorrect) {
+        box.className = 'opt-cognitive-feedback chosen-correct';
+        if (qIdx === 1) {
+            box.innerHTML = '<strong>✅ 判定正确！【因果与契约双重基石】</strong><br>OpenAI 协议强制要求每一个 <code>role: tool</code> 必须跟随在发起它的 <code>role: assistant</code> 之后并使用 <code>tool_call_id</code> 关联。如果省略 assistant 消息，不仅无法通过 API 格式校验，模型也会丢失“自己上一轮究竟向工具传了什么参数”的推理记忆。';
+        } else if (qIdx === 2) {
+            box.innerHTML = '<strong>✅ 判定正确！【复合误差级联不可抗力】</strong><br>根据公式 $P = 0.92^6 \\approx 60.6\\%$。多步链路每增加一步，失败概率都在非线性指数放大！这就是为什么 FDE 铁律要求：80% 核心主干走强类型确定性代码编排（State Graph），仅把 LLM 用在 20% 的容错分支中。';
+        } else if (qIdx === 3) {
+            box.innerHTML = '<strong>✅ 判定正确！【生产级自愈防御设计】</strong><br>在严肃交付现场，直接 crash 会导致整个后台服务瘫痪，而欺骗模型会导致幻觉雪崩。将异常打包为工具输出并注入 <code>retry_hint</code>，可以利用大模型强大的上下文理解力完成自动参数纠正与重试自愈！';
+        }
+    } else {
+        box.className = 'opt-cognitive-feedback chosen-wrong';
+        if (qIdx === 1) {
+            box.innerHTML = '<strong>❌ 认知陷阱提示！</strong><br>这不仅是日志，更是 OpenAI API 的强校验约束！如果不放入 assistant 消息，API 会直接报错 400（missing tool_call_id），导致整个推理流程直接熔断抛错。';
+        } else if (qIdx === 2) {
+            box.innerHTML = '<strong>❌ 认知陷阱：线性直觉偏差！</strong><br>很多人误以为 92% 的单步正确率在 6 步后依然很高。然而概率连乘 $0.92 \\times 0.92 \\times ... = 0.92^6 \\approx 60.6\\%$，意味着三次复杂排障就有一次必定跑偏引发生产灾难！';
+        } else if (qIdx === 3) {
+            box.innerHTML = '<strong>❌ 致命陷阱！</strong><br>让主进程直接抛错退出会导致服务不可用，而返回空对象会诱导模型产生严重的事实幻觉。正确的工程姿势是用 try...except 捕获，并携带明确的 retry_hint 引导模型自愈。';
+        }
+    }
+}
+
 // 18. 交互题库：测验引擎 (Cognitive Feedback & Spaced Practice Retry)
 function renderQuizzes() {
     const mount = document.getElementById('quiz-mount-point');
@@ -2033,6 +2818,20 @@ if (typeof window !== 'undefined') {
     window.resetStudyProgress = resetStudyProgress;
     window.copyCode = copyCode;
     window.showToast = showToast;
+    window.switchEngTab = switchEngTab;
+    window.initAgentSimulator = initAgentSimulator;
+    window.setSimScenario = setSimScenario;
+    window.updateSimParams = updateSimParams;
+    window.stepAgentSimulator = stepAgentSimulator;
+    window.autoRunAgentSimulator = autoRunAgentSimulator;
+    window.resetAgentSimulator = resetAgentSimulator;
+    window.toggleSimFullscreen = toggleSimFullscreen;
+    window.switchInspectTool = switchInspectTool;
+    window.handleConceptQuiz = handleConceptQuiz;
+    window.openSidebar = openSidebar;
+    window.closeSidebar = closeSidebar;
+    window.toggleSidebar = toggleSidebar;
+    window.scrollToTop = scrollToTop;
 }
 
 if (typeof module !== 'undefined' && module.exports) {
@@ -2057,6 +2856,20 @@ if (typeof module !== 'undefined' && module.exports) {
         resetStudyProgress,
         openSpotlight,
         closeSpotlight,
-        showToast
+        showToast,
+        switchEngTab,
+        initAgentSimulator,
+        setSimScenario,
+        updateSimParams,
+        stepAgentSimulator,
+        autoRunAgentSimulator,
+        resetAgentSimulator,
+        toggleSimFullscreen,
+        switchInspectTool,
+        handleConceptQuiz,
+        openSidebar,
+        closeSidebar,
+        toggleSidebar,
+        scrollToTop
     };
 }

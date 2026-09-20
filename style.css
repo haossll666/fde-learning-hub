@@ -77,6 +77,12 @@
   --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.35);
   --shadow-float: 0 12px 32px rgba(0, 0, 0, 0.45);
   --shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.75), 0 4px 16px rgba(0, 0, 0, 0.50), 0 0 1px rgba(255, 255, 255, 0.15);
+
+  /* iOS / Mobile Safe Area Insets */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
 }
 
 [data-theme="light"] {
@@ -157,6 +163,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-system);
   background-color: var(--bg-canvas);
@@ -164,7 +176,104 @@ body {
   line-height: 1.55;
   overflow-x: hidden;
   letter-spacing: -0.01em;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 移动端侧边栏展开时防止底层背景滚动穿透 */
+body.sidebar-open {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* 移动端侧边栏背景遮罩 (Cupertino Frosted Backdrop) */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 移动端侧边栏关闭按钮 (Cupertino Touch Close Pill) */
+.sidebar-close-btn {
+  display: none;
+  background: var(--bg-tertiary);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  min-width: 32px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s var(--ease-spring);
+}
+
+.sidebar-close-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.sidebar-close-btn:active {
+  transform: scale(0.92);
+}
+
+/* 移动端回到顶部浮钮 (Cupertino Glass Capsule) */
+.back-to-top-btn {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right, 16px));
+  bottom: max(20px, calc(16px + env(safe-area-inset-bottom, 0px)));
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-surface-elevated);
+  border: 0.5px solid var(--border-subtle);
+  color: var(--apple-blue);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 38;
+  transition: opacity 0.25s var(--ease-spring), transform 0.25s var(--ease-spring), background 0.2s;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.back-to-top-btn:hover {
+  background: var(--bg-surface-higher);
+  color: var(--apple-blue-hover);
+  transform: translateY(-2px);
+}
+
+.back-to-top-btn:active {
+  transform: scale(0.92);
+}
+
+.back-to-top-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
 }
 
 /* Custom Thin Apple Scrollbar */
@@ -527,6 +636,27 @@ body {
 .breadcrumb-trail strong {
   color: var(--text-primary);
   font-weight: 600;
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.top-bar-subtitle {
+  font-size: 0.76rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
 }
 
 .menu-toggle-btn {
@@ -1800,15 +1930,16 @@ input[type="range"]::-moz-range-thumb,
 
 .checklist-card label {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
   font-size: 0.88rem;
   color: var(--text-secondary);
   cursor: pointer;
   min-height: 44px;
-  padding: 0.35rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   border-radius: var(--radius-sm);
   transition: background var(--transition-fast), color var(--transition-fast);
+  line-height: 1.5;
 }
 
 .checklist-card label:hover {
@@ -1822,6 +1953,68 @@ input[type="range"]::-moz-range-thumb,
   cursor: pointer;
   accent-color: var(--apple-blue);
   flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* SOW 需求防御与 Air-Gap 交付双清单 */
+.dual-checklist {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 1.6rem 0;
+}
+
+.checklist-panel {
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.3rem;
+  box-shadow: var(--shadow-subtle);
+  display: flex;
+  flex-direction: column;
+}
+
+.checklist-panel h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 0.5px solid var(--hairline);
+}
+
+.check-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.check-group label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  min-height: 44px;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast), color var(--transition-fast);
+  line-height: 1.5;
+}
+
+.check-group label:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.check-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--apple-blue);
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 /* 2. Productized Consulting Flow Diagram (Module 0 Section 0.2) */
@@ -2154,9 +2347,10 @@ input[type="range"]::-moz-range-thumb,
 
 #capsule-toast, .capsule-toast {
   position: fixed;
-  top: 24px;
+  top: max(24px, calc(12px + env(safe-area-inset-top, 0px)));
   left: 50%;
   transform: translateX(-50%) translateY(0);
+  max-width: min(460px, 90vw);
   background: var(--bg-modal);
   backdrop-filter: blur(25px) saturate(190%);
   -webkit-backdrop-filter: blur(25px) saturate(190%);
@@ -2170,6 +2364,8 @@ input[type="range"]::-moz-range-thumb,
   z-index: 3000;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 0.5rem;
   pointer-events: none;
   transition: opacity 0.25s var(--ease-spring), transform 0.25s var(--ease-spring);
@@ -2229,6 +2425,46 @@ input[type="range"]::-moz-range-thumb,
   margin-top: 0.8rem;
 }
 
+.citation-ref {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--apple-blue);
+  background: rgba(0, 113, 227, 0.08);
+  border: 0.5px solid rgba(0, 113, 227, 0.28);
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin: 0 2px;
+  vertical-align: super;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.citation-ref:hover {
+  background: var(--apple-blue);
+  color: #ffffff !important;
+  border-color: var(--apple-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 113, 227, 0.25);
+}
+
+.ref-index {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Mono", monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--apple-blue);
+  background: rgba(0, 113, 227, 0.08);
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-right: 0.35rem;
+  flex-shrink: 0;
+}
+
 .ref-card {
   background: var(--bg-surface);
   border: 0.5px solid var(--border-subtle);
@@ -2240,6 +2476,19 @@ input[type="range"]::-moz-range-thumb,
   flex-direction: column;
   justify-content: space-between;
   gap: 0.5rem;
+  outline: none;
+}
+
+.ref-card.highlight-pulse {
+  border-color: var(--apple-blue) !important;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.25), var(--shadow-float) !important;
+  animation: refGlowPulse 1.8s ease-out;
+}
+
+@keyframes refGlowPulse {
+  0% { transform: scale(1.02); }
+  50% { transform: scale(1.01); }
+  100% { transform: scale(1); }
 }
 
 .ref-card:hover {
@@ -2328,39 +2577,1139 @@ input[type="range"]::-moz-range-thumb,
   text-decoration: underline;
 }
 
-/* Responsive Overrides */
+/* ==========================================================================
+   ⚡ Resilient Agent Interactive Flight Simulator & Subpage Tabs (eng-1)
+   Apple HIG Cupertino Glassmorphism, Spring Physics & Precision Telemetry
+   ========================================================================== */
+
+.eng-tab-bar {
+  display: flex;
+  background: var(--bg-tertiary);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 1.6rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.eng-tab-btn {
+  flex: 1;
+  min-width: 140px;
+  background: transparent;
+  border: none;
+  outline: none;
+  border-radius: var(--radius-pill);
+  padding: 0.6rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s var(--ease-spring);
+  font-family: var(--font-system);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
+.eng-tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.eng-tab-btn.active {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), 0 0 0 0.5px var(--border-subtle);
+}
+
+.eng-tab-pane {
+  display: block;
+}
+
+.eng-tab-pane.hidden {
+  display: none !important;
+}
+
+/* Simulator Hero Banner in Theory Tab */
+.sim-hero-banner {
+  background: linear-gradient(135deg, rgba(41, 151, 255, 0.15), rgba(191, 90, 242, 0.10));
+  border: 1px solid rgba(41, 151, 255, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.2rem 0 1.8rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  box-shadow: 0 8px 24px rgba(41, 151, 255, 0.12);
+}
+
+.sim-hero-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--apple-blue);
+  background: var(--apple-blue-bg);
+  border: 0.5px solid var(--apple-blue);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sim-hero-content h4 {
+  margin: 0.15rem 0 0.3rem 0;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.sim-hero-content p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.sim-hero-action-btn {
+  background: var(--apple-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.65rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(41, 151, 255, 0.35);
+  transition: all 0.2s var(--ease-spring);
+}
+
+.sim-hero-action-btn:hover {
+  background: var(--apple-blue-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(41, 151, 255, 0.45);
+}
+
+/* ==========================================================================
+   Simulator Container & Fullscreen Modal Subpage Mode
+   ========================================================================== */
+
+.agent-simulator-container {
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--shadow-float);
+  transition: all 0.3s var(--ease-spring);
+  position: relative;
+}
+
+.agent-simulator-container.fullscreen-mode {
+  position: fixed;
+  inset: 2vh 2vw;
+  z-index: 2200;
+  margin: 0;
+  border-radius: var(--radius-lg);
+  overflow-y: auto;
+  background: var(--bg-modal);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  box-shadow: var(--shadow-modal);
+  border: 1px solid var(--border-focus);
+}
+
+.sim-fullscreen-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 2190;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.sim-fullscreen-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Simulator Header & Scenarios */
+.sim-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+.sim-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sim-title-group h3 {
+  margin: 0;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sim-scenario-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.sim-scenario-pill {
+  background: var(--bg-tertiary);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 0.45rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.18s var(--ease-spring);
+  font-family: var(--font-system);
+}
+
+.sim-scenario-pill:hover {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+.sim-scenario-pill.active {
+  background: var(--apple-blue-bg);
+  border-color: var(--apple-blue);
+  color: var(--apple-blue);
+  box-shadow: 0 2px 8px var(--apple-blue-glow);
+}
+
+/* Controls & Hyperparameters Toolbar */
+.sim-control-toolbar {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.sim-param-group {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.sim-param-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.sim-param-item label {
+  font-weight: 500;
+}
+
+.sim-param-value {
+  font-weight: 700;
+  color: var(--apple-blue);
+  font-family: var(--font-mono);
+}
+
+.sim-param-slider {
+  width: 90px;
+  cursor: pointer;
+}
+
+.sim-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.sim-btn {
+  background: var(--bg-tertiary);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.48rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.18s var(--ease-spring);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-system);
+}
+
+.sim-btn:hover {
+  background: var(--bg-surface-elevated);
+  border-color: var(--border-focus);
+}
+
+.sim-btn.primary {
+  background: var(--apple-blue);
+  color: #ffffff;
+  border-color: var(--apple-blue);
+  box-shadow: 0 2px 8px rgba(41, 151, 255, 0.3);
+}
+
+.sim-btn.primary:hover {
+  background: var(--apple-blue-hover);
+}
+
+.sim-btn.warning {
+  color: var(--apple-orange);
+}
+
+/* State Flow Visualization */
+.sim-flow-container {
+  background: var(--bg-surface-elevated);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem 0.8rem;
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+}
+
+.sim-flow-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 680px;
+  position: relative;
+  padding: 0 0.5rem;
+}
+
+.sim-flow-node {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.25s var(--ease-spring);
+}
+
+.sim-node-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  transition: all 0.25s var(--ease-spring);
+}
+
+.sim-node-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.sim-node-sub {
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+.sim-flow-arrow {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  z-index: 1;
+}
+
+.sim-flow-node.active {
+  background: var(--apple-blue-glow);
+}
+
+.sim-flow-node.active .sim-node-circle {
+  background: var(--apple-blue);
+  color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 0 16px rgba(41, 151, 255, 0.7);
+  transform: scale(1.15);
+}
+
+.sim-flow-node.active .sim-node-label {
+  color: var(--apple-blue);
+}
+
+.sim-flow-node.passed .sim-node-circle {
+  border-color: var(--apple-green);
+  color: var(--apple-green);
+}
+
+.sim-flow-node.error-alert .sim-node-circle {
+  background: var(--apple-red);
+  color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 0 16px rgba(255, 69, 58, 0.7);
+}
+
+/* Simulator Grid: Telemetry & Inspector */
+.sim-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+.sim-card {
+  background: var(--bg-surface-elevated);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sim-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 0.5px solid var(--hairline);
+}
+
+.sim-card-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sim-status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  text-transform: uppercase;
+}
+
+.sim-status-badge.idle { background: var(--bg-tertiary); color: var(--text-secondary); }
+.sim-status-badge.running { background: var(--apple-blue-bg); color: var(--apple-blue); border: 0.5px solid var(--apple-blue); }
+.sim-status-badge.success { background: var(--apple-green-bg); color: var(--apple-green); border: 0.5px solid var(--apple-green); }
+.sim-status-badge.alert { background: var(--apple-red-bg); color: var(--apple-red); border: 0.5px solid var(--apple-red); }
+.sim-status-badge.warn { background: var(--apple-orange-bg); color: var(--apple-orange); border: 0.5px solid var(--apple-orange); }
+
+/* Telemetry Stats Rows */
+.sim-telemetry-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+}
+
+.sim-metric-box {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
+  text-align: center;
+}
+
+.sim-metric-val {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.sim-metric-lbl {
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+/* Fuel Bar */
+.sim-fuel-container {
+  margin-top: 0.35rem;
+}
+
+.sim-fuel-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.3rem;
+}
+
+.sim-fuel-track {
+  height: 8px;
+  background: var(--bg-input);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.sim-fuel-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--apple-blue);
+  border-radius: var(--radius-pill);
+  transition: width 0.35s var(--ease-spring), background-color 0.35s ease;
+}
+
+.sim-fuel-fill.warn { background: var(--apple-orange); }
+.sim-fuel-fill.danger { background: var(--apple-red); }
+
+/* History Inspector */
+.sim-history-list {
+  max-height: 250px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-right: 0.3rem;
+}
+
+.sim-msg-item {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  transition: all 0.15s ease;
+}
+
+.sim-msg-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+.sim-role-tag {
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+
+.sim-role-tag.system { background: var(--apple-purple-bg); color: var(--apple-purple); }
+.sim-role-tag.user { background: var(--apple-blue-bg); color: var(--apple-blue); }
+.sim-role-tag.assistant { background: var(--apple-orange-bg); color: var(--apple-orange); }
+.sim-role-tag.tool { background: var(--apple-green-bg); color: var(--apple-green); }
+
+.sim-msg-body {
+  color: var(--text-primary);
+  word-break: break-word;
+  font-family: var(--font-system);
+}
+
+.sim-msg-meta {
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  margin-top: 3px;
+}
+
+/* Terminal & Log Viewer */
+.sim-terminal {
+  background: #0d1117;
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.8rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: #c9d1d9;
+  max-height: 210px;
+  overflow-y: auto;
+  line-height: 1.55;
+}
+
+.sim-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.sim-term-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.sim-term-dot.red { background: #ff5f56; }
+.sim-term-dot.yellow { background: #ffbd2e; }
+.sim-term-dot.green { background: #27c93f; }
+
+.sim-log-line {
+  margin: 2px 0;
+  word-break: break-word;
+}
+.sim-log-line.info { color: #58a6ff; }
+.sim-log-line.warn { color: #d29922; }
+.sim-log-line.error { color: #f85149; }
+.sim-log-line.success { color: #3fb950; }
+
+/* Active Code Sync Box */
+.sim-code-sync {
+  background: var(--bg-card);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.75rem;
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.sim-code-sync strong {
+  color: var(--apple-blue);
+}
+
+/* Inspect Tool Spec Comparison */
+.sim-inspect-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-top: 0.6rem;
+}
+
+.sim-code-block {
+  background: #0f141c;
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #e6edf3;
+  overflow-x: auto;
+  max-height: 180px;
+}
+
+/* Interview & Mastery Flashcards */
+.interview-flashcards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.interview-card {
+  background: var(--bg-surface-elevated);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.15rem 1.35rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.interview-card:hover {
+  border-color: var(--apple-blue);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+.interview-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.interview-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.interview-card h4 {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.interview-card p {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.interview-quote {
+  background: var(--bg-card);
+  border-left: 3px solid var(--apple-blue);
+  padding: 0.6rem 0.9rem;
+  margin-top: 0.65rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   📱 Comprehensive Mobile & Multi-Tier Responsive Adaptation
+   Apple HIG Precision Ergonomics (Tablets, Large Phones, Compact Phones)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Tier 1: Tablet & Small Laptop (<= 880px)
+   -------------------------------------------------------------------------- */
 @media (max-width: 880px) {
+  /* 1. macOS / iPadOS Style Drawer Navigation */
   .sidebar {
     transform: translateX(-100%);
+    width: min(320px, 86vw);
+    box-shadow: none;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s ease;
+    z-index: 50;
   }
+
   .sidebar.open {
     transform: translateX(0);
+    box-shadow: 14px 0 40px rgba(0, 0, 0, 0.65);
   }
+
+  .sidebar-header {
+    position: relative;
+    padding-top: max(1.2rem, calc(0.8rem + env(safe-area-inset-top, 0px)));
+  }
+
+  .sidebar-close-btn {
+    display: inline-flex;
+    position: absolute;
+    top: max(1.1rem, calc(0.7rem + env(safe-area-inset-top, 0px)));
+    right: 1.1rem;
+    z-index: 10;
+  }
+
+  .sidebar-footer {
+    padding-bottom: max(1.25rem, calc(0.85rem + env(safe-area-inset-bottom, 0px)));
+  }
+
+  /* 2. Main Wrapper & Top Navigation Bar */
   .main-wrapper {
     margin-left: 0;
+    width: 100%;
   }
+
   .menu-toggle-btn {
     display: inline-flex;
   }
-  .content-container {
-    padding: 2rem 1.5rem 4rem 1.5rem;
-  }
+
   .top-bar {
-    padding: 0.85rem 1.5rem;
+    padding: max(0.75rem, env(safe-area-inset-top, 0.75rem)) 1.25rem 0.75rem 1.25rem;
+    gap: 0.6rem;
   }
-  .dt-grid, .pre-mortem-grid, .calc-grid, .dual-checklist, .kpi-cards, .competency-grid, .pbl-summary-grid, .refs-cards-grid, .glossary-grid {
+
+  .top-bar-left {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .top-bar-subtitle {
+    display: none;
+  }
+
+  .breadcrumb-trail {
+    max-width: clamp(120px, 38vw, 240px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.8rem;
+  }
+
+  .spotlight-nav-badge {
+    padding: 0.35rem 0.7rem;
+  }
+
+  .spotlight-nav-kbd {
+    display: none;
+  }
+
+  /* 移动端表单输入框统一保持 16px 彻底杜绝 iOS 聚焦时强行放大 */
+  .search-input,
+  .calc-field input {
+    font-size: 16px !important;
+  }
+
+  /* 3. Content Container & Grids Stacking */
+  .content-container {
+    padding: 2rem 1.5rem max(4.5rem, calc(3rem + env(safe-area-inset-bottom, 0px))) 1.5rem;
+  }
+
+  .dt-grid,
+  .pre-mortem-grid,
+  .calc-grid,
+  .dual-checklist,
+  .kpi-cards,
+  .competency-grid,
+  .pbl-summary-grid,
+  .refs-cards-grid,
+  .glossary-grid,
+  .sim-grid,
+  .sim-inspect-box {
     grid-template-columns: 1fr;
   }
+
+  /* 4. Diagrams & Controls */
   .diagram-card {
     flex-direction: column;
+    padding: 1.25rem;
   }
+
   .flow-arrow {
     transform: rotate(90deg);
   }
-  #spotlight-overlay, .spotlight-overlay {
-    padding-top: 5vh;
+
+  .sim-control-toolbar {
+    flex-direction: column;
+    align-items: stretch;
   }
+
+  .sim-hero-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  /* 5. Spotlight Search Modal (Tablet Default) */
+  #spotlight-overlay,
+  .spotlight-overlay {
+    padding-top: max(5vh, env(safe-area-inset-top, 20px));
+  }
+
   .spotlight-modal {
-    max-width: 94vw;
+    max-width: 92vw;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Tier 2: Mobile Smartphone (<= 640px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  /* 1. Spotlight Search Full Adaptability */
+  #spotlight-overlay,
+  .spotlight-overlay {
+    padding: max(8px, env(safe-area-inset-top, 8px)) 10px max(12px, env(safe-area-inset-bottom, 12px)) 10px;
+    align-items: flex-start;
+  }
+
+  .spotlight-modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--radius-md);
+    max-height: calc(100vh - 16px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  }
+
+  .spotlight-input {
+    font-size: 16px !important; /* Prevents iOS auto-zoom */
+  }
+
+  .spotlight-results {
+    max-height: calc(68vh - 70px);
+    -webkit-overflow-scrolling: touch;
+    padding: 0.4rem;
+  }
+
+  .spotlight-footer .spotlight-hints {
+    display: none; /* Hide useless desktop arrow hints */
+  }
+
+  .spotlight-footer {
+    padding: 0.55rem 1rem;
+    justify-content: center;
+    font-size: 0.72rem;
+  }
+
+  .spotlight-item {
+    padding: 0.75rem 0.8rem;
+    min-height: 48px;
+    gap: 0.65rem;
+  }
+
+  /* 2. Simulator Tab Bar & Track */
+  .eng-tab-bar {
+    padding: 3px;
+    gap: 4px;
+  }
+
+  .eng-tab-btn {
+    min-width: 105px;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
+  .sim-flow-container {
+    padding: 0.85rem 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sim-flow-track {
+    min-width: 600px;
+  }
+
+  .sim-log-stream {
+    max-height: 220px;
+    font-size: 0.72rem;
+  }
+
+  /* 3. Checklists & Panels */
+  .checklist-panel {
+    padding: 1.1rem;
+  }
+
+  .check-group label,
+  .checklist-card label {
+    font-size: 0.85rem;
+    min-height: 44px;
+    padding: 0.35rem 0.45rem;
+    line-height: 1.48;
+  }
+
+  /* 4. Table & Code Block Touch Scrolling */
+  .table-container,
+  pre {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Tier 3: Compact Smartphone (<= 480px, e.g. iPhone SE / Mini)
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  /* 1. Header & Navigation */
+  .top-bar {
+    padding: max(0.55rem, env(safe-area-inset-top, 0.55rem)) 0.85rem 0.55rem 0.85rem;
+  }
+
+  .breadcrumb-trail {
+    max-width: 130px;
+    font-size: 0.75rem;
+  }
+
+  .spotlight-nav-badge {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.75rem;
+    min-height: 36px;
+  }
+
+  .spotlight-nav-text {
+    font-size: 0.75rem;
+  }
+
+  /* 2. Content Container & Typography */
+  .content-container {
+    padding: 1.15rem 0.85rem max(4.5rem, calc(2.5rem + env(safe-area-inset-bottom, 0px))) 0.85rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.35rem, 5.8vw, 1.8rem);
+    line-height: 1.3;
+    margin: 0.45rem 0 0.7rem 0;
+    word-break: break-word;
+  }
+
+  .section-summary {
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+
+  .section-category-tag {
+    font-size: 0.68rem;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .mark-done-btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 46px;
+    font-size: 0.84rem;
+    text-align: center;
+  }
+
+  .prose h2 {
+    font-size: 1.25rem;
+    margin: 1.6rem 0 0.75rem 0;
+  }
+
+  .prose h3 {
+    font-size: 1.05rem;
+    margin: 1.35rem 0 0.65rem 0;
+  }
+
+  .prose p,
+  .prose li {
+    font-size: 0.88rem;
+    line-height: 1.62;
+  }
+
+  /* 3. Simulator Telemetry Metrics */
+  .sim-telemetry-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+  }
+
+  .sim-metric-box {
+    padding: 0.45rem 0.25rem;
+  }
+
+  .sim-metric-val {
+    font-size: 0.9rem;
+  }
+
+  .sim-metric-lbl {
+    font-size: 0.62rem;
+  }
+
+  .sim-btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .sim-flow-track {
+    min-width: 500px;
+    padding: 0 0.25rem;
+  }
+
+  .sim-node-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 0.78rem;
+  }
+
+  .sim-node-label {
+    font-size: 0.72rem;
+  }
+
+  .sim-node-sub {
+    font-size: 0.62rem;
+  }
+
+  /* 4. CoI Calculator */
+  .calculator-card {
+    padding: 1.15rem 1rem;
+  }
+
+  .coi-button-bar {
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .coi-secondary-btn,
+  .calculator-card .action-btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .slider-row {
+    gap: 0.5rem;
+  }
+
+  /* 5. Quizzes & Cognitive Attribution */
+  .quiz-card {
+    padding: 1.1rem 0.95rem;
+    border-radius: var(--radius-md);
+  }
+
+  .quiz-q {
+    font-size: 0.92rem;
+    line-height: 1.52;
+  }
+
+  .quiz-opt {
+    padding: 0.75rem 0.95rem;
+    font-size: 0.85rem;
+    min-height: 48px;
+    line-height: 1.48;
+  }
+
+  .quiz-retry-btn {
+    min-height: 44px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cognitive-trap-banner {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+
+  /* 6. Code Containers & Tables */
+  .code-header {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .copy-btn {
+    padding: 0.35rem 0.65rem;
+    min-height: 36px;
+  }
+
+  pre {
+    padding: 0.9rem;
+    font-size: 0.78rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.55rem 0.6rem;
+    font-size: 0.76rem;
+  }
+
+  /* 7. Dashboard & Flashcards */
+  .interview-card {
+    padding: 1rem;
+  }
+
+  .rank-card {
+    padding: 1.1rem 1rem;
+  }
+
+  .kpi-card {
+    padding: 0.9rem 1rem;
+  }
+}
+
+

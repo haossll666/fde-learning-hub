@@ -269,13 +269,18 @@ class MockElement {
     }
 
     dispatchEvent(evt) {
-        evt.target = this;
-        evt.currentTarget = this;
-        const handlers = this.eventListeners[evt.type] || [];
+        const eventObj = typeof evt === 'string' ? { type: evt } : evt;
+        eventObj.target = this;
+        eventObj.currentTarget = this;
+        const handlers = this.eventListeners[eventObj.type] || [];
         for (const h of handlers) {
-            h.call(this, evt);
+            h.call(this, eventObj);
         }
-        return !evt.defaultPrevented;
+        return !eventObj.defaultPrevented;
+    }
+
+    click() {
+        return this.dispatchEvent({ type: 'click', preventDefault: () => {} });
     }
 
     closest(selector) {
@@ -476,12 +481,13 @@ function createTestEnv(options = {}) {
     const ids = [
         'sidebar', 'sidebar-nav', 'progress-text', 'progress-bar-fill',
         'search-input', 'theme-toggle', 'menu-toggle', 'breadcrumb-trail',
-        'section-header-mount', 'section-content-mount'
+        'section-header-mount', 'section-content-mount',
+        'sidebar-backdrop', 'sidebar-close-btn', 'traffic-light-red', 'back-to-top-btn'
     ];
     ids.forEach(id => {
         let el = document.getElementById(id);
         if (!el) {
-            el = document.createElement(id === 'search-input' ? 'input' : 'div');
+            el = document.createElement((id === 'search-input' || id === 'spotlight-input') ? 'input' : (id.includes('btn') || id === 'menu-toggle' || id === 'theme-toggle') ? 'button' : 'div');
             el.id = id;
             document.body.appendChild(el);
         }
@@ -532,9 +538,11 @@ function createTestEnv(options = {}) {
             if (!window._listeners[event]) window._listeners[event] = [];
             window._listeners[event].push(handler);
         },
-        dispatchEvent: (evt) => {
-            const handlers = (window._listeners && window._listeners[evt.type]) || [];
-            handlers.forEach(h => h.call(window, evt));
+        dispatchEvent: (evt, extra = {}) => {
+            const type = typeof evt === 'string' ? evt : evt.type;
+            const eventObj = typeof evt === 'string' ? { type: evt, ...extra } : evt;
+            const handlers = (window._listeners && window._listeners[type]) || [];
+            handlers.forEach(h => h.call(window, eventObj));
         }
     };
 

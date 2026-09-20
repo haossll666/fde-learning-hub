@@ -188,7 +188,76 @@ function createTier3Suite() {
         }
     });
 
+    // 3.4 Resilient Agent Interactive Flight Simulator & Subpage Navigation
+    suite.test('3.4 Resilient Agent interactive simulator state machine and subpage navigation', () => {
+        const env = createTestEnv();
+        env.sandbox.initApp();
+
+        // 1. Load eng-1
+        env.sandbox.loadSection(2, 0);
+
+        const theoryPane = env.document.getElementById('eng-tab-pane-theory');
+        const simPane = env.document.getElementById('eng-tab-pane-simulator');
+        const interviewPane = env.document.getElementById('eng-tab-pane-interview');
+        assert.ok(theoryPane && simPane && interviewPane, 'All 3 subpage panes must exist in eng-1');
+
+        // 2. Switch Tab to Simulator
+        env.window.switchEngTab('simulator');
+        assert.ok(!simPane.classList.contains('hidden'), 'Simulator pane must be visible');
+        assert.ok(theoryPane.classList.contains('hidden'), 'Theory pane must be hidden');
+
+        // 3. Test Happy Path Step Progression
+        env.window.setSimScenario('happy');
+        const stepVal = env.document.getElementById('metric-step-val');
+        const statusBadge = env.document.getElementById('sim-status-badge');
+        assert.strictEqual(stepVal.textContent, '0 / 6');
+        assert.strictEqual(statusBadge.textContent, 'READY');
+
+        // Step through 4 steps
+        for (let i = 0; i < 4; i++) {
+            env.window.stepAgentSimulator();
+        }
+        assert.strictEqual(stepVal.textContent, '4 / 6');
+        assert.strictEqual(statusBadge.textContent, 'SUCCESS');
+
+        // 4. Test Scenario 2 (Loop -> Max Steps Reached)
+        env.window.setSimScenario('loop');
+        for (let i = 0; i < 6; i++) {
+            env.window.stepAgentSimulator();
+        }
+        assert.strictEqual(stepVal.textContent, '6 / 6');
+        assert.strictEqual(statusBadge.textContent, 'MAX_STEPS_REACHED');
+
+        // 5. Test Scenario 3 (Token budget exceeded)
+        env.window.setSimScenario('token');
+        env.window.stepAgentSimulator();
+        env.window.stepAgentSimulator();
+        assert.strictEqual(statusBadge.textContent, 'ABORTED');
+
+        // 6. Test Scenario 4 (Sandbox intercept)
+        env.window.setSimScenario('sandbox');
+        env.window.stepAgentSimulator();
+        env.window.stepAgentSimulator();
+        assert.strictEqual(statusBadge.textContent, 'SUCCESS');
+
+        // 7. Test Fullscreen Subpage Modal
+        const container = env.document.getElementById('agent-simulator-container');
+        env.window.toggleSimFullscreen();
+        assert.ok(container.classList.contains('fullscreen-mode'));
+        env.window.toggleSimFullscreen();
+        assert.ok(!container.classList.contains('fullscreen-mode'));
+
+        // 8. Test Concept Check Quizzes in Tab 3
+        env.window.switchEngTab('interview');
+        assert.ok(!interviewPane.classList.contains('hidden'));
+        env.window.handleConceptQuiz(1, 1, true);
+        const fb1 = env.document.getElementById('concept-feedback-1');
+        assert.ok(fb1.classList.contains('chosen-correct'));
+        assert.ok(fb1.textContent.includes('判定正确'));
+    });
+
     return suite;
 }
+
 
 module.exports = { createTier3Suite };

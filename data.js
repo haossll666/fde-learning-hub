@@ -461,31 +461,76 @@ const FDE_ALL_DATA = {
           "summary": "用纯原生代码构建可观察、可调试、带熔断保护与完整动态 Tool Spec 的 Agent 决策引擎。",
           "content": `
 <div class="prose">
-    <div class="dual-track-card">
-        <div class="dt-header">🌐 双轨双语翻译看板 (Dual-Track Translation)</div>
-        <div class="dt-grid">
-            <div class="dt-col">
-                <span class="dt-badge tech">技术人员视角 (Technical Spec)</span>
-                <p>重构 ReAct Agent 控制流，剥离第三方黑盒框架；引入原生 <code>inspect</code> 自动生成 Tool Spec、单次请求 Token 累加器与 <code>max_steps=6</code> 刚性熔断保护，彻底杜绝递归死循环。</p>
-            </div>
-            <div class="dt-col">
-                <span class="dt-badge biz">业务痛点映射 (Business Pain)</span>
-                <p>解决高并发与弱网场景下任务无限挂起、后台进程卡死导致的工单阻塞堆积，保障核心业务流程在任何不可抗力下 5 秒内返回明确状态。</p>
-            </div>
-            <div class="dt-col">
-                <span class="dt-badge cxo">CXO 财务账本与谈判话术</span>
-                <p><strong>“李总，我们彻底封死了死循环漏洞。单次任务的算力成本被硬性锁死在 0.08 元以内，系统可用性达到 99.9%，杜绝了因为单据卡死导致月度结算延期的运营事故。”</strong></p>
-            </div>
-        </div>
+    <!-- 顶层三重视角导航切换条 (Cupertino Segmented Control) -->
+    <div class="eng-tab-bar" role="tablist" aria-label="工程手艺视图切换">
+        <button class="eng-tab-btn active" id="btn-tab-theory" onclick="switchEngTab('theory')" role="tab" aria-selected="true">
+            📖 核心内参与源码剖析
+        </button>
+        <button class="eng-tab-btn" id="btn-tab-simulator" onclick="switchEngTab('simulator')" role="tab" aria-selected="false">
+            ⚡ 交互演练附加舱 (Flight Simulator)
+        </button>
+        <button class="eng-tab-btn" id="btn-tab-interview" onclick="switchEngTab('interview')" role="tab" aria-selected="false">
+            🎯 面试通关与工业级迁移
+        </button>
     </div>
 
-    <h3>一、原生 Agent 状态机循环完整代码（100% 可直接执行）</h3>
-    <div class="code-container">
-        <div class="code-header">
-            <span>Python: 具备 inspect 原生内省与安全熔断的企业级 Agent</span>
-            <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+    <!-- ====================================================================
+         VIEW 1: 核心原理与源码解剖 (Theory & Source Code Deep Dive)
+         ==================================================================== -->
+    <div class="eng-tab-pane" id="eng-tab-pane-theory">
+        <div class="dual-track-card">
+            <div class="dt-header">🌐 双轨双语翻译看板 (Dual-Track Translation)</div>
+            <div class="dt-grid">
+                <div class="dt-col">
+                    <span class="dt-badge tech">技术人员视角 (Technical Spec)</span>
+                    <p>重构 ReAct Agent 控制流，剥离第三方黑盒框架；引入原生 <code>inspect</code> 自动生成 Tool Spec、单次请求 Token 累加器与 <code>max_steps=6</code> 刚性熔断保护，彻底杜绝递归死循环。</p>
+                </div>
+                <div class="dt-col">
+                    <span class="dt-badge biz">业务痛点映射 (Business Pain)</span>
+                    <p>解决高并发与弱网场景下任务无限挂起、后台进程卡死导致的工单阻塞堆积，保障核心业务流程在任何不可抗力下 5 秒内返回明确状态。</p>
+                </div>
+                <div class="dt-col">
+                    <span class="dt-badge cxo">CXO 财务账本与谈判话术</span>
+                    <p><strong>“李总，我们彻底封死了死循环漏洞。单次任务的算力成本被硬性锁死在 0.08 元以内，系统可用性达到 99.9%，杜绝了因为单据卡死导致月度结算延期的运营事故。”</strong></p>
+                </div>
+            </div>
         </div>
-        <pre><code class="language-python">import inspect
+
+        <!-- 演练舱直达横幅 -->
+        <div class="sim-hero-banner">
+            <div class="sim-hero-content">
+                <div class="sim-hero-badge">⚡ 交互式飞行演练舱已就绪</div>
+                <h4>纸上得来终觉浅：立即上手单步操控 Resilient Enterprise Agent</h4>
+                <p>通过交互式状态机流转、实时上下文显微镜、Token 燃油箱与故障注入沙盒，3 分钟彻底融会贯通 ReAct 循环与自愈机制。</p>
+            </div>
+            <button class="sim-hero-action-btn" onclick="switchEngTab('simulator')">
+                启动交互演练舱 ➔
+            </button>
+        </div>
+
+        <h3>一、从“全自主迷思”到“确定性工程”：复合误差级联定理</h3>
+        <p>在严肃的企业交付现场，过度迷信开放式 Agent 的自主决策是导致 95% 试点项目夭折的头号元凶。Anthropic 官方在《Building Effective Agents》中给出了明确指导原则：<strong>“优先寻找最简单的确定性方案，仅在必要时增加复杂度；Workflows 提供可预测性与一致性，Agents 仅用于需要自主决策的分支”</strong><a href="#ref-1" class="citation-ref">[1]</a>。CIO 权威报告亦指出：<strong>“对多步流程必须采用显式编排，严禁依赖开放式 Agent 行为”</strong><a href="#ref-2" class="citation-ref">[2]</a>。</p>
+
+        <div class="callout danger">
+            <strong>数学真相：复合误差级联（Compounding Error Theorem）</strong><br>
+            设多步任务包含 $n$ 个决策节点，单个节点的大模型工具调用/推理正确率为 $p$。在完全自主循环中，全局端到端成功率 $P(Task)$ 满足：<br>
+            <div style="text-align: center; margin: 0.6rem 0; font-family: monospace; font-size: 0.95rem; font-weight: bold;">
+                P(Task) = ∏ p_i ≈ p^n
+            </div>
+            即使当前顶级模型在单步任务中达到惊人的 92% 准确率（$p=0.92$）：<br>
+            • $n=1$ 步：92.0% 可靠性；<br>
+            • $n=3$ 步：$0.92^3 \approx 77.8\%$；<br>
+            • $n=6$ 步：$0.92^6 \approx 60.6\%$ —— 意味着每三次复杂排障就至少有一次严重跑偏，引发生产 SLA 灾难！<br>
+            <strong>FDE 架构铁律：80% 核心主干走强类型确定性代码编排（State Graph），模型仅占 20% 作为“局部异常自愈分支”，端到端业务 SLA 牢牢锁定在 98%+。</strong>
+        </div>
+
+        <h3>二、原生 Agent 状态机循环完整代码（100% 可直接执行）</h3>
+        <div class="code-container">
+            <div class="code-header">
+                <span>Python: 具备 inspect 原生内省与安全熔断的企业级 Agent</span>
+                <button class="copy-btn" onclick="copyCode(this)">复制代码</button>
+            </div>
+            <pre><code class="language-python">import inspect
 import json
 import logging
 from typing import Dict, Any, List, Callable
@@ -596,12 +641,360 @@ class ResilientEnterpriseAgent:
 
         return {"status": "MAX_STEPS_REACHED", "trace": execution_trace}
 </code></pre>
+        </div>
+
+        <h3>三、由内向外：构建自主 Agent 的三大工程台阶</h3>
+        <p>理解这个 Agent 的黄金心法是<strong>“由内向外”</strong>三步走：</p>
+        <ol>
+            <li><strong>🔄 大脑（Core Reasoning Loop & State Machine）：</strong>由 <code>while step_count &lt; self.max_steps</code> 与 <code>history</code> 列表构成。模型每一轮吐出的 <code>assistant</code> 消息（哪怕只有 <code>tool_calls</code> 毫无文本）都必须忠实压入历史，再将后续工具执行结果作为 <code>role: tool</code> 配对回填，驱动状态机闭环推演。</li>
+            <li><strong>🛠️ 双手（Tool Contract & Native Reflection）：</strong>依靠 Python 原生 <code>inspect</code> 标准库动态读取函数的名称、Docstring 与类型标注，自动映射为合规的 OpenAI Tool Spec。彻底抛弃繁琐的第三方 DSL，使业务函数以纯 Pythonic 风格零成本注入。</li>
+            <li><strong>🛡️ 战甲（Production Guards & Circuit Breakers）：</strong>用 <code>max_steps=6</code> 阻断无限递归死循环；用 <code>token_budget</code> 防御未分页大报表导致的账单暴增；用 <code>try...except</code> 捕获工具现场崩溃并通过 <code>retry_hint</code> 激发模型自我纠偏（Self-Correction）。</li>
+        </ol>
+    </div>
+
+    <!-- ====================================================================
+         VIEW 2: 交互演练附加舱 (Interactive Agent Flight Simulator Subpage)
+         ==================================================================== -->
+    <div class="eng-tab-pane hidden" id="eng-tab-pane-simulator">
+        <div class="agent-simulator-container" id="agent-simulator-container">
+            <!-- 头部控制与全屏切换 -->
+            <div class="sim-header-row">
+                <div class="sim-title-group">
+                    <span style="font-size: 1.4rem;">⚡</span>
+                    <div>
+                        <h3>Resilient Agent 交互式飞行模拟舱</h3>
+                        <span style="font-size: 0.74rem; color: var(--text-tertiary);">生产级状态机单步推演 · 上下文显微镜 · 动态熔断攻防实验室</span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <button class="sim-btn" onclick="toggleSimFullscreen()" id="sim-fullscreen-toggle-btn" title="切换全屏沉浸式子页面模式">
+                        ⤢ 全屏子页面模式
+                    </button>
+                    <button class="sim-btn warning" onclick="resetAgentSimulator()" title="重置沙盒至初始状态">
+                        🔄 重置
+                    </button>
+                </div>
+            </div>
+
+            <!-- 业务场景选择 Pills -->
+            <div class="sim-scenario-selector" role="radiogroup" aria-label="业务模拟场景">
+                <button class="sim-scenario-pill active" id="sim-sc-happy" onclick="setSimScenario('happy')">
+                    🌟 场景 1: 三步自愈黄金流 (Happy Path + Auto-Heal)
+                </button>
+                <button class="sim-scenario-pill" id="sim-sc-loop" onclick="setSimScenario('loop')">
+                    🚨 场景 2: 死循环与步数熔断 (max_steps=6)
+                </button>
+                <button class="sim-scenario-pill" id="sim-sc-token" onclick="setSimScenario('token')">
+                    💸 场景 3: 算力 Token 熔断 (token_budget)
+                </button>
+                <button class="sim-scenario-pill" id="sim-sc-sandbox" onclick="setSimScenario('sandbox')">
+                    🛡️ 场景 4: 未授权沙箱拦截 (Sandbox Defense)
+                </button>
+            </div>
+
+            <!-- 参数控制条与推演按钮群 -->
+            <div class="sim-control-toolbar">
+                <div class="sim-param-group">
+                    <div class="sim-param-item">
+                        <label for="sim_max_steps">最大步数上限:</label>
+                        <input type="range" class="sim-param-slider" id="sim_max_steps" min="2" max="10" value="6" oninput="updateSimParams()">
+                        <span class="sim-param-value" id="val_sim_max_steps">6 步</span>
+                    </div>
+                    <div class="sim-param-item">
+                        <label for="sim_token_budget">Token 预算池:</label>
+                        <input type="range" class="sim-param-slider" id="sim_token_budget" min="1000" max="15000" step="500" value="8000" oninput="updateSimParams()">
+                        <span class="sim-param-value" id="val_sim_token_budget">8000</span>
+                    </div>
+                    <div class="sim-param-item">
+                        <label for="sim_fault_select">故障注入:</label>
+                        <select id="sim_fault_select" class="coi-input" style="padding: 3px 8px; font-size: 0.78rem;" onchange="updateSimParams()">
+                            <option value="none">无 (按照预设脚本)</option>
+                            <option value="missing_arg">强制漏传必填参数 (触发自愈)</option>
+                            <option value="tool_crash">强制工具内部抛出未捕获异常</option>
+                            <option value="unregistered">强制调用未注册函数</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="sim-buttons-group">
+                    <button class="sim-btn primary" id="sim-step-btn" onclick="stepAgentSimulator()">
+                        ▶ 单步推演 (Step Next)
+                    </button>
+                    <button class="sim-btn" id="sim-autorun-btn" onclick="autoRunAgentSimulator()">
+                        ⚡ 连续运行 (Auto Run)
+                    </button>
+                </div>
+            </div>
+
+            <!-- 状态机可视化节点流 (5-Stage Visual State Flow) -->
+            <div class="sim-flow-container">
+                <div class="sim-flow-track" id="sim-flow-track">
+                    <div class="sim-flow-node active" id="flow-node-1">
+                        <div class="sim-node-circle">1</div>
+                        <span class="sim-node-label">组装上下文</span>
+                        <span class="sim-node-sub">History 初始化</span>
+                    </div>
+                    <span class="sim-flow-arrow">➔</span>
+                    <div class="sim-flow-node" id="flow-node-2">
+                        <div class="sim-node-circle">2</div>
+                        <span class="sim-node-label">大模型推理</span>
+                        <span class="sim-node-sub">gpt-4o 调用</span>
+                    </div>
+                    <span class="sim-flow-arrow">➔</span>
+                    <div class="sim-flow-node" id="flow-node-3">
+                        <div class="sim-node-circle">3</div>
+                        <span class="sim-node-label">决策分支路由</span>
+                        <span class="sim-node-sub">检查 tool_calls</span>
+                    </div>
+                    <span class="sim-flow-arrow">➔</span>
+                    <div class="sim-flow-node" id="flow-node-4">
+                        <div class="sim-node-circle">4</div>
+                        <span class="sim-node-label">受控沙箱执行</span>
+                        <span class="sim-node-sub">try...except 防御</span>
+                    </div>
+                    <span class="sim-flow-arrow">➔</span>
+                    <div class="sim-flow-node" id="flow-node-5">
+                        <div class="sim-node-circle">5</div>
+                        <span class="sim-node-label">回填与终局</span>
+                        <span class="sim-node-sub">收敛成功或熔断</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主工作区：四象限联动看板 -->
+            <div class="sim-grid">
+                <!-- 左上：实时飞行遥测仪表盘 -->
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <span class="sim-card-title">📊 飞行遥测与财务仪表盘</span>
+                        <span class="sim-status-badge idle" id="sim-status-badge">READY</span>
+                    </div>
+
+                    <div class="sim-telemetry-row">
+                        <div class="sim-metric-box">
+                            <div class="sim-metric-val" id="metric-step-val">0 / 6</div>
+                            <div class="sim-metric-lbl">当前循环步数</div>
+                        </div>
+                        <div class="sim-metric-box">
+                            <div class="sim-metric-val" id="metric-token-val">120</div>
+                            <div class="sim-metric-lbl">累计消耗 Tokens</div>
+                        </div>
+                        <div class="sim-metric-box">
+                            <div class="sim-metric-val" id="metric-cost-val">¥0.001</div>
+                            <div class="sim-metric-lbl">折合算力成本</div>
+                        </div>
+                    </div>
+
+                    <!-- Token 燃油箱进度条 -->
+                    <div class="sim-fuel-container">
+                        <div class="sim-fuel-header">
+                            <span>Token 预算池使用率</span>
+                            <span id="fuel-pct-text">1.5%</span>
+                        </div>
+                        <div class="sim-fuel-track">
+                            <div class="sim-fuel-fill" id="sim-fuel-fill" style="width: 1.5%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 代码高亮映射框 -->
+                    <div class="sim-code-sync" id="sim-code-sync-box">
+                        <strong>当前执行逻辑：</strong> <span id="sim-code-sync-text">Agent 已就绪，点击「单步推演」或「自动运行」开始循环</span>
+                    </div>
+                </div>
+
+                <!-- 右上：动态上下文记忆显微镜 (History Inspector) -->
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <span class="sim-card-title">🔍 上下文记忆显微镜 (History Inspector)</span>
+                        <span style="font-size: 0.72rem; color: var(--text-tertiary);" id="history-count-badge">2 条消息</span>
+                    </div>
+                    <div class="sim-history-list" id="sim-history-list">
+                        <!-- 动态渲染消息气泡 -->
+                    </div>
+                </div>
+
+                <!-- 左下：工具契约与 inspect 原生自省对比 -->
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <span class="sim-card-title">🛠️ 工具契约自省器 (inspect ➔ Tool Spec)</span>
+                        <div style="display: flex; gap: 4px;">
+                            <button class="sim-btn" style="padding: 2px 7px; font-size: 0.7rem;" onclick="switchInspectTool('get_order_status')">get_order_status</button>
+                            <button class="sim-btn" style="padding: 2px 7px; font-size: 0.7rem;" onclick="switchInspectTool('remind_warehouse')">remind_warehouse</button>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.74rem; color: var(--text-secondary); margin-bottom: 0.35rem;">
+                        左侧：纯 Python 原生函数与 Docstring &nbsp; | &nbsp; 右侧：<code>_build_tool_spec</code> 自动推断出的 OpenAI Schema
+                    </div>
+                    <div class="sim-inspect-box">
+                        <div class="sim-code-block" id="inspect-py-source">
+<span style="color:#ff7b72;">def</span> <span style="color:#d2a8ff;">get_order_status</span>(order_id: <span style="color:#79c0ff;">str</span>) -&gt; <span style="color:#79c0ff;">dict</span>:
+    <span style="color:#a5d6ff;">"""查询指定订单的履约与仓储状态。"""</span>
+    <span style="color:#8b949e;"># 现场真实业务查询...</span>
+    <span style="color:#ff7b72;">return</span> {"order_id": order_id}
+                        </div>
+                        <div class="sim-code-block" id="inspect-json-spec">
+{
+  <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"function"</span>,
+  <span style="color:#79c0ff;">"function"</span>: {
+    <span style="color:#79c0ff;">"name"</span>: <span style="color:#a5d6ff;">"get_order_status"</span>,
+    <span style="color:#79c0ff;">"description"</span>: <span style="color:#a5d6ff;">"查询指定订单的履约与仓储状态。"</span>,
+    <span style="color:#79c0ff;">"parameters"</span>: {
+      <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"object"</span>,
+      <span style="color:#79c0ff;">"properties"</span>: {
+        <span style="color:#79c0ff;">"order_id"</span>: { <span style="color:#79c0ff;">"type"</span>: <span style="color:#a5d6ff;">"string"</span> }
+      },
+      <span style="color:#79c0ff;">"required"</span>: [<span style="color:#a5d6ff;">"order_id"</span>]
+    }
+  }
+}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右下：运行黑匣子终端 (Live Terminal Trace) -->
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <span class="sim-card-title">💻 终端日志黑匣子 (Execution Trace)</span>
+                        <span style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--apple-green);">STDOUT / LOGS</span>
+                    </div>
+                    <div class="sim-terminal" id="sim-terminal">
+                        <div class="sim-terminal-bar">
+                            <div class="sim-term-dot red"></div>
+                            <div class="sim-term-dot yellow"></div>
+                            <div class="sim-term-dot green"></div>
+                            <span style="font-size: 0.68rem; color: #8b949e; margin-left: 6px;">EnterpriseAgent.py — python3</span>
+                        </div>
+                        <div id="sim-terminal-logs">
+                            <div class="sim-log-line info">[INIT] 注册受控沙箱工具: get_order_status, remind_warehouse</div>
+                            <div class="sim-log-line info">[INIT] 最大允许步数 max_steps=6, 安全预算 token_budget=8000</div>
+                            <div class="sim-log-line">[IDLE] 等待推演启动...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sim-fullscreen-backdrop" id="sim-fullscreen-backdrop" onclick="toggleSimFullscreen()"></div>
+    </div>
+
+    <!-- ====================================================================
+         VIEW 3: 面试杀手锏与工业级迁移 (Interview Mastery & Defense Blueprints)
+         ==================================================================== -->
+    <div class="eng-tab-pane hidden" id="eng-tab-pane-interview">
+        <h3>一、大厂与 FDE 高频架构面试深度答辩模版 (Interview Battle Cards)</h3>
+        <p>在面试资深 AI 架构师、前线部署工程师（FDE）或技术合伙人时，面试官往往会从“工程防御”、“框架取舍”与“并发演进”三个维度下钻。以下是标准的高分答辩策略：</p>
+
+        <div class="interview-flashcards-grid">
+            <div class="interview-card">
+                <div class="interview-card-header">
+                    <h4>考点 1：你们团队为什么选择不用 LangChain，而是徒手写原生 ReAct 循环？</h4>
+                    <span class="interview-tag" style="background:var(--apple-blue-bg); color:var(--apple-blue);">架构哲学</span>
+                </div>
+                <p><strong>面试官意图：</strong>考察你是盲目调用第三方轮子的“调包侠”，还是真正理解运行时（Runtime）、可观测性与企业交付安全底线的高级工程师。</p>
+                <div class="interview-quote">
+                    <strong>标杆答辩金句：</strong><br>
+                    “企业核心交付的命门在于<strong>确定性与极简可维护性</strong>。LangChain 的多层封装引入了冗长隐蔽的回调链、脆弱的 Pydantic v1/v2 依赖冲突以及难以排查的重试黑盒。当生产环境发生超时或死循环时，排查深度往往令人发指。我们剥除掉繁琐抽象后，Agent 本质就是一个带 History 状态的 while 循环。用原生代码仅需 60 行即可无缝插入刚性步数熔断、Token 账单熔断、白名单沙箱与自定义 retry_hint 纠偏，零三方冗余依赖，能百分之百通过银行等企业严苛的内网代码安全审计。”
+                </div>
+            </div>
+
+            <div class="interview-card">
+                <div class="interview-card-header">
+                    <h4>考点 2：如果工具执行返回了几十万字的大文本（如查询大量生产日志），该如何防御 Context 撑爆与成本激增？</h4>
+                    <span class="interview-tag" style="background:var(--apple-orange-bg); color:var(--apple-orange);">上下文工程</span>
+                </div>
+                <p><strong>面试官意图：</strong>考察对 LLM 上下文窗口限制（Context Window Limit）及长程推理性能衰减（Attention Dilution）的应对方案。</p>
+                <div class="interview-quote">
+                    <strong>标杆答辩金句：</strong><br>
+                    “绝不能让原始大文本直通 <code>history</code> 列表。我们在工程上采取三级防御体系：<br>
+                    1. <strong>强制分页与截断（Pagination & Head-Tail Sampling）：</strong>工具层对结果设置默认 10 条或 4KB 上限；<br>
+                    2. <strong>中间状态外置（Artifacts / Scratchpad 模式）：</strong>大文件存入临时持久化存储（如 Redis/S3/SQLite），回传给模型历史的仅为元数据指针（如 <code>file_ref: logs_20260917.csv</code>）与结构化统计值；<br>
+                    3. <strong>辅助检索工具注入：</strong>赋予模型类似 <code>grep_log</code> 或 <code>query_sql</code> 的精准探测工具，由模型按需小步按块调取，从而将 Context 始终压制在最佳性价比区间。”
+                </div>
+            </div>
+
+            <div class="interview-card">
+                <div class="interview-card-header">
+                    <h4>考点 3：这段代码如果要在千万级高并发生产系统中运行，核心瓶颈在哪？如何改造？</h4>
+                    <span class="interview-tag" style="background:var(--apple-green-bg); color:var(--apple-green);">高并发演进</span>
+                </div>
+                <p><strong>面试官意图：</strong>考察从单机原型（Prototype）迈向分布式高可用系统（Production-Grade Architecture）的工程扩展功底。</p>
+                <div class="interview-quote">
+                    <strong>标杆答辩金句：</strong><br>
+                    “核心瓶颈有两点：<strong>串行 I/O 阻塞</strong>与<strong>内存状态易失（Statelessness）</strong>。改造方案：<br>
+                    1. <strong>异步并行调度（Parallel Execution）：</strong>遍历 <code>tool_calls</code> 改为 <code>asyncio.gather</code> 异步并发调度，多工具调用耗时从 $\sum t_i$ 骤降至 $\max(t_i)$；<br>
+                    2. <strong>状态持久化与可中断恢复（Durable Execution / Checkpointing）：</strong>将内存列表 <code>history</code> 接入 Redis 或 PostgreSQL 事务持久化，支持弱网中断后的断点自愈与状态重放；<br>
+                    3. <strong>工具参数静态与动态双重拦截：</strong>配合下一节的 Pydantic BaseModel 强类型守门员，在本地执行前彻底杜绝类型不一致导致的运行时崩溃。”
+                </div>
+            </div>
+        </div>
+
+        <h3>二、现场交互式概念自测卡 (Concept Self-Check)</h3>
+        <p>点击选项即可实时校验掌握深度，并查看认知陷阱深度归因：</p>
+
+        <div class="pbl-card" style="margin-top: 1rem;">
+            <div class="challenge-banner">
+                <span class="badge blue">自测 1 · 核心状态机</span>
+                <h4>为什么在多步 Agent 循环中，必须把模型返回的 assistant 消息（即使只含 tool_calls）原样压入 history？</h4>
+            </div>
+            <div class="choice-group">
+                <button class="choice-btn" onclick="handleConceptQuiz(1, 0, false)">
+                    A. 只是为了方便日志记录，如果不放进去对后续调用没有任何影响
+                </button>
+                <button class="choice-btn" onclick="handleConceptQuiz(1, 1, true)">
+                    B. 【正确】符合 OpenAI 协议规范（tool 角色必须对应前序 assistant 中的 tool_call_id），且为后续推理提供因果记忆
+                </button>
+                <button class="choice-btn" onclick="handleConceptQuiz(1, 2, false)">
+                    C. 为了触发模型的自然语言打招呼机制，提高生成回复的拟人度
+                </button>
+            </div>
+            <div id="concept-feedback-1" class="opt-cognitive-feedback hidden"></div>
+        </div>
+
+        <div class="pbl-card" style="margin-top: 1rem;">
+            <div class="challenge-banner">
+                <span class="badge red">自测 2 · 复合误差级联</span>
+                <h4>设模型单步工具调用的准确率为 92%（0.92），在经历 6 步决策链路后，全局端到端成功率约为多少？</h4>
+            </div>
+            <div class="choice-group">
+                <button class="choice-btn" onclick="handleConceptQuiz(2, 0, false)">
+                    A. 约 92%（顶级大模型具备自适应误差纠正能力，成功率恒定）
+                </button>
+                <button class="choice-btn" onclick="handleConceptQuiz(2, 1, false)">
+                    B. 约 85%（轻微折损）
+                </button>
+                <button class="choice-btn" onclick="handleConceptQuiz(2, 2, true)">
+                    C. 【正确】约 60.6%（依据定理 P = 0.92^6 ≈ 0.606，不可逆的误差级联导致近 40% 的失败率）
+                </button>
+            </div>
+            <div id="concept-feedback-2" class="opt-cognitive-feedback hidden"></div>
+        </div>
+
+        <div class="pbl-card" style="margin-top: 1rem;">
+            <div class="challenge-banner">
+                <span class="badge purple">自测 3 · 工具自愈工程</span>
+                <h4>当本地工具在执行过程中发生业务抛错（如数据库网络闪断或缺少参数）时，生产级 Agent 的首选做法是？</h4>
+            </div>
+            <div class="choice-group">
+                <button class="choice-btn" onclick="handleConceptQuiz(3, 0, false)">
+                    A. 立即让 Python 主进程抛出未捕获异常退出，由容器重启
+                </button>
+                <button class="choice-btn" onclick="handleConceptQuiz(3, 1, true)">
+                    B. 【正确】通过 try...except 捕获异常，包装为 role='tool' 并附带 retry_hint 喂回模型，激发其 In-Context 自愈修正
+                </button>
+                <button class="choice-btn" onclick="handleConceptQuiz(3, 2, false)">
+                    C. 假装执行成功，返回空 JSON 字符串 <code>{}</code> 欺骗大模型继续往下走
+                </button>
+            </div>
+            <div id="concept-feedback-3" class="opt-cognitive-feedback hidden"></div>
+        </div>
     </div>
 </div>
 `,
           "refs": [
-            { "title": "calmrocks: ai-engineer-notebooks (纯 Python 原生 Agent 状态机与生产级熔断实现)", "url": "https://github.com/calmrocks/ai-engineer-notebooks", "note": "无第三方框架绑架，基于inspect内省生成Tool Spec与原生max_steps熔断设计", "badge": "开源实现" },
-            { "title": "ReAct: Synergizing Reasoning and Acting in Language Models (ICLR 2023)", "url": "https://arxiv.org/abs/2210.03629", "note": "大语言模型交替推理与工具执行的学术奠基论文", "badge": "经典论文" }
+            { "title": "Anthropic: Building Effective Agents (2024-12 智能体与工作流设计权威指南)", "url": "https://www.anthropic.com/news/building-effective-agents", "note": "确立 Workflow 优先、简单组合模式与工具内省的核心原则", "badge": "权威规范" },
+            { "title": "CIO: Forward-deployed engineering in the age of agentic AI (2026-07)", "url": "https://www.cio.com/article/4202404/forward-deployed-engineering-in-the-age-of-agentic-ai-from-vibe-coding-to-governed-autonomy.html", "note": "显式编排与六层架构模型：从 Vibe Coding 迈向 Governed Autonomy", "badge": "行业蓝图" },
+            { "title": "ReAct: Synergizing Reasoning and Acting in Language Models (ICLR 2023)", "url": "https://arxiv.org/abs/2210.03629", "note": "大语言模型交替推理与工具执行的学术奠基论文", "badge": "经典论文" },
+            { "title": "calmrocks: ai-engineer-notebooks (纯 Python 原生 Agent 状态机与生产级熔断实现)", "url": "https://github.com/calmrocks/ai-engineer-notebooks", "note": "无第三方框架绑架，基于inspect内省生成Tool Spec与原生max_steps熔断设计", "badge": "开源实现" }
           ]
         },
         {
@@ -742,8 +1135,8 @@ print(f"对账金额: {clean_record.total_reconciled_amount}")
         },
         {
           "id": "eng-4",
-          "title": "2.4 绝密基线：Air-Gapped 物理隔离网部署全景指南",
-          "summary": "单向光闸、脱机私有化部署、零网络遥测防泄漏（DLP）实战规范。",
+          "title": "2.4 绝密基线：零信任双层鉴权、向量防断裂与 Air-Gapped 脱机部署",
+          "summary": "Dual-Tier 零信任鉴权（ReBAC+OPA）、短时令牌隔离、HNSW 拓扑防断裂与物理脱机实战规范。",
           "content": `
 <div class="prose">
     <div class="dual-track-card">
@@ -751,20 +1144,39 @@ print(f"对账金额: {clean_record.total_reconciled_amount}")
         <div class="dt-grid">
             <div class="dt-col">
                 <span class="dt-badge tech">技术人员视角 (Technical Spec)</span>
-                <p>构建自包含 Docker tar 离线镜像；排查源码与三方依赖中的静态外联请求；配置单向光闸（Data Diode）摆渡；使用 vLLM / AWQ 量化部署本地推理。</p>
+                <p>落地 Dual-Tier 复合鉴权（OpenFGA 查图 + OPA 查上下文）；实施向量检索前过滤并采用硬分区防范 HNSW 拓扑断裂；构建自包含离线镜像与单向光闸。</p>
             </div>
             <div class="dt-col">
                 <span class="dt-badge biz">业务痛点映射 (Business Pain)</span>
-                <p>军工、金融核心资产严禁连接公网，任何静默联网都会导致内网安全红牌告警并立刻中止合同。</p>
+                <p>权限越界导致横向移动数据泄密；向量过滤导致召回断崖式雪崩；军工金融外联静默告警中断交付。</p>
             </div>
             <div class="dt-col">
                 <span class="dt-badge cxo">CXO 财务账本与谈判话术</span>
-                <p><strong>“周总，我们的系统达到最高密级的物理脱机标准。核心数据在物理层面上根本没有通往外网的网线，完全符合人行监管与数据安全法，让您免受合规审查风险。”</strong></p>
+                <p><strong>“周总，我们构建了银行级零信任双层防御。模型决策与执行物理剥离，即便模型被提示词越狱，底层策略引擎也会直接熔断；同时核心数据在物理上毫无外联，完全符合监管与安全规范。”</strong></p>
             </div>
         </div>
     </div>
 
-    <h3>一、Air-Gapped 离线部署四大纪律</h3>
+    <h3>一、双层零信任防御：ReBAC 关系判定 + Policy Engine 运行时守卫</h3>
+    <p>企业级 Agent 面临的最严峻威胁是<strong>过度授权（Excessive Agency）</strong>。OWASP 明确将“依赖模型输出进行鉴权”列为绝对禁区<a href="#ref-1" class="citation-ref">[1]</a>。单一静态策略引擎（如 OPA）在面对复杂企业协作图时会遭遇上下文拉取的延迟爆炸，因此必须采纳 <strong>Dual-Tier 双层防御体系</strong>：</p>
+    <ul>
+        <li><strong>Tier 1：基于关系的访问控制（ReBAC / OpenFGA）<a href="#ref-2" class="citation-ref">[2]</a>：</strong>基于 Google Zanzibar 规范维护主体与资源的关系图（<code>&lt;Agent/User&gt; is &lt;viewer&gt; of &lt;Document&gt;</code>），秒级判定实体归属与继承路径，解决“能不能看这个对象”；</li>
+        <li><strong>Tier 2：运行时策略守卫（ABAC / OPA / Cedar）：</strong>针对工作时段、网络 IP、单笔限额、DLP 脱敏规则等动态环境属性进行独立决策，解决“当前上下文中能不能做这个动作”；</li>
+        <li><strong>凭据生命周期隔离（Token Vault）<a href="#ref-3" class="citation-ref">[3]</a>：</strong>通过 OAuth 2.0 Token Exchange（RFC 8693）动态换发<strong>存活期 $\le 5$ 分钟的单次 Scoped Access Token</strong>，模型全生命周期永不触碰长效 Secret。</li>
+    </ul>
+
+    <h3>二、企业级 RAG 检索前过滤与 HNSW 图拓扑防断裂</h3>
+    <p>依据 OWASP RAG Security 核心准则：<strong>访问控制元数据必须下沉到每一个向量 Chunk 级，且在检索前（Pre-retrieval）执行强过滤，严禁在检索后后验过滤</strong><a href="#ref-4" class="citation-ref">[4]</a>。</p>
+    <div class="callout warning">
+        <strong>底层物理陷阱：HNSW 拓扑断裂（The Graph Disconnection Dilemma）</strong><br>
+        传统向量数据库在强权限过滤（选择度 &lt; 1%）下，预过滤会将 HNSW 邻近图切成孤立碎片。贪婪跳转陷入局部最优，导致<strong>召回率（Recall）暴跌 40%~70%</strong>（ACM SIGMOD 2024 ACORN 论文实证<a href="#ref-5" class="citation-ref">[5]</a>）。<br>
+        <strong>FDE 落地工程解法：</strong><br>
+        1. <strong>硬物理分区（Hard Partitioning）：</strong>按租户或安全密级分 Collection 物理隔离，杜绝图污染；<br>
+        2. <strong>单阶段倒排过滤（Single-Stage Inverted Payload Index）：</strong>采用 Qdrant / Milvus Iterator，在图遍历时利用倒排索引动态约束有效跳点；<br>
+        3. <strong>Fail-Closed 刚性拒答：</strong>无授权命中或余弦相似度 &lt; 0.72 时强制拒答，严禁模型裸答。
+    </div>
+
+    <h3>三、Air-Gapped 离线部署四大纪律</h3>
     <ol>
         <li><strong>零动态依赖拉取：</strong>所有依赖必须打包为包含完整 C 绑定的本地 <code>.whl</code> 文件，严禁现场 <code>pip install</code>。</li>
         <li><strong>单向光闸摆渡纪律：</strong>数据流向只进不出，更新补丁必须经过离线介质杀毒与多级保密审批。</li>
@@ -774,6 +1186,11 @@ print(f"对账金额: {clean_record.total_reconciled_amount}")
 </div>
 `,
           "refs": [
+            { "title": "OWASP: AI Agent Security Cheat Sheet (2025 权威智能体安全指南)", "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html", "note": "决策执行物理分离、模型外置策略校验与防过度授权 (Excessive Agency)", "badge": "安全规范" },
+            { "title": "Google Zanzibar & OpenFGA: Relationship-Based Access Control (ReBAC)", "url": "https://openfga.dev/", "note": "大规模分布式实体图访问控制与委派继承标准规范", "badge": "工业架构" },
+            { "title": "Auth0 by Okta: Mitigate Excessive Agency in AI Agents with Zero Trust Security", "url": "https://auth0.com/blog/mitigate-excessive-agency-ai-agents/", "note": "Token Vault 短时凭据隔离机制与 CIBA 异步人机审批流实现", "badge": "零信任方案" },
+            { "title": "OWASP: RAG Security Cheat Sheet (Section 4 & 5 数据隔离与溯源)", "url": "https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html", "note": "Chunk 级访问控制元数据、检索前过滤与强制来源溯源规范", "badge": "安全规范" },
+            { "title": "ACM SIGMOD 2024: ACORN: Performant and Predicate-Agnostic Search on Structured Data", "url": "https://arxiv.org/abs/2403.04871", "note": "揭示高选择比过滤下 HNSW 图断裂机理与单阶段图遍历优化", "badge": "顶级学术" },
             { "title": "Pier Paolo Ippolito: Air-Gapped ML Deployment & VPC-SC 生产规范", "url": "https://github.com/pierpaolo28/Awesome-FDE-Roadmap", "note": "零公网环境容器自包含打包、硬件单向光闸与离线驱动编译实操手册", "badge": "实战指南" },
             { "title": "NSA / CISA: Operational Technology & Air-Gapped Systems Security Guidelines", "url": "https://www.cisa.gov", "note": "物理隔离网络环境严格防静默网络外联与介质安全摆渡法定规范", "badge": "国家标准" }
           ]
@@ -802,7 +1219,18 @@ print(f"对账金额: {clean_record.total_reconciled_amount}")
         </div>
     </div>
 
-    <h3>一、RAGAS 四维评估指标体系（真实学术计算逻辑）</h3>
+    <h3>一、为什么是 200 条黄金集？回归门禁的统计学功效证明</h3>
+    <p>在企业级交付中，“200 条测试用例”绝非主观拍脑袋，而是由<strong>统计学显著性检验（Statistical Power Analysis）</strong>推导出来的硬约束<a href="#ref-1" class="citation-ref">[1]</a>：</p>
+    <div class="callout note">
+        <strong>数学推导：McNemar 成对检验与样本量下限</strong><br>
+        在 CI/CD 自动化回归门禁中，模型输出是否满足业务标准被抽象为二项分布（Pass/Fail）。若要灵敏捕捉模型升级或 Prompt 微调后出现的 <strong>5% 微小性能劣化（例如由 85% 跌至 80%）</strong>，设定第一类错误 $\alpha = 0.05$（95% 置信度），第二类错误 $\beta = 0.20$（80% 统计功效 Power）：<br>
+        <div style="text-align: center; margin: 0.5rem 0; font-family: monospace; font-size: 0.92rem; font-weight: bold;">
+            N ≥ (Z_{α/2} √(2p̄(1-p̄)) + Z_β √(p1(1-p1) + p2(1-p2)))^2 / (p1 - p2)^2 ≈ 196 ~ 230
+        </div>
+        <strong>结论：</strong>200~250 条覆盖典型业务、边界用例与对抗性攻击的 Golden Dataset，是具备统计学信服力、能自动阻断 CI 发布的<strong>最小经济样本量</strong><a href="#ref-2" class="citation-ref">[2]</a>。低于 100 条无法排除随机偶然性，高于 500 条会导致 CI 跑批成本激增。
+    </div>
+
+    <h3>二、RAGAS 四维评估指标体系（真实学术计算逻辑）</h3>
     <div class="table-container">
         <table class="data-table">
             <thead>
@@ -842,8 +1270,14 @@ print(f"对账金额: {clean_record.total_reconciled_amount}")
         </table>
     </div>
     <div style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 0.4rem;">
-        * 注：RAGAS 官方指标库并不统一定义绝对及格线，不同垂直业务对幻觉容忍度截然不同；上述指标阈值为行业顶尖 FDE 团队在生产部署中沉淀的推荐基线。
+        * 注：RAGAS 官方指标库并不统一定义绝对及格线，不同垂直业务对幻觉容忍度截然不同；上述指标阈值为行业顶尖 FDE 团队在生产部署中沉淀的推荐基线<a href="#ref-3" class="citation-ref">[3]</a><a href="#ref-4" class="citation-ref">[4]</a>。
     </div>
+
+    <h3>三、生产过程指标 vs 结果指标双轨矩阵</h3>
+    <ul>
+        <li><strong>过程指标（Process Metrics）：</strong>工具调用精确率（Tool Precision ≥ 95%）、单次任务执行步数（≤ 6 步硬熔断）、P95 响应延迟（≤ 4.5s）；</li>
+        <li><strong>结果指标（Outcome Metrics）：</strong>事实忠实度（Faithfulness ≥ 95%）、检索排序精度（Context Precision ≥ 85%）、人机协作接管率（Escalation Rate ≤ 5%）。</li>
+    </ul>
 
     <div class="code-hunt-block">
         <div class="code-hunt-header">
@@ -872,6 +1306,8 @@ def query_enterprise_agent(user_query):
 </div>
 `,
           "refs": [
+            { "title": "Statistical Methods for ML Model Evaluation & McNemar's Test Power Analysis", "url": "https://en.wikipedia.org/wiki/McNemar%27s_test", "note": "二项分布回归门禁样本量推导：95%置信度捕捉5%模型漂移的最小经济样本量", "badge": "统计理论" },
+            { "title": "CIO: Forward-deployed engineering in the age of agentic AI (2026-07)", "url": "https://www.cio.com/article/4202404/forward-deployed-engineering-in-the-age-of-agentic-ai-from-vibe-coding-to-governed-autonomy.html", "note": "多维度真实用例、边界场景与对抗性提示词工程评测套件规范", "badge": "行业蓝图" },
             { "title": "Ragas 官方指标文档：Faithfulness, Relevance, Precision, Recall 评估体系", "url": "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/", "note": "基于NLI的事实忠实度、合成反向提问相关度与MAP排序精度数学逻辑", "badge": "官方规范" },
             { "title": "Evaluating RAG Systems: Production Best Practices", "url": "https://arxiv.org/abs/2309.15217", "note": "RAGAS论文：工业界对幻觉与上下文召回进行自动化度量的实证基准", "badge": "学术文献" }
           ]

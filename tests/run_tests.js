@@ -21,6 +21,7 @@ const { createTier1Suite } = require('./tier1_coverage.test');
 const { createTier2Suite } = require('./tier2_boundary.test');
 const { createTier3Suite } = require('./tier3_cross_feature.test');
 const { createTier4Suite } = require('./tier4_real_world.test');
+const { createTier5Suite } = require('./tier5_mobile_responsiveness.test');
 
 // ANSI Colors for readable console output
 const colors = {
@@ -42,12 +43,12 @@ async function main() {
     const tierArgIdx = args.findIndex(a => a === '--tier' || a === '-t');
     if (tierArgIdx !== -1 && args[tierArgIdx + 1]) {
         selectedTier = parseInt(args[tierArgIdx + 1], 10);
-    } else if (args[0] && /^[1-4]$/.test(args[0])) {
+    } else if (args[0] && /^[1-5]$/.test(args[0])) {
         selectedTier = parseInt(args[0], 10);
     }
 
     console.log(`\n${colors.bold}${colors.cyan}══════════════════════════════════════════════════════════════════════════════${colors.reset}`);
-    console.log(`${colors.bold}${colors.cyan}   ⚡ FDE Flight Simulator & Learning Hub — 4-Tier E2E Test Harness${colors.reset}`);
+    console.log(`${colors.bold}${colors.cyan}   ⚡ FDE Flight Simulator & Learning Hub — 5-Tier E2E Test Harness${colors.reset}`);
     console.log(`${colors.dim}   Platform: Node.js ${process.version} | Timestamp: ${new Date().toISOString()}${colors.reset}`);
     console.log(`${colors.bold}${colors.cyan}══════════════════════════════════════════════════════════════════════════════${colors.reset}\n`);
 
@@ -55,7 +56,8 @@ async function main() {
         { tier: 1, creator: createTier1Suite },
         { tier: 2, creator: createTier2Suite },
         { tier: 3, creator: createTier3Suite },
-        { tier: 4, creator: createTier4Suite }
+        { tier: 4, creator: createTier4Suite },
+        { tier: 5, creator: createTier5Suite }
     ];
 
     const suitesToRun = selectedTier 
